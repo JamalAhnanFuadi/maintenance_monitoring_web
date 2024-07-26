@@ -15,20 +15,20 @@
                       http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
 	version="3.1" metadata-complete="true">
 
-	<display-name>UMX</display-name>
-	<description>UMX</description>
+	<display-name>Monitoring</display-name>
+	<description>Monitoring and Maintenance Report</description>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 	<listener>
 		<listener-class>
-             sg.ic.umx.init.ContextListener 
+             id.tsi.mmw.init.ContextListener
 		</listener-class>
 	</listener>
 	<filter>
 		<filter-name>application</filter-name>
-		<filter-class>sg.ic.umx.filter.ApplicationFilter</filter-class>
+		<filter-class>id.tsi.mmw.filter.ApplicationFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>application</filter-name>

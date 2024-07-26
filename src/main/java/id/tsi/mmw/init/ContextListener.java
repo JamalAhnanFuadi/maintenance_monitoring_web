@@ -20,7 +20,7 @@ public class ContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent evt) {
         log.info("Application Init Started");
         PropertyManager.getInstance();
-        EncryptionManager.init();
+        EncryptionManager.getInstance();
         ConnectionManager.getInstance();
         log.info("Application Init Completed");
     }
@@ -29,7 +29,7 @@ public class ContextListener implements ServletContextListener {
     public void contextDestroyed(ServletContextEvent evt) {
         log.info("Application Shutdown Started");
         ConnectionManager.getInstance().shutdown();
-        EncryptionManager.shutdown();
+        EncryptionManager.getInstance().shutdown();
         log.info("Application Shutdown Completed");
     }
 
