@@ -6,9 +6,7 @@ import id.tsi.mmw.util.log.AppLogger;
 import id.tsi.mmw.property.Property;
 
 @Singleton
-public class PropertyManager {
-
-    private final AppLogger log;
+public class PropertyManager extends BaseManager{
 
     private static PropertyManager instance;
 
@@ -43,6 +41,14 @@ public class PropertyManager {
     public boolean getBoolProperty(String key) {
         return Boolean.parseBoolean(prop.getProperty(key, "false"));
 
+    }
+
+    public int getIntProperty(String key) {
+        return getIntProperty(key, 0);
+    }
+
+    public int getIntProperty(String key, int defaultValue) {
+        return Integer.parseInt(getProperty(key, String.valueOf(defaultValue)));
     }
 
 }

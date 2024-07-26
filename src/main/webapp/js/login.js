@@ -14,20 +14,21 @@ function initVue() {
             this.session();
         },
         methods: {
-            session: function () {
+           session: function () {
                 const vm = this;
-                axios.get('/umx/system/authentication/session')
+                /*axios.get('/monitoring/api/authentication/session')
                     .then(function (response) {
                         location.href = 'index';
                     }).catch(function (error) {
                         vm.authenticated = false;
                         console.log(error);
-                    });
+                    });*/
+               vm.authenticated = false;
             },
             login: function () {
                 const vm = this;
                 axios.post(
-                    '/umx/system/authentication/login?random=' + Math.random(), {
+                    '/monitoring/api/authentication/login?random=' + Math.random(), {
                     username: vm.username,
                     password: vm.password
                 }).then(function (response) {
@@ -47,7 +48,7 @@ function initVue() {
             },
             logout: function () {
                 const vm = this;
-                axios.get('/umx/system/authentication/logout')
+                axios.get('/monitoring/api/authentication/logout')
                     .then(function (response) {
                         vm.session();
                     }).catch(function (error) {

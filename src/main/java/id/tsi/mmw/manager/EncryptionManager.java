@@ -1,10 +1,8 @@
 package id.tsi.mmw.manager;
 
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.security.*;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
@@ -15,110 +13,153 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
 import id.tsi.mmw.util.log.AppLogger;
 
-public class EncryptionManager {
+public class EncryptionManager extends BaseManager {
 
-    private static final AppLogger logger = new AppLogger(EncryptionManager.class);
-    private static final String ALGO = "PBEWithMD5AndDES";
-    private static final String KEY = "@#1D%7887F&108!8780FEF*88&%!@d97d0!";
-    private static final int ITRCOUNT = 17;
+    private static EncryptionManager instance;
 
-    // 8-byte Salt
-    private static final byte[] SALT =
-            {(byte) 0xA9, (byte) 0x9B, (byte) 0xC8, (byte) 0x32, (byte) 0x56, (byte) 0x35, (byte) 0xE3, (byte) 0x03};
+    private static final String ALGO = "AES/CBC/PKCS5PADDING";
+    private static final String KEY = "9v9rdhus135231289aulfcoe5oknr3ru";
+    private static final String HASH = "SHA-256";
 
-    private static Cipher ecipher;
-    private static Cipher dcipher;
+    private MessageDigest messageDigest;
+    private SecureRandom secureRandom;
+    private SecretKeySpec secretKeySpec;
 
-    private static MessageDigest digest;
+    private Cipher ecipher;
+    private Cipher dcipher;
 
     private EncryptionManager() {
-        // Empty Constructor
-    }
+        final String methodName = "Constructor";
+        log = new AppLogger(EncryptionManager.class);
+        log.debug(methodName, "Start");
 
-    public static synchronized void init() {
-        final String methodName = "init";
         try {
-            // Create the key
-            KeySpec keySpec = new PBEKeySpec(KEY.toCharArray(), SALT, ITRCOUNT);
-            SecretKey key = SecretKeyFactory.getInstance(ALGO).generateSecret(keySpec);
-            ecipher = Cipher.getInstance(key.getAlgorithm());
-            dcipher = Cipher.getInstance(key.getAlgorithm());
-
-            // Prepare the parameter to the ciphers
-            AlgorithmParameterSpec paramSpec = new PBEParameterSpec(SALT, ITRCOUNT);
-
-            // Create the ciphers
-            ecipher.init(Cipher.ENCRYPT_MODE, key, paramSpec);
-            dcipher.init(Cipher.DECRYPT_MODE, key, paramSpec);
-
-            digest = MessageDigest.getInstance("SHA-256");
-
-        } catch (InvalidKeySpecException | NoSuchAlgorithmException | NoSuchPaddingException
-                | InvalidAlgorithmParameterException | InvalidKeyException ex) {
-            logger.error(methodName, ex.getMessage());
+            ecipher = Cipher.getInstance(ALGO);
+            dcipher = Cipher.getInstance(ALGO);
+            secretKeySpec = generateSecretKey(KEY);
+            messageDigest = MessageDigest.getInstance(HASH);
+            secureRandom = new SecureRandom();
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+            log.error(methodName, e.getMessage());
         }
+        log.debug(methodName, "Completed");
     }
 
-    public static synchronized void shutdown() {
-        ecipher = null;
-        dcipher = null;
+    public String encrypt(String text) {
+        return encrypt(secretKeySpec, text);
     }
 
-    /**
-     * Encrypts the given plaintext and returns an encrypted ciphertext.
-     *
-     * @param plaintext The text to be encrypted.
-     * @return A ciphertext
-     */
-    public static synchronized String encrypt(String plaintext) {
-        final String methodName = "encrypt";
-
+    public String encrypt(String key, String text) {
+        SecretKeySpec keySpec;
         try {
-            // Encode the string into bytes using utf-8
-            byte[] utf8 = plaintext.getBytes(StandardCharsets.UTF_8);
-
-            // Encrypt
-            byte[] enc = ecipher.doFinal(utf8);
-
-            // Encode bytes to base64 to get a string
-            return Base64.getEncoder().encodeToString(enc);
-        } catch (BadPaddingException | IllegalBlockSizeException ex) {
-            logger.error(methodName, ex.getMessage());
-        }
-        return null;
-    }
-
-    /**
-     * Decrypts the given ciphertext and returns an decrypted plaintext.
-     *
-     * @param ciphertext The text to be decrypted.
-     * @return A plaintext
-     */
-    public static synchronized String decrypt(String ciphertext) {
-        final String methodName = "decrypt";
-
-        try {
-            // Decode base64 to get bytes
-            byte[] dec = Base64.getDecoder().decode(ciphertext.getBytes(StandardCharsets.UTF_8));
-
-            // Decrypt
-            byte[] utf8 = dcipher.doFinal(dec);
-
-            // Decode using utf-8
-            return new String(utf8, StandardCharsets.UTF_8);
-
-        } catch (BadPaddingException | IllegalBlockSizeException ex) {
-            logger.error(methodName, ex.getMessage());
+            keySpec = generateSecretKey(key);
+            return encrypt(keySpec, text);
+        } catch (Exception e) {
+            log.error("encrypt", e);
         }
         return "";
     }
 
-    public static String hash(String plainText) {
-        byte[] output = digest.digest(plainText.getBytes());
-        return Base64.getEncoder().encodeToString(output);
+    private String encrypt(SecretKeySpec keySpec, String text) {
+        try {
+            byte[] ivs = generateIV();
+
+            AlgorithmParameterSpec paramSpec = new IvParameterSpec(ivs);
+
+            ecipher.init(Cipher.ENCRYPT_MODE, keySpec, paramSpec);
+
+            byte[] encrypted = ecipher.doFinal(text.getBytes(StandardCharsets.UTF_8));
+
+            // Combine to single byte Array
+            byte[] combined = new byte[ivs.length + encrypted.length];
+
+            System.arraycopy(ivs, 0, combined, 0, ivs.length);
+            System.arraycopy(encrypted, 0, combined, ivs.length, encrypted.length);
+
+            return Base64.getEncoder().encodeToString(combined);
+
+        } catch (InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException
+                 | BadPaddingException e) {
+            log.error("encrypt", e.getMessage());
+        }
+        return "";
+    }
+
+    public String decrypt(String text) {
+        return decrypt(secretKeySpec, text);
+    }
+
+    private String decrypt(SecretKeySpec keySpec, String text) {
+        try {
+
+            byte[] combined = Base64.getDecoder().decode(text);
+
+            byte[] ivs = new byte[16];
+            byte[] encryptedText = new byte[combined.length - 16];
+
+            System.arraycopy(combined, 0, ivs, 0, ivs.length);
+            System.arraycopy(combined, ivs.length, encryptedText, 0, encryptedText.length);
+
+            AlgorithmParameterSpec paramSpec = new IvParameterSpec(ivs);
+            dcipher.init(Cipher.DECRYPT_MODE, keySpec, paramSpec);
+
+            return new String(dcipher.doFinal(encryptedText), StandardCharsets.UTF_8);
+
+        } catch (InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException
+                 | BadPaddingException e) {
+            log.error("decrypt", e.getMessage());
+        }
+        return "";
+    }
+
+    private byte[] generateIV() {
+        byte[] ivBytes = new byte[16];
+        secureRandom.nextBytes(ivBytes);
+        return ivBytes;
+    }
+
+    private SecretKeySpec generateSecretKey(String key) {
+        return new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "AES");
+    }
+
+    public String generateRandomString(int length) {
+        return new BigInteger(length * 5, secureRandom).toString(32);
+    }
+
+    public String hash(String text, String salt) {
+        String hashed = "";
+        messageDigest.update(salt.getBytes(StandardCharsets.UTF_8));
+        byte[] bytes;
+        bytes = messageDigest.digest(text.getBytes(StandardCharsets.UTF_8));
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < bytes.length; i++) {
+            sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        hashed = sb.toString();
+        messageDigest.reset();
+
+        return hashed;
+    }
+
+    public void shutdown() {
+        log.debug("shutdown", "Start");
+        ecipher = null;
+        dcipher = null;
+        log.debug("shutdown", "Completed");
+    }
+
+
+    public static EncryptionManager getInstance() {
+        if (instance == null) {
+            instance = new EncryptionManager();
+        }
+        return instance;
     }
 }

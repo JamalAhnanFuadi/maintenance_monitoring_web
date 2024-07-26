@@ -6,10 +6,10 @@
 
 <head>
     <%@include file="WEB-INF/pages/css_import.jsp"%>
-    <link href="css/umx.css" rel="stylesheet">
+    <link href="css/monitoring.css" rel="stylesheet">
     <link href="css/login.css" rel="stylesheet">
 
-    <title>UMX</title>
+    <title>Monitoring</title>
 </head>
 
 <body class="nav-md">
@@ -27,7 +27,7 @@
                                 <img src="images/logo.png" alt="logo">
                             </div>
                             <div id="app-name" class="col-xs-4">
-                                <h1>UMX</h1>
+                                <h1>Monitoring</h1>
                             </div>
                             <div id="user-logo" class="pull-right col-xs-4">
                                 <img src="images/kbtg-logo.png" alt="logo">

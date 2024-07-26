@@ -1,81 +1,45 @@
 package id.tsi.mmw.manager;
 
 import javax.inject.Singleton;
-import org.jdbi.v3.core.Handle;
-import org.jdbi.v3.core.Jdbi;
-import org.jdbi.v3.jackson2.Jackson2Config;
-import org.jdbi.v3.jackson2.Jackson2Plugin;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import id.tsi.mmw.util.json.JsonHelper;
 import id.tsi.mmw.util.log.AppLogger;
 import id.tsi.mmw.property.Property;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 @Singleton
-public class ConnectionManager {
+public class ConnectionManager extends BaseManager {
 
     private static ConnectionManager instance;
 
-    private final AppLogger log;
-
     private HikariDataSource dataSource;
-    private Jdbi jdbi;
 
     private ConnectionManager() {
-        log = new AppLogger(this.getClass());
-
-        HikariConfig config = initConfig();
-
-        dataSource = new HikariDataSource(config);
-
-        initJdbi(dataSource);
-
-        log.debug("init", "Connected Successfully to DB");
-    }
-
-    private HikariConfig initConfig() {
-
+        final String methodName = "Constructor";
+        log = new AppLogger(ConnectionManager.class);
+        log.debug(methodName, "Start");
         HikariConfig config = new HikariConfig();
-/*
 
-        config.setDriverClassName(PropertyManager.getInstance().getProperty(Property.JDBC_DRIVER));
-        config.setJdbcUrl(PropertyManager.getInstance().getProperty(Property.JDBC_URL));
-        config.addDataSourceProperty("user", PropertyManager.getInstance().getProperty(Property.JDBC_USERNAME));
-        config.addDataSourceProperty("password",
-                EncryptionManager.decrypt(PropertyManager.getInstance().getProperty(Property.JDBC_PASSWORD)));
-*/
+        log.info("Initiating Connection to : " + getProp(Property.DB_URL));
 
-        log.debug("initConfig", "Connecting to URL : " + config.getJdbcUrl());
+        final String USERNAME = getProp(Property.DB_USERNAME);
+        final String PASSWORD = EncryptionManager.getInstance().decrypt(getProp(Property.DB_PASSWORD));
+        final String DATASOURCE_CLASS_NAME = getProp(Property.DB_DRIVER_CLASSNAME);
+        final String URL = getProp(Property.DB_URL);
+        final int POOL_SIZE = getIntProp(Property.DB_POOL_SIZE);
 
-        // Optimization
-        config.addDataSourceProperty("verifyServerCertificate", false);
-        config.addDataSourceProperty("useSSL", false);
-        config.addDataSourceProperty("cachePrepStmts", true);
-        config.addDataSourceProperty("prepStmtCacheSize", 250);
-        config.addDataSourceProperty("prepStmtCacheSqlLimit", 2048);
-        config.addDataSourceProperty("useServerPrepStmts", true);
+        config.setUsername(USERNAME);
+        config.setPassword(PASSWORD);
+
+        config.setDriverClassName(DATASOURCE_CLASS_NAME);
+        config.setJdbcUrl(URL);
 
         // Pool Size
-        config.setMaximumPoolSize(10);
-
-        config.setConnectionTestQuery("SELECT 1");
-
-        return config;
-
-    }
-
-    private void initJdbi(HikariDataSource dataSource) {
-        jdbi = Jdbi.create(dataSource);
-        jdbi.installPlugin(new Jackson2Plugin());
-        jdbi.getConfig(Jackson2Config.class).setMapper(JsonHelper.getMapper());
-    }
-
-    public Handle getHandle() {
-        return jdbi.open();
-    }
-
-    public void shutdown() {
-        dataSource.close();
+        config.setMaximumPoolSize(POOL_SIZE);
+        dataSource = new HikariDataSource(config);
+        completed(methodName);
     }
 
     public static ConnectionManager getInstance() {
@@ -83,5 +47,25 @@ public class ConnectionManager {
             instance = new ConnectionManager();
         }
         return instance;
+    }
+
+    public Connection getConnection() throws SQLException {
+        return dataSource.getConnection();
+    }
+
+    private String getProp(String key) {
+        return PropertyManager.getInstance().getProperty(key);
+    }
+
+    private int getIntProp(String key) {
+        return PropertyManager.getInstance().getIntProperty(key);
+    }
+
+    public void shutdown() {
+        log.info("shutdown", "Stopping Data Source");
+        dataSource.close();
+        dataSource = null;
+        log.info("shutdown", "Data Sources Stopped");
+
     }
 }
