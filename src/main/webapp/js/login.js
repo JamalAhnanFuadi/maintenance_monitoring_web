@@ -16,19 +16,18 @@ function initVue() {
         methods: {
            session: function () {
                 const vm = this;
-                /*axios.get('/monitoring/api/authentication/session')
+                axios.get('/monitoring/rest/authentication/session')
                     .then(function (response) {
                         location.href = 'index';
                     }).catch(function (error) {
                         vm.authenticated = false;
                         console.log(error);
-                    });*/
-               vm.authenticated = false;
+                    });
             },
             login: function () {
                 const vm = this;
                 axios.post(
-                    '/monitoring/api/authentication/login?random=' + Math.random(), {
+                    '/monitoring/rest/authentication/login?random=' + Math.random(), {
                     username: vm.username,
                     password: vm.password
                 }).then(function (response) {
@@ -48,7 +47,7 @@ function initVue() {
             },
             logout: function () {
                 const vm = this;
-                axios.get('/monitoring/api/authentication/logout')
+                axios.get('/monitoring/rest/authentication/logout')
                     .then(function (response) {
                         vm.session();
                     }).catch(function (error) {
