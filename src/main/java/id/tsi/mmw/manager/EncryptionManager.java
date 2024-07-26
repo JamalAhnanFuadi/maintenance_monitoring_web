@@ -67,23 +67,34 @@ public class EncryptionManager extends BaseManager {
         return "";
     }
 
+    /**
+     * Encrypts the given text using the provided key and initialization vector (IV).
+     *
+     * @param keySpec the SecretKeySpec representing the encryption key
+     * @param text the text to be encrypted
+     * @return the encrypted text as a Base64 encoded string
+     */
     private String encrypt(SecretKeySpec keySpec, String text) {
         try {
-            byte[] ivs = generateIV();
+            // Generate a random initialization vector (IV)
+            byte[] ivBytes = generateIV();
 
-            AlgorithmParameterSpec paramSpec = new IvParameterSpec(ivs);
+            // Specify the algorithm parameter spec with the IV
+            AlgorithmParameterSpec paramSpec = new IvParameterSpec(ivBytes);
 
+            // Initialize the cipher in encryption mode with the key and IV
             ecipher.init(Cipher.ENCRYPT_MODE, keySpec, paramSpec);
 
-            byte[] encrypted = ecipher.doFinal(text.getBytes(StandardCharsets.UTF_8));
+            // Encrypt the text bytes
+            byte[] encryptedBytes = ecipher.doFinal(text.getBytes(StandardCharsets.UTF_8));
 
-            // Combine to single byte Array
-            byte[] combined = new byte[ivs.length + encrypted.length];
+            // Combine IV and encrypted bytes into a single byte array
+            byte[] combinedBytes = new byte[ivBytes.length + encryptedBytes.length];
+            System.arraycopy(ivBytes, 0, combinedBytes, 0, ivBytes.length);
+            System.arraycopy(encryptedBytes, 0, combinedBytes, ivBytes.length, encryptedBytes.length);
 
-            System.arraycopy(ivs, 0, combined, 0, ivs.length);
-            System.arraycopy(encrypted, 0, combined, ivs.length, encrypted.length);
-
-            return Base64.getEncoder().encodeToString(combined);
+            // Return the Base64 encoded encrypted text
+            return Base64.getEncoder().encodeToString(combinedBytes);
 
         } catch (InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException
                  | BadPaddingException e) {
@@ -96,26 +107,43 @@ public class EncryptionManager extends BaseManager {
         return decrypt(secretKeySpec, text);
     }
 
+    /**
+     * Decrypts the given text using the provided key and initialization vector (IV).
+     *
+     * @param keySpec the SecretKeySpec representing the decryption key
+     * @param text the text to be decrypted
+     * @return the decrypted text
+     */
     private String decrypt(SecretKeySpec keySpec, String text) {
         try {
-
+            // Decode the combined text into bytes
             byte[] combined = Base64.getDecoder().decode(text);
 
+            // Separate the IV and the encrypted text
             byte[] ivs = new byte[16];
             byte[] encryptedText = new byte[combined.length - 16];
 
+            // Copy the first 16 bytes (IV) into the ivs array
             System.arraycopy(combined, 0, ivs, 0, ivs.length);
+
+            // Copy the rest of the bytes (encrypted text) into the encryptedText array
             System.arraycopy(combined, ivs.length, encryptedText, 0, encryptedText.length);
 
+            // Set up the initialization vector for decryption
             AlgorithmParameterSpec paramSpec = new IvParameterSpec(ivs);
+
+            // Initialize the decryption cipher with the decryption mode, key, and IV
             dcipher.init(Cipher.DECRYPT_MODE, keySpec, paramSpec);
 
+            // Perform the decryption and return the decrypted text
             return new String(dcipher.doFinal(encryptedText), StandardCharsets.UTF_8);
 
         } catch (InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException
                  | BadPaddingException e) {
+            // Log any decryption errors
             log.error("decrypt", e.getMessage());
         }
+        // Return an empty string if decryption fails
         return "";
     }
 
@@ -133,18 +161,38 @@ public class EncryptionManager extends BaseManager {
         return new BigInteger(length * 5, secureRandom).toString(32);
     }
 
+    /**
+     * This method hashes the given text using the provided salt.
+     *
+     * @param text the text to be hashed
+     * @param salt the salt to be used in the hashing process
+     * @return the hashed text
+     */
     public String hash(String text, String salt) {
+        // Initialize an empty string to store the hashed value
         String hashed = "";
+
+        // Update the message digest with the salt bytes
         messageDigest.update(salt.getBytes(StandardCharsets.UTF_8));
-        byte[] bytes;
-        bytes = messageDigest.digest(text.getBytes(StandardCharsets.UTF_8));
+
+        // Generate the hash bytes by digesting the text bytes
+        byte[] bytes = messageDigest.digest(text.getBytes(StandardCharsets.UTF_8));
+
+        // Create a StringBuilder to build the hashed string
         StringBuilder sb = new StringBuilder();
+
+        // Convert each byte to a hexadecimal string and append it to the StringBuilder
         for (int i = 0; i < bytes.length; i++) {
             sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
         }
+
+        // Store the final hashed string
         hashed = sb.toString();
+
+        // Reset the message digest for the next operation
         messageDigest.reset();
 
+        // Return the hashed value
         return hashed;
     }
 

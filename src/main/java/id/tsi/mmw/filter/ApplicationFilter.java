@@ -46,26 +46,36 @@ public class ApplicationFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain)
             throws IOException, ServletException {
 
+        // Initialize a boolean flag to track validity
         boolean valid = true;
 
+        // Cast the servlet request to HttpServletRequest
         HttpServletRequest request = (HttpServletRequest) servletRequest;
 
+        // Extract the path from the request URI
         String path = request.getRequestURI().substring(request.getContextPath().length());
 
-        if (path.contains("/lib/") || path.contains("/js/") || path.contains("/css/") || path.contains("/images/")
-                || path.contains("/asset/") || (path.contains("/system/"))) {
+        // Check if the path contains any of the specified directories
+        if (path.contains("/lib/") || path.contains("/js/") || path.contains("/css") || path.contains("/images/")
+                || path.contains("/asset/") || path.contains("/rest/")) {
+            // If it does, allow the request to pass through
             chain.doFilter(servletRequest, servletResponse);
         } else {
+            // If the path is not in the specified directories, check if it is a protected path
             if (isProtectedPath(path)) {
+                // If it is a protected path, check if the user has a valid session
                 HttpSession session = request.getSession(false);
                 if (!(session != null && session.getAttribute(SESSION_KEY) != null)) {
+                    // If the session is not valid, set the flag to false
                     valid = false;
                 }
             }
 
+            // If the path is not in the specified directories and is valid, allow the request to pass through
             if (valid) {
                 chain.doFilter(servletRequest, servletResponse);
             } else {
+                // If the path is not valid, redirect to the login page
                 HttpServletResponse response = (HttpServletResponse) servletResponse;
                 response.sendRedirect(request.getContextPath() + "/login");
             }

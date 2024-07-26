@@ -40,7 +40,6 @@ public class PropertyManager extends BaseManager{
 
     public boolean getBoolProperty(String key) {
         return Boolean.parseBoolean(prop.getProperty(key, "false"));
-
     }
 
     public int getIntProperty(String key) {
