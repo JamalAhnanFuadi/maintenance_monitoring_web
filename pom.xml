@@ -8,22 +8,22 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>UMX</name>
+    <name>MMW</name>
 
-    <groupId>sg.ic</groupId>
-    <artifactId>umx</artifactId>
+    <groupId>id.tsi</groupId>
+    <artifactId>MMW</artifactId>
     <packaging>war</packaging>
 
     <version>1.0.0</version>
 
-    <description>UMX</description>
-    <inceptionYear>2019</inceptionYear>
+    <description>MMW</description>
+    <inceptionYear>2024</inceptionYear>
 
     <organization>
-        <name>Identiticoders</name>
-        <url>http://www.ic.sg</url>
+        <name>Tegar Solusi Indonesia</name>
+        <url>https://tegarsolusi.com/</url>
     </organization>
-    <url>http://www.ic.sg</url>
+    <url>https://tegarsolusi.com/</url>
 
     <!-- Component Properties -->
     <properties>
@@ -52,7 +52,7 @@
 
     <!-- Build -->
     <build>
-        <finalName>umx</finalName>
+        <finalName>monitoring</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
