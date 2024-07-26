@@ -15,6 +15,9 @@ public class BaseController {
 
     protected AppLogger log;
 
+    public BaseController() {
+        // Empty Constructor
+    }
     // Logging
     protected AppLogger getLogger(Class<?> clazz) {
         return new AppLogger(clazz);

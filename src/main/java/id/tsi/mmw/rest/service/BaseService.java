@@ -17,6 +17,9 @@ public class BaseService {
     @Context
     protected HttpServletRequest httpServletRequest;
 
+    public BaseService() {
+        // Empty Constructor
+    }
     // Logging
     protected AppLogger getLogger(Class<?> clazz) {
         return new AppLogger(clazz);

@@ -6,11 +6,15 @@ import org.glassfish.jersey.internal.inject.AbstractBinder;
 
 public class ApplicationBinder extends AbstractBinder {
 
+    /**
+     * Configures the application bindings.
+     */
     @Override
     protected void configure() {
-
-        ClassIndex.getAnnotated(Controller.class).forEach(this::bindAsContract);
-
+        // Retrieve all classes annotated with @Controller using ClassIndex
+        ClassIndex.getAnnotated(Controller.class)
+                // For each class found, bind it as a contract
+                .forEach(this::bindAsContract);
     }
 
 }

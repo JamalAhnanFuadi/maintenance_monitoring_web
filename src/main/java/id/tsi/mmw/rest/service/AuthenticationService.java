@@ -39,6 +39,12 @@ public class AuthenticationService extends BaseService {
         validator = new AuthenticationValidator();
     }
 
+    /**
+     * Handles the login functionality with authentication and session management.
+     *
+     * @param authRequest The authentication request containing username and password.
+     * @return The response indicating the authentication status.
+     */
     @POST
     @Path("login")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -71,27 +77,26 @@ public class AuthenticationService extends BaseService {
             User user = null;
             String trackingId = generateTrackingID();
 
-            // Validate if the username is a valid root user
+            // Validate if the username is a valid user
             boolean validUser = userController.validateEmail(authRequest.getUsername());
             log.info(methodName, "Validate user : " + validUser);
 
             if (validUser) {
-
+                // Retrieve user details if the user is valid
                 user = userController.getUserDetailByEmail(authRequest.getUsername());
 
                 if (user != null) {
+                    userId = user.getUid();
                     // Retrieve user salt and hash the password for comparison
-                    String userSalt = authenticationController.getUserSalt(user.getUid());
+                    String userSalt = authenticationController.getUserSalt(userId);
                     String hashPassword = EncryptionManager.getInstance().hash(authRequest.getPassword(), userSalt);
 
-                    // Authenticate the root user based on username and hashed password
-                    authenticate = authenticationController.authenticateUser(authRequest.getUsername(), hashPassword);
+                    // Authenticate the user based on username and hashed password
+                    authenticate = authenticationController.authenticateUser(userId, hashPassword);
                     log.info("Authenticate username and password : " + authenticate);
 
                     if (authenticate) {
-
-                        userId = user.getUid();
-
+                        // Update user login timestamp upon successful authentication
                         log.info("Update user login timestamp");
                         authenticationController.updateLoginTimestamp(userId, startProcessingDT);
 
@@ -105,7 +110,7 @@ public class AuthenticationService extends BaseService {
                         setSessionAttribute(Principal.class.getCanonicalName(), principal);
                         setTrackingID(trackingId);
 
-                        // Build success response
+                        // Build success response upon successful authentication
                         response = buildSuccessResponse();
                     }
                 }
@@ -114,7 +119,6 @@ public class AuthenticationService extends BaseService {
 
         // TODO: Implement audit authentication log
 
-
         // Log the response entity and method completion
         log.debug(methodName, response.getEntity());
         completed(methodName);
@@ -122,11 +126,18 @@ public class AuthenticationService extends BaseService {
         return response;
     }
 
+    /**
+     * Logs out the user by clearing the session and redirecting to the login page.
+     *
+     * @return A temporary redirect response to the login page.
+     */
     @GET
     @Path("logout")
     @PermitAll
     public Response logout() {
+        // clearing the login session
         clearSession();
+        // send a redirect to the login page
         return Response.temporaryRedirect(URI.create(httpServletRequest.getContextPath() + "/login")).build();
     }
 

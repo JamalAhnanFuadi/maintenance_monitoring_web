@@ -23,10 +23,19 @@ public class JacksonFeature implements Feature {
     }
 
     private ObjectMapper getObjectMapper() {
+        // Create a new instance of ObjectMapper
         ObjectMapper objectMapper = new ObjectMapper();
+
+        // Configure the ObjectMapper to not fail when encountering unknown properties during deserialization
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        // Set the behavior to exclude properties with null values during serialization
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+        // Enable indentation for the output during serialization
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+        // Return the configured ObjectMapper
         return objectMapper;
     }
 }
