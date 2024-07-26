@@ -1,4 +1,4 @@
-package id.tsi.mmw.rest.model;
+package id.tsi.mmw.rest.model.response;
 
 import javax.ws.rs.core.Response.Status;
 

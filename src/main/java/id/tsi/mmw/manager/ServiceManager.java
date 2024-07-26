@@ -4,7 +4,7 @@ import javax.ws.rs.ApplicationPath;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
 
-@ApplicationPath("/api")
+@ApplicationPath("/rest")
 public class ServiceManager extends ResourceConfig {
 
     public ServiceManager() {

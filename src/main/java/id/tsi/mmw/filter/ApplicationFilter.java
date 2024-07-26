@@ -53,7 +53,7 @@ public class ApplicationFilter implements Filter {
         String path = request.getRequestURI().substring(request.getContextPath().length());
 
         if (path.contains("/lib/") || path.contains("/js/") || path.contains("/css/") || path.contains("/images/")
-                || path.contains("/asset/") || (path.contains("/system/"))) {
+                || path.contains("/asset/") || (path.contains("/rest/"))) {
             chain.doFilter(servletRequest, servletResponse);
         } else {
             if (isProtectedPath(path)) {
