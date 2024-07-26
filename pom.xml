@@ -7,12 +7,12 @@
     <name>MMW</name>
 
     <groupId>id.tsi</groupId>
-    <artifactId>MMW</artifactId>
+    <artifactId>mmw</artifactId>
     <packaging>war</packaging>
 
     <version>1.0.0</version>
 
-    <description>MMW</description>
+    <description>Monitoring and Maintenance Web</description>
     <inceptionYear>2024</inceptionYear>
 
     <organization>
