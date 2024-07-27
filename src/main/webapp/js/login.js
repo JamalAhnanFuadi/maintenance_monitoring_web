@@ -3,7 +3,7 @@ $(document).ready(function () {
 });
 
 function initVue() {
-   new Vue({
+    new Vue({
         el: '#vue',
         data: {
             username: null,
@@ -14,23 +14,23 @@ function initVue() {
             this.session();
         },
         methods: {
-           session: function () {
+            session: function () {
                 const vm = this;
                 axios.get('/monitoring/rest/authentication/session')
                     .then(function (response) {
                         location.href = 'index';
                     }).catch(function (error) {
-                        vm.authenticated = false;
-                        console.log(error);
-                    });
+                    vm.authenticated = false;
+                    //console.log(error);
+                });
             },
             login: function () {
                 const vm = this;
                 axios.post(
-                    '/monitoring/rest/authentication/login?random=' + Math.random(), {
-                    username: vm.username,
-                    password: vm.password
-                }).then(function (response) {
+                    '/monitoring/rest/authentication/login', {
+                        username: vm.username,
+                        password: vm.password
+                    }).then(function (response) {
                     location.href = 'index';
                 }).catch(function (error) {
                     notifyError('Failed login', 'Wrong username and/or password');
@@ -51,10 +51,10 @@ function initVue() {
                     .then(function (response) {
                         vm.session();
                     }).catch(function (error) {
-                        vm.session();
-                        notifyError('Network Error', 'Logout failed');
-                        console.log(error);
-                    });
+                    vm.session();
+                    notifyError('Network Error', 'Logout failed');
+                    console.log(error);
+                });
             }
         }
     });

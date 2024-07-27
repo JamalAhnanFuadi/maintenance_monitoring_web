@@ -1,65 +1,68 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <%@include file="WEB-INF/pages/css_import.jsp"%>
-    <link href="css/monitoring.css" rel="stylesheet">
-    <link href="css/login.css" rel="stylesheet">
-
-    <title>Monitoring</title>
+    <%@include file="/WEB-INF/pages/css_import.jsp" %>
+    <title>Login</title>
 </head>
 
-<body class="nav-md">
+<body>
+<!-- Login Alternative Row -->
+<div id="vue" class="container">
+    <div class="row">
+        <div class="text-center">
+            <!-- Login Container -->
+            <div id="login-container">
+                <!-- Login Title -->
+                <div class="login-title text-center">
+                    <h1><strong>Monitoring and Maintenance</strong></h1>
+                    <h1>Dashboard</h1>
+                </div>
+                <!-- END Login Title -->
 
-<!-- Loading Screen -->
-<div class="loader"></div>
-
-<div id="vue">
-    <div class="login_wrapper" v-if="authenticated == false">
-        <div class="form login_form" @keyup.enter="login()">
-            <section id="wrapper" class="login-register">
-                <div id="login-header-2" class="text-center">
-                    <div class="row">
-                        <div id="user-logo" class="pull-right col-xs-4">
-                            <img src="images/tsi-logo.png" alt="logo">
+                <!-- Login Block -->
+                <div class="block push-bit">
+                    <!-- Login Form -->
+                    <div id="form-login" class="form-horizontal" >
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="gi gi-user"></i></span>
+                                    <input ref="username" v-model="username" name="username" class="form-control"
+                                           placeholder="Username" required v-focus />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="gi gi-asterisk"></i></span>
+                                    <input ref="password" type="password" v-model="password" name="password"
+                                           class="form-control" placeholder="Password" required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group form-actions">
+                            <div class="col-xs-8 text-right">
+                                <button type="submit" class="btn btn-sm btn-primary" @click="login()"></i> Login to
+                                    Dashboard</button>
+                            </div>
                         </div>
                     </div>
+                    <!-- END Login Form -->
                 </div>
-                <div id="login-header" class="text-center">
-                    <div class="row">
-                        <div id="app-name" class="text-left">
-                            <h2>Login</h2>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="form-group">
-                        <input ref="username" v-model="username" name="username" class="form-control"
-                               placeholder="Username" required v-focus />
-                    </div>
-                    <div class="form-group">
-                        <input ref="password" type="password" v-model="password" name="password"
-                               class="form-control" placeholder="Password" required />
-                    </div>
-                    <div>
-                        <button class="btn btn-lg btn-block btn-login" type="submit" @click="login()">Login</button>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-                <div class="separator">
-                    <div class="clearfix"></div>
-                    <div class="pull-right">Monitoring and Maintenance Service v1.0</div>
-                </div>
-            </section>
+                <!-- END Login Block -->
+            </div>
+            <!-- END Login Container -->
         </div>
     </div>
 </div>
+<!-- END Login Alternative Row -->
 
 <!-- javascript imports -->
-<%@include file="WEB-INF/pages/js_import.jsp"%>
+<%@include file="/WEB-INF/pages/js_import.jsp"%>
 <script src="lib/moment/js/moment.min.js"></script>
 <script src="lib/bootstrap-notify/js/bootstrap-notify.min.js"></script>
 <script src="js/customVue.js"></script>
@@ -68,7 +71,6 @@
 <!-- Automatically provides/replaces `Promise` if missing or broken. -->
 <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
-
 </body>
 
 </html>

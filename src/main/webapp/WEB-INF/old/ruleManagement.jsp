@@ -5,7 +5,7 @@
 <html lang="en">
 
 <head>
-    <%@include file="pages/css_import.jsp"%>
+    <%@include file="../pages/css_import.jsp"%>
     <title>UMX</title>
 </head>
 
@@ -15,10 +15,10 @@
     <div class="container body">
         <div class="main_container">
             <!-- side nav -->
-            <%@include file="pages/side_menu.jsp"%>
+            <%@include file="../pages/side_menu.jsp"%>
             <!-- /side nav -->
             <!-- top navigation -->
-            <%@include file="pages/top_nav.jsp"%>
+            <%@include file="../pages/top_nav.jsp"%>
             <!-- /top navigation -->
             <!-- page content -->
             <main class="right_col" role="main" id="vue">
@@ -170,11 +170,11 @@
             <!-- /page content -->
         </div>
         <!-- footer content -->
-        <%@include file="pages/footer.jsp"%>
+        <%@include file="../pages/footer.jsp"%>
         <!-- /footer content -->
     </div>
     <!-- javascript imports -->
-    <%@include file="pages/js_import.jsp"%>
+    <%@include file="../pages/js_import.jsp"%>
     <script src="/umx/js/ruleManagement.js"></script>
 </body>
 
