@@ -135,8 +135,13 @@ public class AuthenticationService extends BaseService {
     @Path("logout")
     @PermitAll
     public Response logout() {
+        final String methodName = "logout";
+        start(methodName);
+
         // clearing the login session
         clearSession();
+
+        completed(methodName);
         // send a redirect to the login page
         return Response.temporaryRedirect(URI.create(httpServletRequest.getContextPath() + "/login")).build();
     }
@@ -145,6 +150,10 @@ public class AuthenticationService extends BaseService {
     @Path("session")
     @PermitAll
     public Response session() {
+        final String methodName = "logout";
+        start(methodName);
+
+        completed(methodName);
         return buildSuccessResponse();
     }
 }

@@ -39,6 +39,15 @@
                     </archive>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -234,7 +243,6 @@
         <scheduler.version>9.3</scheduler.version>
         <!-- Java Version -->
         <java.version>1.8</java.version>
-
     </properties>
 
 </project>

@@ -49,7 +49,7 @@ function notifyError(title, message = '') {
         "title": title,
         "message": message
     }, {
-        "type": 'error',
+        "type": 'danger',
         "allow_dismiss": true,
         "newest_on_top": true,
         "placement": {

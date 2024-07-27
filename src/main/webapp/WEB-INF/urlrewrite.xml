@@ -15,8 +15,8 @@
 	</rule>
 
 	<rule>
-		<from>^/rules$</from>
-		<to>/WEB-INF/ruleManagement.jsp</to>
+		<from>^/users$</from>
+		<to>/WEB-INF/user_management.jsp</to>
 	</rule>
 
 	<rule>
