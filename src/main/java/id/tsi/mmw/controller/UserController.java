@@ -5,6 +5,8 @@ import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.statement.Query;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class UserController extends BaseController {
@@ -78,5 +80,24 @@ public class UserController extends BaseController {
 
         completed(methodName);
         return user;
+    }
+
+    public List<User> getUserList()
+    {
+        final String methodName = "getUserList";
+        start (methodName);
+        List<User> result = new ArrayList<>();
+        String sql = "Select uid, firstname, lastname, fullname, email, mobile_number, dob, status, create_dt, modify_dt from users";
+        try (Handle handle = getHandle(); Query q = handle.createQuery(sql)) {
+            // Execute the query and get the result as a Boolean
+            result = q.mapToBean(User.class).list();
+        } catch (SQLException e) {
+            // Log any SQL exception that occurs during the authentication process
+            log.error(methodName, e);
+        }
+
+        completed(methodName);
+        return result;
+
     }
 }
