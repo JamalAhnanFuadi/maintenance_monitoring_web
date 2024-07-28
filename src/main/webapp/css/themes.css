@@ -1,0 +1,23 @@
+.themed-color-default {
+    color: #03a9f4 !important;
+}
+
+.themed-border-default {
+    border-color: #03a9f4 !important;
+}
+
+.themed-background-default {
+    background-color: #03a9f4 !important;
+}
+
+.themed-color-dark-default {
+    color: #394263 !important;
+}
+
+.themed-border-dark-default {
+    border-color: #394263 !important;
+}
+
+.themed-background-dark-default {
+    background-color: #394263 !important;
+}

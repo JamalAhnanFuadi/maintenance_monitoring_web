@@ -1,0 +1,45 @@
+body {
+	background-color: #F7F7F7;
+}
+
+#login-header{
+	background: rgb(0, 141, 68);
+	padding: 10px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	margin-bottom: 10px;
+}
+
+
+#app-name{
+	color: white;
+	font-family: 'verdana';
+	align-items: center;
+}
+
+#user-logo {
+	text-align: center;
+}
+
+.btn-login {
+	background: rgb(0, 141, 68);
+	color: white;
+}
+
+#login-header-2  .col-xs-4,
+#login-header-2  .col-xs-1 {
+	flex: 1;
+	display: flex;
+	justify-content: center;
+}
+#login-header-2 img {
+	max-width: 100%;
+	height: auto;
+	margin-bottom: 10px;
+}
+
+#login-header-2 .row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
