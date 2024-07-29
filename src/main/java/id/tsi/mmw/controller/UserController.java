@@ -3,10 +3,12 @@ package id.tsi.mmw.controller;
 import id.tsi.mmw.model.User;
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.statement.Query;
+import org.jdbi.v3.core.statement.Update;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class UserController extends BaseController {
@@ -100,4 +102,65 @@ public class UserController extends BaseController {
         return result;
 
     }
+    public boolean create(User user)
+    {
+        final String methodName = "create";
+        start (methodName);
+        boolean result = false;
+        final String sql = "INSERT INTO [users] (uid, firstname, lastname, fullname, email, mobile_number, dob, status, create_dt, modify_dt)values (:uid, :firstname, :lastname, :fullname, :email, :mobile_number, :dob, :status, :create_dt, :modify_dt)";
+
+        try (Handle h = getHandle(); Update u = h.createUpdate(sql)) {
+            u.bindBean(user);
+            result = executeUpdate(u);
+        } catch (Exception ex) {
+            log.error(methodName, ex);
+        }
+        completed(methodName);
+        return result;
+
+
+    }
+    public boolean update(User user) {
+        final String methodName = "update";
+        start(methodName);
+        boolean result = false;
+        final String sql =
+                "UPDATE [users] SET uid =:uid, firstname =:firstname, lastname =:lastname, fullname =:fullname, email =:email, mobile_number =:mobile_number , dob =:dob, status =:status, create_dt =:create_dt , modify_dt =:modify_dt ";
+        try (Handle h = getHandle(); Update u = h.createUpdate(sql)) {
+            u.bindBean(user);
+            result = executeUpdate(u);
+        } catch (Exception ex) {
+            log.error(methodName, ex);
+        }
+        completed(methodName);
+        return result;
+    }
+    public boolean delete(String uid) {
+        final String methodName = "delete";
+        start(methodName);
+        boolean result = false;
+        final String sql = "DELETE FROM [users] WHERE uid = :uid";
+        try (Handle h = getHandle(); Update u = h.createUpdate(sql)) {
+            u.bind("uid", uid);
+            result = executeUpdate(u);
+        } catch (Exception ex) {
+            log.error(methodName, ex);
+        }
+        completed(methodName);
+        return result;
+    }
+    public Optional<User> get(String uid) {
+        final String methodName = "get";
+        start(methodName);
+        Optional<User> result = Optional.empty();
+        final String sql = "SELECT * FROM [users] WHERE uid = :uid";
+        try (Handle h = getHandle(); Query q = h.createQuery(sql)) {
+            result = q.bind("uid", uid).mapToBean(User.class).findOne();
+        } catch (Exception ex) {
+            log.error(methodName, ex);
+        }
+        completed(methodName);
+        return result;
+    }
+
 }
