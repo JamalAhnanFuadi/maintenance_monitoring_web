@@ -106,6 +106,9 @@ public class BaseService {
     protected Response buildUnauthorizedResponse() {
         return buildResponse(Response.Status.UNAUTHORIZED, "Unauthorized");
     }
+    protected Response buildBadRequestResponse() {
+        return buildResponse(Response.Status.BAD_REQUEST, "Bad Request");
+    }
 
 }
 

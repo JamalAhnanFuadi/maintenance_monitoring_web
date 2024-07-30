@@ -42,7 +42,7 @@ public class User {
         return uid;
     }
 
-    public void setUid(String uid) {
+    public void setUid() {
         this.uid = uid;
     }
 
