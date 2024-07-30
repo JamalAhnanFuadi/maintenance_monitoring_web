@@ -55,6 +55,7 @@ public class BaseController {
         return h;
     }
 
+
     protected boolean executeUpdate(Update update) {
         return update.execute() > 0;
     }

@@ -13,9 +13,7 @@ import java.util.Optional;
 @Controller
 public class UserController extends BaseController {
 
-    public UserController() {
-        log = getLogger(this.getClass());
-    }
+    public UserController() {log = getLogger(this.getClass());}
 
     /**
      * Validates the user email by checking if it exists in the database table.
@@ -149,18 +147,21 @@ public class UserController extends BaseController {
         completed(methodName);
         return result;
     }
-    public Optional<User> get(String uid) {
-        final String methodName = "get";
+    public User getUserByUid(String uid) {
+        final String methodName = "getUserByUid";
         start(methodName);
-        Optional<User> result = Optional.empty();
-        final String sql = "SELECT * FROM [users] WHERE uid = :uid";
+
+        User user = new User();
+        final String sql = "SELECT uid, firstname, lastname, fullname, email, mobile_number, dob, status, create_dt, modify_dt" +
+                " FROM users WHERE uid = :uid";
         try (Handle h = getHandle(); Query q = h.createQuery(sql)) {
-            result = q.bind("uid", uid).mapToBean(User.class).findOne();
+            q.bind("uid", uid);
+            user = q.mapToBean(User.class).one();
         } catch (Exception ex) {
             log.error(methodName, ex);
         }
         completed(methodName);
-        return result;
+        return user;
     }
 
 }
