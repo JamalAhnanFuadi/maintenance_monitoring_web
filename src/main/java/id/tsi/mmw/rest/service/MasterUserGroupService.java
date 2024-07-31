@@ -1,15 +1,17 @@
 package id.tsi.mmw.rest.service;
 
+import id.tsi.mmw.controller.MasterUserGroupController;
 import id.tsi.mmw.model.User;
 
 import javax.annotation.security.PermitAll;
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
 public class MasterUserGroupService extends BaseService {
 
-    @inject
+    @Inject
     private MasterUserGroupController masterUserGroupController;
 
     public MasterUserGroupService() {
