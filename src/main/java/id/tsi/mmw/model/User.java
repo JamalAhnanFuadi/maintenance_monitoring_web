@@ -34,6 +34,24 @@ public class User {
     @JsonProperty("modifyDt")
     private String modifyDt;
 
+    // Authentication table
+
+    @JsonProperty("password")
+    private String password;
+
+    @JsonProperty("salt")
+    private String salt;
+
+    @JsonProperty("loginAllowed")
+    private boolean loginAllowed;
+
+    @JsonProperty("lastPasswordSet")
+    private String lastPasswordSet;
+
+    @JsonProperty("lastLoginDt")
+    private String lastLoginDt;
+
+
     public User() {
         // default constructor
     }
@@ -116,5 +134,49 @@ public class User {
 
     public void setModifyDt(String modifyDt) {
         this.modifyDt = modifyDt;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public boolean isLoginAllowed() {
+        return loginAllowed;
+    }
+
+    public void setLoginAllowed(boolean loginAllowed) {
+        this.loginAllowed = loginAllowed;
+    }
+
+    public String getLastPasswordSet() {
+        return lastPasswordSet;
+    }
+
+    public void setLastPasswordSet(String lastPasswordSet) {
+        this.lastPasswordSet = lastPasswordSet;
+    }
+
+    public String getLastLoginDt() {
+        return lastLoginDt;
+    }
+
+    public void setLastLoginDt(String lastLoginDt) {
+        this.lastLoginDt = lastLoginDt;
     }
 }

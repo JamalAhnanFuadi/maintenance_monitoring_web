@@ -152,8 +152,10 @@ public class UserController extends BaseController {
         start(methodName);
 
         User user = new User();
-        final String sql = "SELECT uid, firstname, lastname, fullname, email, mobile_number, dob, status, create_dt, modify_dt" +
-                " FROM users WHERE uid = :uid";
+        final String sql = "SELECT a.uid, a.firstname, a.lastname, a.fullname, a.email, a.mobile_number, a.dob, a.status, " +
+                " b.login_allowed, b.last_password_set, b.last_login_dt, a.create_dt, a.modify_dt FROM users a " +
+                " JOIN authentications b ON b.uid = a.uid " +
+                " WHERE a.uid = :uid";
         try (Handle h = getHandle(); Query q = h.createQuery(sql)) {
             q.bind("uid", uid);
             user = q.mapToBean(User.class).one();
