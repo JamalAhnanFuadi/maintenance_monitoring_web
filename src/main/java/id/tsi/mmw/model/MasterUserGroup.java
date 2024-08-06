@@ -31,7 +31,7 @@ public class MasterUserGroup {
     public void setGroupKey(String groupKey){this.groupKey = groupKey;}
 
     public String getDescription(){return description;}
-    public void setdescription (String description){this.description = description;}
+    public void setDescription (String description){this.description = description;}
 
     public String getCreateDt() {
         return createDt;
