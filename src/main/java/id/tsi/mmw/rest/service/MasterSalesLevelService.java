@@ -1,5 +1,6 @@
 package id.tsi.mmw.rest.service;
 
+
 import id.tsi.mmw.controller.MasterProductController;
 import id.tsi.mmw.controller.MasterSalesLevelController;
 import id.tsi.mmw.model.User;
@@ -74,4 +75,3 @@ public class MasterSalesLevelService extends BaseService {
 
     }
 
-}
