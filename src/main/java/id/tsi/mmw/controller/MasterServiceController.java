@@ -54,7 +54,7 @@ public class MasterServiceController extends BaseController{
         start(methodName);
         boolean result = false;
         final String sql =
-                "UPDATE [master_service] SET service_id =: service_id , service_name =: service_name, service_description =: service_description, service_price =: service_price, service_status =: service_status, create_dt =: create_dt , modify_dt =: modify_dt";
+                "UPDATE [master_service] SET service_id =:service_id , service_name =:service_name, service_description =:service_description, service_price =:service_price, service_status =:service_status, create_dt =:create_dt , modify_dt =:modify_dt";
         try (Handle h = getHandle(); Update u = h.createUpdate(sql)) {
             u.bindBean(user);
             result = executeUpdate(u);

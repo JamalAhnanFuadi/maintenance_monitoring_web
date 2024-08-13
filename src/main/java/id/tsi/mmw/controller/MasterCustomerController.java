@@ -52,7 +52,7 @@ public class MasterCustomerController extends BaseController{
         start(methodName);
         boolean result = false;
         final String sql =
-                "UPDATE [master_customer] SET CustomerID =: CustomerID,FirstName =: FirstName,LastName =: LastName,Email =: Email,PhoneNumber =: PhoneNumber,Address =: Address,City =: City ,State =: State,PostalCode =: PostalCode,Country =: Country,DateOfBirth =: DateOfBirth,Status =: Status ";
+                "UPDATE [master_customer] SET CustomerID =:CustomerID,FirstName =:FirstName,LastName =:LastName,Email =:Email,PhoneNumber =:PhoneNumber,Address =:Address,City =:City ,State =:State,PostalCode =:PostalCode,Country =:Country,DateOfBirth =:DateOfBirth,Status =:Status ";
         try (Handle h = getHandle(); Update u = h.createUpdate(sql)) {
             u.bindBean(user);
             result = executeUpdate(u);

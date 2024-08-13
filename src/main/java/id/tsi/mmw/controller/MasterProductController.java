@@ -55,7 +55,7 @@ public class MasterProductController extends BaseController{
         start(methodName);
         boolean result = false;
         final String sql =
-                "UPDATE [master_product] SET uid =:uid, product_key =: product_key, description =: description ,create_dt =: create_dt, modify_dt =: modify_dt ";
+                "UPDATE [master_product] SET uid =:uid, product_key =:product_key, description =:description ,create_dt =:create_dt, modify_dt =:modify_dt ";
         try (Handle h = getHandle(); Update u = h.createUpdate(sql)) {
             u.bindBean(user);
             result = executeUpdate(u);

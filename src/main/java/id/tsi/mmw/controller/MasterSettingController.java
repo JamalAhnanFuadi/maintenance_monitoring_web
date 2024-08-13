@@ -54,7 +54,7 @@ public class MasterSettingController extends BaseController{
         start(methodName);
         boolean result = false;
         final String sql =
-                "UPDATE [master_setting] SET uid =:uid, setting_key := setting_key, setting_value := setting_value, description := description, last_updated := last_updated";
+                "UPDATE [master_setting] SET uid =:uid, setting_key =:setting_key, setting_value =:setting_value, description =:description, last_updated =:last_updated";
         try (Handle h = getHandle(); Update u = h.createUpdate(sql)) {
             u.bindBean(user);
             result = executeUpdate(u);
