@@ -10,10 +10,10 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-public class CustomerMaintenanceService extends BaseService{
+public class CustomerMaintenanceService extends BaseService {
     @Inject
 
-    private CustomerMaintenanceController customerMaintenanceController
+    private CustomerMaintenanceController customerMaintenanceController;
 
     public CustomerMaintenanceService() {
         log = getLogger(this.getClass());
@@ -74,3 +74,4 @@ public class CustomerMaintenanceService extends BaseService{
 
 
     }
+}

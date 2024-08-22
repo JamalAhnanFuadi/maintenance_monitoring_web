@@ -60,7 +60,7 @@ public class MasterSubcriptionService extends BaseService{
         start(methodName);
 
         Response response = buildBadRequestResponse();
-        User user = masterSubcriptionController.getUserByUid(sub_id;
+        User user = masterSubcriptionController.getUserByUid(sub_id);
 
         if (user.getUid() != null) {
             boolean result = masterSubcriptionController.delete(sub_id);

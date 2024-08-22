@@ -86,7 +86,7 @@ public class MasterServiceController extends BaseController{
 
         User user = new User();
         final String sql = "SELECT service_id , service_name , service_description , service_price , service_status , create_dt , modify_dt from master_service" +
-                " FROM master_service WHERE service_id = :service_id;
+                " FROM master_service WHERE service_id = :service_id";
         try (Handle h = getHandle(); Query q = h.createQuery(sql)) {
             q.bind("service_id", service_id);
             user = q.mapToBean(User.class).one();

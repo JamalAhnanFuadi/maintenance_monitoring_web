@@ -1,8 +1,6 @@
 package id.tsi.mmw.rest.service;
 
-
-import id.tsi.mmw.controller.MasterProductController;
-import id.tsi.mmw.controller.MasterSalesLevelController;
+import id.tsi.mmw.controller.AccessMatricController;
 import id.tsi.mmw.model.User;
 
 import javax.annotation.security.PermitAll;
@@ -11,11 +9,12 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-public class MasterSalesLevelService extends BaseService {
+public class AccessMatricService extends BaseService{
     @Inject
-    private MasterSalesLevelController masterSalesLevelController;
 
-    public MasterSalesLevelService() {
+    private AccessMatricController accessMatricConntroller;
+
+    public AccessMatricService() {
         log = getLogger(this.getClass());
     }
 
@@ -26,7 +25,7 @@ public class MasterSalesLevelService extends BaseService {
         start(methodName);
 
         List<User> userList;
-        userList = masterSalesLevelController.getUserList();
+        userList = accessMatricConntroller.getUserList();
         completed(methodName);
         return buildSuccessResponse(userList);
     }
@@ -37,7 +36,7 @@ public class MasterSalesLevelService extends BaseService {
         Response response = null;
         start(methodName);
 
-        boolean result = masterSalesLevelController.create(user);
+        boolean result = accessMatricConntroller.create(user);
         completed(methodName);
         return response;
     }
@@ -48,23 +47,23 @@ public class MasterSalesLevelService extends BaseService {
         Response response = buildSuccessResponse();
         start(methodName);
         user.setUid();
-        boolean result = masterSalesLevelController.update(user);
+        boolean result = accessMatricConntroller.update(user);
 
         completed(methodName);
         return response;
     }
 
     @DELETE
-    @Path("{uid}")
-    public Response delete(@PathParam("uid") String uid) {
+    @Path("{user_id}")
+    public Response delete(@PathParam("user_id") String user_id) {
         final String methodName = "delete";
         start(methodName);
 
         Response response = buildBadRequestResponse();
-        User user = masterSalesLevelController.getUserByUid(uid);
+        User user = accessMatricConntroller.getUserByUid(user_id);
 
         if (user.getUid() != null) {
-            boolean result = masterSalesLevelController.delete(uid);
+            boolean result = accessMatricConntroller.delete(user_id);
             if (result) {
                 response = buildSuccessResponse();
             }
@@ -75,4 +74,3 @@ public class MasterSalesLevelService extends BaseService {
 
     }
 }
-
