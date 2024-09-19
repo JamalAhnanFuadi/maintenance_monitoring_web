@@ -20,6 +20,31 @@
 	</rule>
 
 	<rule>
+		<from>^/user_log$</from>
+		<to>/WEB-INF/user_log.jsp</to>
+	</rule>
+	<rule>
+		<from>^/user_group</from>
+		<to>/WEB-INF/user_group.jsp</to>
+	</rule>
+	<rule>
+		<from>^/organization</from>
+		<to>/WEB-INF/organization.jsp</to>
+	</rule>
+	<rule>
+		<from>^/list_mtc</from>
+		<to>/WEB-INF/list_mtc.jsp</to>
+	</rule>
+	<rule>
+		<from>^/active</from>
+		<to>/WEB-INF/active.jsp</to>
+	</rule>
+	<rule>
+		<from>^/customer$</from>
+		<to>/WEB-INF/customer.jsp</to>
+	</rule>
+
+	<rule>
 		<from>^/business-roles$</from>
 		<to>/WEB-INF/businessRoleManagement.jsp</to>
 	</rule>

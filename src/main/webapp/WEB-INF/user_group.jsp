@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -49,25 +49,17 @@
                 <!-- Datatables Content -->
                 <div class="block full">
                     <div class="block-title">
-                        <h2><strong>Master</strong>User</h2>
+                        <h2><strong>Master</strong>User Group</h2>
                         <button type="button" class="btn btn-primary pull-right">Add New</button>
                     </div>
                     <div class="table-responsive">
                         <table id="example-datatable" class="table table-vcenter table-condensed table-bordered">
                             <thead>
                             <tr>
-                                <th class="text-center">ID</th>
+                                <th class="text-center">Group ID</th>
                                 <th class="text-center"><i class="gi gi-user"></i></th>
-                                <th class="text-center">User ID</th>
-                                <th class="text-center">Username</th>
-                                <th class="text-center">Email</th>
-                                <th class="text-center">Password Hash</th>
-                                <th class="text-center">Full Name</th>
-                                <th class="text-center">Date Of Birth</th>
-                                <th class="text-center">Created At</th>
-                                <th class="text-center">Update At</th>
-                                <th class="text-center">Status</th>
-
+                                <th>Group Name</th>
+                                <th>Description</th>
 
                                 <th class="text-center">Actions</th>
                             </tr>
@@ -76,16 +68,8 @@
                             <tr>
                                 <td class="text-center">1</td>
                                 <td class="text-center"><img src="img/placeholders/avatars/avatar15.jpg" alt="avatar" class="img-circle"></td>
-                                <td><a href="javascript:void(0)">2132</a></td>
-                                <td>usernname1</td>
-                                <td><span>user1@gmail.com</span></td>
-                                <td>$2y$10$VnY5d4D1bHs28i5Bd8tOme1n9O/</td>
-                                <td>example user 1</td>
-                                <td>1990-05-15</td>
-                                <td>2024-01-10 08:15:00</td>
-                                <td>2024-09-16 14:23:45</td>
-                                <td><span class="label label-info">active</span></td>
-
+                                <td><a href="javascript:void(0)">Admin</a></td>
+                                <td>Administrators with full access</td>
 
                                 <td class="text-center">
                                     <div class="btn-group">
@@ -95,20 +79,10 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-center">1</td>
+                                <td class="text-center">2</td>
                                 <td class="text-center"><img src="img/placeholders/avatars/avatar15.jpg" alt="avatar" class="img-circle"></td>
-                                <td><a href="javascript:void(0)">66565</a></td>
-                                <td>usernname2</td>
-                                <td>user2@gmail.com</td>
-                                <td>$2y$10$VnY5d4D1bHs28i5Bd8tOme1n9O/</td>
-                                <td>example user 2</td>
-                                <td>1990-05-15</td>
-                                <td>2024-01-10 08:15:00</td>
-                                <td>2024-09-16 14:23:45</td>
-
-                                <td> <span class="label label-warning">inactive</span></td>
-
-
+                                <td><a href="javascript:void(0)">Viewers</a></td>
+                                <td>Users who can view content</td>
 
                                 <td class="text-center">
                                     <div class="btn-group">
@@ -119,20 +93,20 @@
                             </tr>
                             </tbody>
 
+                    </div>
+                    <!-- END Dummy Content -->
                 </div>
-                <!-- END Dummy Content -->
+                <!-- END Page Content -->
             </div>
-            <!-- END Page Content -->
+            <!-- END Main Container -->
         </div>
-        <!-- END Main Container -->
+        <!-- END Page Container -->
     </div>
-    <!-- END Page Container -->
-</div>
-<!-- END Page Wrapper -->
+    <!-- END Page Wrapper -->
 
-<!-- Scroll to top link, initialized in js/app.js - scrollToTop() -->
-<a href="#" id="to-top"><i class="fa fa-angle-double-up"></i></a>
+    <!-- Scroll to top link, initialized in js/app.js - scrollToTop() -->
+    <a href="#" id="to-top"><i class="fa fa-angle-double-up"></i></a>
 
-<%@include file="/WEB-INF/pages/js_import.jsp" %>
+    <%@include file="/WEB-INF/pages/js_import.jsp" %>
 </body>
 </html>

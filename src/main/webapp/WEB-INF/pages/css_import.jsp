@@ -49,3 +49,38 @@
         font-weight: bold;
     }
 </style>
+<style>
+    .table-responsive{
+        max-height: 100%; /* Atur tinggi maksimum kontainer */
+        overflow-y: auto; /* Gulir vertikal */
+        overflow-x: auto; /* Gulir horizontal jika perlu */
+        border: 1px solid #ccc; /* Border kontainer */
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%; /* Lebar tabel */
+    }
+
+    th, td {
+        border: 1px solid #000; /* Border sel */
+        padding: 10px;
+        text-align: left;
+        vertical-align: top;
+        min-height: 40px; /* Tinggi minimum untuk setiap sel */
+    }
+    th {
+        border: 3px solid #000; /* Garis tebal untuk header */
+        padding: 10px;
+        background-color: #f2f2f2; /* Warna latar untuk header */
+        text-align: left;
+    }
+
+    td {
+        border: 2px solid #000; /* Garis untuk sel */
+        padding: 10px;
+        text-align: left;
+    }
+
+
+</style>

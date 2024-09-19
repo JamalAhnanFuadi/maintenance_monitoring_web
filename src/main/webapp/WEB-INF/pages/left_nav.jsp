@@ -51,23 +51,28 @@
                             <a href="users">Users</a>
                         </li>
                         <li>
-                            <a href="#">User Group</a>
+                            <a href="user_log">User Logs</a>
                         </li>
                         <li>
-                            <a href="#">User Access Matric</a>
+                            <a href="user_group">User Group</a>
                         </li>
+
                     </ul>
                 </li>
                 <li>
-                    <a href="#"><i class="gi gi-group sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Group Management</span></a>
+                    <a href="organization"><i class="gi gi-group sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">Organization</span></a>
                 </li>
                 <li>
-                    <a href="#"><i class="gi gi-stats sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Products</span></a>
+                    <a href="list_mtc"><i class="gi gi-stats sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">List MTC</span></a>
                 </li>
                 <li>
-                    <a href="#"><i class="gi gi-stats sidebar-nav-icon"></i><span
+                    <a href="active"><i class="gi gi-stats sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">Active</span></a>
+                </li>
+                <li>
+                    <a href="customer"><i class="gi gi-stats sidebar-nav-icon"></i><span
                             class="sidebar-nav-mini-hide">Customers</span></a>
                 </li>
                 <li>
