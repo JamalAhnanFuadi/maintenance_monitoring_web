@@ -49,7 +49,7 @@
                 <!-- Datatables Content -->
                 <div class="block full">
                     <div class="block-title">
-                        <h2><strong>Master</strong>User</h2>
+                        <h2><strong>List Of Maintenance Contract</strong></h2>
                         <button type="button" class="btn btn-primary pull-right">Add New</button>
                     </div>
                     <div class="table-responsive">
@@ -57,7 +57,7 @@
                             <thead>
                             <tr>
                                 <th class="text-center">ID</th>
-                                <th class="text-center"><i class="gi gi-user"></i></th>
+
                                 <th class="text-center">Last Update</th>
                                 <th class="text-center">MTC Contract</th>
                                 <th class="text-center">SO Number</th>
@@ -92,7 +92,7 @@
                             <tbody>
                             <tr>
                                 <td class="text-center">1</td>
-                                <td class="text-center"><img src="img/placeholders/avatars/avatar15.jpg" alt="avatar" class="img-circle"></td>
+
                                 <td>21-feb-23</td>
                                 <td>DCW32-0002</td>
                                 <td>0715-145/ALT.02-PO-TSI/2022</td>
@@ -132,7 +132,7 @@
                             <tr>
                             <tr>
                                 <td class="text-center">1</td>
-                                <td class="text-center"><img src="img/placeholders/avatars/avatar15.jpg" alt="avatar" class="img-circle"></td>
+
                                 <td>21-feb-23</td>
                                 <td>DCW32-0002</td>
                                 <td>0715-145/ALT.02-PO-TSI/2022</td>

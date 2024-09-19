@@ -65,7 +65,7 @@
                 </li>
                 <li>
                     <a href="list_mtc"><i class="gi gi-stats sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">List MTC</span></a>
+                            class="sidebar-nav-mini-hide">List Maintenance</span></a>
                 </li>
                 <li>
                     <a href="active"><i class="gi gi-stats sidebar-nav-icon"></i><span
@@ -73,7 +73,15 @@
                 </li>
                 <li>
                     <a href="customer"><i class="gi gi-stats sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Customers</span></a>
+                            class="sidebar-nav-mini-hide">Customers List</span></a>
+                </li>
+                <li>
+                    <a href="history"><i class="gi gi-stats sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">History Of Maintenance</span></a>
+                </li>
+                <li>
+                    <a href="corrective_maintenance"><i class="gi gi-stats sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">Corrective Maintenance Ticket</span></a>
                 </li>
                 <li>
                     <a href="#" class="sidebar-nav-menu"><i

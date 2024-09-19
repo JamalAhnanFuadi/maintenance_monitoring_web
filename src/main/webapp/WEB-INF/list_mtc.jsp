@@ -49,7 +49,7 @@
         <!-- Datatables Content -->
         <div class="block full">
           <div class="block-title">
-            <h2><strong>Organization</strong></h2>
+            <h2><strong>List Maintenance</strong></h2>
             <button type="button" class="btn btn-primary pull-right">Add New</button>
           </div>
           <div class="table-responsive">

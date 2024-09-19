@@ -1,4 +1,4 @@
-%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -49,44 +49,42 @@
                 <!-- Datatables Content -->
                 <div class="block full">
                     <div class="block-title">
-                        <h2><strong>Customer List Device Maintenance</strong></h2>
+                        <h2><strong>Corrective Maintenance Ticket</strong></h2>
                         <button type="button" class="btn btn-primary pull-right">Add New</button>
                     </div>
                     <div class="table-responsive">
                         <table id="example-datatable" class="table table-vcenter table-condensed table-bordered">
                             <thead>
                             <tr>
-                                <th class="text-center">ID</th>
-                                <th class="text-center"><i class="gi gi-user"></i></th>
-                                <th>Customer</th>
-                                <th>End User</th>
-                                <th>Service Level</th>
-                                <th>Job Code</th>
-                                <th>Product Number</th>
-                                <th>S/N</th>
-                                <th>Notes</th>
-                                <th>MTC Begin Date</th>
-                                <th>MTC End Date</th>
-
-
+                                <th class="text-center">Ticket ID</th>
+                                <th class="text-center">PIC</th>
+                                <th class="text-center">Date</th>
+                                <th class="text-center">Customer</th>
+                                <th class="text-center">Problem Description</th>
+                                <th class="text-center">Analysis/Information</th>
+                                <th class="text-center">Action</th>
+                                <th class="text-center">Type Of Action</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Solved Date</th>
+                                <th class="text-center">Close Ticket Date</th>
+                                <th class="text-center">Solving Date</th>
                                 <th class="text-center">Actions</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
                                 <td class="text-center">1</td>
-                                <td class="text-center"><img src="img/placeholders/avatars/avatar15.jpg" alt="avatar" class="img-circle"></td>
-                                <td><a href="javascript:void(0)">PT. ANOMALI LINTAS ENERGY</a></td>
-                                <td>kemenkes</td>
-                                <td>Device Waranty</td>
-                                <td>OP23-0093</td>
-                                <td>MR-44-HW</td>
-                                <td>FD027021GY</td>
-                                <td>smartnet</td>
-                                <td>25-nov-23</td>
-                                <td>5-nov-24</td>
-
-
+                                <td>MTC-21001</td>
+                                <td>Yuda</td>
+                                <td>05-jan-23</td>
+                                <td>PT INCHAPE INDOMOBIL ENERGI BARU</td>
+                                <td>disscus how to block whatsapp</td>
+                                <td>Gather information about the plan</td>
+                                <td>give recomendation about the plan</td>
+                                <td>troubleshoot</td>
+                                <td>Solved</td>
+                                <td>05-jan-23</td>
+                                <td>05-jan-23</td>
 
                                 <td class="text-center">
                                     <div class="btn-group">
@@ -97,18 +95,18 @@
                             </tr>
                             <tr>
                                 <td class="text-center">1</td>
-                                <td class="text-center"><img src="img/placeholders/avatars/avatar15.jpg" alt="avatar" class="img-circle"></td>
-                                <td><a href="javascript:void(0)">PT. ANOMALI LINTAS ENERGY</a></td>
-                                <td>kemenkes</td>
-                                <td>Device Waranty</td>
-                                <td>OP23-0093</td>
-                                <td>MR-44-HW</td>
-                                <td>FD027021GY</td>
-                                <td>smartnet</td>
-                                <td>25-nov-23</td>
-                                <td>5-nov-24</td>
 
-
+                                <td>MTC-21001</td>
+                                <td>Yuda</td>
+                                <td>05-jan-23</td>
+                                <td>PT INCHAPE INDOMOBIL ENERGI BARU</td>
+                                <td>disscus how to block whatsapp</td>
+                                <td>Gather information about the plan</td>
+                                <td>give recomendation about the plan</td>
+                                <td>troubleshoot</td>
+                                <td>Solved</td>
+                                <td>05-jan-23</td>
+                                <td>05-jan-23</td>
 
                                 <td class="text-center">
                                     <div class="btn-group">

@@ -43,6 +43,14 @@
 		<from>^/customer$</from>
 		<to>/WEB-INF/customer.jsp</to>
 	</rule>
+	<rule>
+		<from>^/history$</from>
+		<to>/WEB-INF/history.jsp</to>
+	</rule>
+	<rule>
+		<from>^/corrective_maintenance</from>
+		<to>/WEB-INF/corrective_maintenance.jsp</to>
+	</rule>
 
 	<rule>
 		<from>^/business-roles$</from>
