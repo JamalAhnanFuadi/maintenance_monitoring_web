@@ -20,8 +20,8 @@
 	</rule>
 
 	<rule>
-		<from>^/user_log$</from>
-		<to>/WEB-INF/user_log.jsp</to>
+		<from>^/master_user_group$</from>
+		<to>/WEB-INF/master_user_group.jsp</to>
 	</rule>
 	<rule>
 		<from>^/user_group</from>

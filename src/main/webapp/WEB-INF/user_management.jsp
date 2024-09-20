@@ -58,15 +58,16 @@
                             <tr>
                                 <th class="text-center">ID</th>
                                 <th class="text-center"><i class="gi gi-user"></i></th>
-                                <th class="text-center">User ID</th>
-                                <th class="text-center">Username</th>
-                                <th class="text-center">Email</th>
-                                <th class="text-center">Password Hash</th>
+                                <th class="text-center">First Name</th>
+                                <th class="text-center">Last Name</th>
                                 <th class="text-center">Full Name</th>
+                                <th class="text-center">Email</th>
+                                <th class="text-center">Mobile Number</th>
                                 <th class="text-center">Date Of Birth</th>
+                                <th class="text-center">Status</th>
                                 <th class="text-center">Created At</th>
                                 <th class="text-center">Update At</th>
-                                <th class="text-center">Status</th>
+
 
 
                                 <th class="text-center">Actions</th>
@@ -76,15 +77,16 @@
                             <tr>
                                 <td class="text-center">1</td>
                                 <td class="text-center"><img src="img/placeholders/avatars/avatar15.jpg" alt="avatar" class="img-circle"></td>
-                                <td><a href="javascript:void(0)">2132</a></td>
-                                <td>usernname1</td>
-                                <td><span>user1@gmail.com</span></td>
-                                <td>$2y$10$VnY5d4D1bHs28i5Bd8tOme1n9O/</td>
-                                <td>example user 1</td>
+                                <td>contoh</td>
+                                <td>user</td>
+                                <td>contoh user</td>
+                                <td>contohuser@gmail.com</td>
+                                <td>1234567890</td>
                                 <td>1990-05-15</td>
+                                <td><span class="label label-info">active</span></td>
                                 <td>2024-01-10 08:15:00</td>
                                 <td>2024-09-16 14:23:45</td>
-                                <td><span class="label label-info">active</span></td>
+
 
 
                                 <td class="text-center">
@@ -97,16 +99,15 @@
                             <tr>
                                 <td class="text-center">1</td>
                                 <td class="text-center"><img src="img/placeholders/avatars/avatar15.jpg" alt="avatar" class="img-circle"></td>
-                                <td><a href="javascript:void(0)">66565</a></td>
-                                <td>usernname2</td>
-                                <td>user2@gmail.com</td>
-                                <td>$2y$10$VnY5d4D1bHs28i5Bd8tOme1n9O/</td>
-                                <td>example user 2</td>
+                                <td>contoh</td>
+                                <td>user</td>
+                                <td>contoh user</td>
+                                <td>contohuser@gmail.com</td>
+                                <td>1234567890</td>
                                 <td>1990-05-15</td>
+                                <td> <span class="label label-warning">inactive</span></td>
                                 <td>2024-01-10 08:15:00</td>
                                 <td>2024-09-16 14:23:45</td>
-
-                                <td> <span class="label label-warning">inactive</span></td>
 
 
 

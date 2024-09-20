@@ -73,7 +73,7 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <td class="text-center">1</td>
+
                                 <td>MTC-21001</td>
                                 <td>Yuda</td>
                                 <td>05-jan-23</td>
@@ -85,6 +85,7 @@
                                 <td>Solved</td>
                                 <td>05-jan-23</td>
                                 <td>05-jan-23</td>
+                                <td>0</td>
 
                                 <td class="text-center">
                                     <div class="btn-group">
@@ -94,7 +95,6 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-center">1</td>
 
                                 <td>MTC-21001</td>
                                 <td>Yuda</td>
@@ -107,6 +107,7 @@
                                 <td>Solved</td>
                                 <td>05-jan-23</td>
                                 <td>05-jan-23</td>
+                                <td>0</td>
 
                                 <td class="text-center">
                                     <div class="btn-group">

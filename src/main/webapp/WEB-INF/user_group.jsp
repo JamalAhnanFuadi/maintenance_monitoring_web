@@ -49,17 +49,19 @@
                 <!-- Datatables Content -->
                 <div class="block full">
                     <div class="block-title">
-                        <h2><strong>List User Group</strong></h2>
+                        <h2><strong>User Group</strong></h2>
                         <button type="button" class="btn btn-primary pull-right">Add New</button>
                     </div>
                     <div class="table-responsive">
                         <table id="example-datatable" class="table table-vcenter table-condensed table-bordered">
                             <thead>
                             <tr>
-                                <th class="text-center">Group ID</th>
+                                <th class="text-center">ID</th>
                                 <th class="text-center"><i class="gi gi-user"></i></th>
-                                <th>Group Name</th>
-                                <th>Description</th>
+                                <th>User ID</th>
+                                <th>Group ID</th>
+                                <th>Create dt</th>
+                                <th>Modify dt</th>
 
                                 <th class="text-center">Actions</th>
                             </tr>
@@ -68,8 +70,10 @@
                             <tr>
                                 <td class="text-center">1</td>
                                 <td class="text-center"><img src="img/placeholders/avatars/avatar15.jpg" alt="avatar" class="img-circle"></td>
-                                <td><a href="javascript:void(0)">Admin</a></td>
-                                <td>Administrators with full access</td>
+                                <td>user</td>
+                                <td>user</td>
+                                <td>2024-07-26 22:31:13</td>
+                                <td>2024-07-26 22:31:13</td>
 
                                 <td class="text-center">
                                     <div class="btn-group">
@@ -79,10 +83,12 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-center">2</td>
+                                <td class="text-center">1</td>
                                 <td class="text-center"><img src="img/placeholders/avatars/avatar15.jpg" alt="avatar" class="img-circle"></td>
-                                <td><a href="javascript:void(0)">Viewers</a></td>
-                                <td>Users who can view content</td>
+                                <td>user</td>
+                                <td>user</td>
+                                <td>2024-07-26 22:31:13</td>
+                                <td>2024-07-26 22:31:13</td>
 
                                 <td class="text-center">
                                     <div class="btn-group">

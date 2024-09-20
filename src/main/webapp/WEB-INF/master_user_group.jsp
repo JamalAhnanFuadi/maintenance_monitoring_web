@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -49,45 +49,53 @@
         <!-- Datatables Content -->
         <div class="block full">
           <div class="block-title">
-            <h2><strong>List User Log</strong></h2>
+            <h2><strong>Master User Group</strong></h2>
             <button type="button" class="btn btn-primary pull-right">Add New</button>
           </div>
           <div class="table-responsive">
             <table id="example-datatable" class="table table-vcenter table-condensed table-bordered">
               <thead>
               <tr>
-                <th class="text-center">Log ID</th>
+                <th class="text-center">ID</th>
                 <th class="text-center"><i class="gi gi-user"></i></th>
-                <th class="text-center">User ID</th>
-                <th class="text-center">Action</th>
-                <th class="text-center">Times</th>
-                <th class="text-center">Detail</th>
+                <th>Group Name</th>
+                <th>description</th>
+                <th>Create dt</th>
+                <th>Modify dt</th>
 
-
+                <th class="text-center">Actions</th>
               </tr>
               </thead>
               <tbody>
               <tr>
                 <td class="text-center">1</td>
                 <td class="text-center"><img src="img/placeholders/avatars/avatar15.jpg" alt="avatar" class="img-circle"></td>
-                <td><a>1234</a></td>
-                <td><span class="label label-info">Login</span></td>
-                <td>2024-09-16 08:00:00</td>
-                <td>succesful login</td>
+                <td>user</td>
+                <td>user</td>
+                <td>2024-07-26 22:31:13</td>
+                <td>2024-07-26 22:31:13</td>
 
-
-
+                <td class="text-center">
+                  <div class="btn-group">
+                    <a href="javascript:void(0)" data-toggle="tooltip" title="Edit" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i></a>
+                    <a href="javascript:void(0)" data-toggle="tooltip" title="Delete" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></a>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <td class="text-center">1</td>
                 <td class="text-center"><img src="img/placeholders/avatars/avatar15.jpg" alt="avatar" class="img-circle"></td>
-                <td><a>4321</a></td>
-                <td><span class="label label-warning">logout</span></td>
-                <td>2024-09-16 08:00:00</td>
-                <td>succesful logout</td>
+                <td>user</td>
+                <td>user</td>
+                <td>2024-07-26 22:31:13</td>
+                <td>2024-07-26 22:31:13</td>
 
-
-
+                <td class="text-center">
+                  <div class="btn-group">
+                    <a href="javascript:void(0)" data-toggle="tooltip" title="Edit" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i></a>
+                    <a href="javascript:void(0)" data-toggle="tooltip" title="Delete" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></a>
+                  </div>
+                </td>
               </tr>
               </tbody>
 
