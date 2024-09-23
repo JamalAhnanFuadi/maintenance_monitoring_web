@@ -52,12 +52,16 @@
                         <h2><strong>List Of Maintenance Contract</strong></h2>
                         <button type="button" class="btn btn-primary pull-right">Add New</button>
                     </div>
+                    <div class="search-container">
+                        <input type="text" id="SearchInput" placeholder="Search...">
+                    </div>
+
                     <div class="table-responsive">
                         <table id="example-datatable" class="table table-vcenter table-condensed table-bordered">
                             <thead>
                             <tr>
+                                <th>No</th>
                                 <th class="text-center">ID</th>
-
                                 <th class="text-center">Last Update</th>
                                 <th class="text-center">MTC Contract</th>
                                 <th class="text-center">SO Number</th>
@@ -91,7 +95,8 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <td class="text-center">1</td>
+                                <td>1</td>
+                                <td class="text-center">123</td>
 
                                 <td>21-feb-23</td>
                                 <td>DCW32-0002</td>
@@ -131,7 +136,8 @@
                             </tr>
                             <tr>
                             <tr>
-                                <td class="text-center">1</td>
+                                <td>2</td>
+                                <td class="text-center">123</td>
 
                                 <td>21-feb-23</td>
                                 <td>DCW32-0002</td>
@@ -187,5 +193,28 @@
     <a href="#" id="to-top"><i class="fa fa-angle-double-up"></i></a>
 
     <%@include file="/WEB-INF/pages/js_import.jsp" %>
+    <script>
+        const searchInput = document.getElementById('SearchInput');
+        const dataTable = document.getElementById('example-datatable');
+
+        searchInput.addEventListener('keyup', function() {
+            const filter = searchInput.value.toLowerCase();
+            const rows = dataTable.getElementsByTagName('tr');
+
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                let found = false;
+
+                for (let j = 0; j < cells.length; j++) {
+                    if (cells[j].textContent.toLowerCase().includes(filter)) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                rows[i].style.display = found ? '' : 'none';
+            }
+        });
+    </script>
 </body>
 </html>

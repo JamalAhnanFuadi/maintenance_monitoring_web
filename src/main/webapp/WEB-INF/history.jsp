@@ -52,6 +52,9 @@
                         <h2><strong>History Of Maintenance List</strong></h2>
                         <button type="button" class="btn btn-primary pull-right">Add New</button>
                     </div>
+                    <div class="search-container">
+                        <input type="text" id="SearchInput" placeholder="Search...">
+                    </div>
                     <div class="table-responsive">
                         <table id="example-datatable" class="table table-vcenter table-condensed table-bordered">
                             <thead>
@@ -77,7 +80,7 @@
                                 <td>MR-44-HW</td>
                                 <td>FD027021GY</td>
                                 <td>10000000</td>
-                                <td>5-nov-24</td>
+                                <td>5-nov-23</td>
 
                                 <td class="text-center">
                                     <div class="btn-group">
@@ -95,7 +98,7 @@
                                 <td>MR-44-HW</td>
                                 <td>FD027021GY</td>
                                 <td>10000000</td>
-                                <td>5-nov-24</td>
+                                <td>5-nov-23</td>
 
                                 <td class="text-center">
                                     <div class="btn-group">
@@ -121,5 +124,28 @@
     <a href="#" id="to-top"><i class="fa fa-angle-double-up"></i></a>
 
     <%@include file="/WEB-INF/pages/js_import.jsp" %>
+    <script>
+        const searchInput = document.getElementById('SearchInput');
+        const dataTable = document.getElementById('example-datatable');
+
+        searchInput.addEventListener('keyup', function() {
+            const filter = searchInput.value.toLowerCase();
+            const rows = dataTable.getElementsByTagName('tr');
+
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                let found = false;
+
+                for (let j = 0; j < cells.length; j++) {
+                    if (cells[j].textContent.toLowerCase().includes(filter)) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                rows[i].style.display = found ? '' : 'none';
+            }
+        });
+    </script>
 </body>
 </html>

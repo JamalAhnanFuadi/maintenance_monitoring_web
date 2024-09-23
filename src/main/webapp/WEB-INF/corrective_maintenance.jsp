@@ -52,10 +52,15 @@
                         <h2><strong>Corrective Maintenance Ticket</strong></h2>
                         <button type="button" class="btn btn-primary pull-right">Add New</button>
                     </div>
+                    <div class="search-container">
+                        <input type="text" id="SearchInput" placeholder="Search...">
+
+                    </div>
                     <div class="table-responsive">
                         <table id="example-datatable" class="table table-vcenter table-condensed table-bordered">
                             <thead>
                             <tr>
+                                <th>No</th>
                                 <th class="text-center">Ticket ID</th>
                                 <th class="text-center">PIC</th>
                                 <th class="text-center">Date</th>
@@ -73,12 +78,12 @@
                             </thead>
                             <tbody>
                             <tr>
-
-                                <td>MTC-21001</td>
-                                <td>Yuda</td>
+                                <td>1</td>
+                                <td>iMTC-21001</td>
+                                <td>jamal</td>
                                 <td>05-jan-23</td>
                                 <td>PT INCHAPE INDOMOBIL ENERGI BARU</td>
-                                <td>disscus how to block whatsapp</td>
+                                <td>disscus how to maintenance</td>
                                 <td>Gather information about the plan</td>
                                 <td>give recomendation about the plan</td>
                                 <td>troubleshoot</td>
@@ -95,12 +100,12 @@
                                 </td>
                             </tr>
                             <tr>
-
+                                <td>2</td>
                                 <td>MTC-21001</td>
-                                <td>Yuda</td>
+                                <td>jamal</td>
                                 <td>05-jan-23</td>
                                 <td>PT INCHAPE INDOMOBIL ENERGI BARU</td>
-                                <td>disscus how to block whatsapp</td>
+                                <td>disscus how to maintenance</td>
                                 <td>Gather information about the plan</td>
                                 <td>give recomendation about the plan</td>
                                 <td>troubleshoot</td>
@@ -133,5 +138,29 @@
     <a href="#" id="to-top"><i class="fa fa-angle-double-up"></i></a>
 
     <%@include file="/WEB-INF/pages/js_import.jsp" %>
+
+    <script>
+        const searchInput = document.getElementById('SearchInput');
+        const dataTable = document.getElementById('example-datatable');
+
+        searchInput.addEventListener('keyup', function() {
+            const filter = searchInput.value.toLowerCase();
+            const rows = dataTable.getElementsByTagName('tr');
+
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                let found = false;
+
+                for (let j = 0; j < cells.length; j++) {
+                    if (cells[j].textContent.toLowerCase().includes(filter)) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                rows[i].style.display = found ? '' : 'none';
+            }
+        });
+    </script>
 </body>
 </html>

@@ -25,18 +25,11 @@
                     <a href="#"><i class="gi gi-stats sidebar-nav-icon"></i><span
                             class="sidebar-nav-mini-hide">Dashboard 2</span></a>
                 </li>
-                <li class="sidebar-header">
-                    <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip" title="Master data"><i class="gi gi-server"></i></a></span>
-                    <span class="sidebar-header-title">Reports</span>
-                </li>
-                <li>
-                    <a href="#"><i class="gi gi-server_flag sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Service Reports</span></a>
-                </li>
-                <li>
-                    <a href="#"><i class="gi gi-server_new sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Maintenance Reports</span></a>
-                </li>
+
+
+
+
+
                 <li class="sidebar-header">
                     <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip" title="Master data"><i class="gi gi-cargo"></i></a></span>
                     <span class="sidebar-header-title">Master Data</span>
@@ -51,7 +44,7 @@
                             <a href="users">Users</a>
                         </li>
                         <li>
-                            <a href="user_log">User Logs</a>
+                            <a href="master_user_group">Master User Group</a>
                         </li>
                         <li>
                             <a href="user_group">User Group</a>
@@ -63,17 +56,14 @@
                     <a href="organization"><i class="gi gi-group sidebar-nav-icon"></i><span
                             class="sidebar-nav-mini-hide">Organization</span></a>
                 </li>
-                <li>
-                    <a href="list_mtc"><i class="gi gi-stats sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">List Maintenance</span></a>
-                </li>
+
                 <li>
                     <a href="active"><i class="gi gi-stats sidebar-nav-icon"></i><span
                             class="sidebar-nav-mini-hide">Active</span></a>
                 </li>
                 <li>
-                    <a href="customer"><i class="gi gi-stats sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Customers List</span></a>
+                    <a href="list_mtc"><i class="gi gi-stats sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">List Maintenance</span></a>
                 </li>
                 <li>
                     <a href="history"><i class="gi gi-stats sidebar-nav-icon"></i><span

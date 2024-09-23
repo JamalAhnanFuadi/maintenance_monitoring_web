@@ -50,12 +50,21 @@
                 <div class="block full">
                     <div class="block-title">
                         <h2><strong>List User</strong></h2>
+
                         <button type="button" class="btn btn-primary pull-right">Add New</button>
                     </div>
+
+                    <div class="search-container">
+                        <input type="text" id="SearchInput" placeholder="Search...">
+                    </div>
+
                     <div class="table-responsive">
+
+
                         <table id="example-datatable" class="table table-vcenter table-condensed table-bordered">
                             <thead>
                             <tr>
+                                <th>No</th>
                                 <th class="text-center">ID</th>
                                 <th class="text-center"><i class="gi gi-user"></i></th>
                                 <th class="text-center">First Name</th>
@@ -75,7 +84,8 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <td class="text-center">1</td>
+                                <td>1</td>
+                                <td class="text-center">123i</td>
                                 <td class="text-center"><img src="img/placeholders/avatars/avatar15.jpg" alt="avatar" class="img-circle"></td>
                                 <td>contoh</td>
                                 <td>user</td>
@@ -97,7 +107,8 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-center">1</td>
+                                <td>2</td>
+                                <td class="text-center">321</td>
                                 <td class="text-center"><img src="img/placeholders/avatars/avatar15.jpg" alt="avatar" class="img-circle"></td>
                                 <td>contoh</td>
                                 <td>user</td>
@@ -135,5 +146,29 @@
 <a href="#" id="to-top"><i class="fa fa-angle-double-up"></i></a>
 
 <%@include file="/WEB-INF/pages/js_import.jsp" %>
+
+    <script>
+        const searchInput = document.getElementById('SearchInput');
+        const dataTable = document.getElementById('example-datatable');
+
+        searchInput.addEventListener('keyup', function() {
+            const filter = searchInput.value.toLowerCase();
+            const rows = dataTable.getElementsByTagName('tr');
+
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                let found = false;
+
+                for (let j = 0; j < cells.length; j++) {
+                    if (cells[j].textContent.toLowerCase().includes(filter)) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                rows[i].style.display = found ? '' : 'none';
+            }
+        });
+    </script>
 </body>
 </html>
