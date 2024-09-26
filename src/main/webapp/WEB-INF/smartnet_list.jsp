@@ -49,7 +49,7 @@
                 <!-- Datatables Content -->
                 <div class="block full">
                     <div class="block-title">
-                        <h2><strong>History Of Smartnet List</strong></h2>
+                        <h2><strong>Smartnet List</strong></h2>
                         <button type="button" class="btn btn-primary pull-right">Add New</button>
                     </div>
                     <div class="search-container">
@@ -60,27 +60,31 @@
                             <thead>
                             <tr>
                                 <th class="text-center">No</th>
-                                <th class="text-center">Contract</th>
+                                <th class="text-center">Contract No</th>
                                 <th class="text-center">Customer</th>
                                 <th class="text-center">End User</th>
-                                <th class="text-center">Product Number</th>
+                                <th class="text-center">Product No</th>
                                 <th class="text-center">S/N</th>
                                 <th class="text-center">Broken S/N</th>
                                 <th class="text-center">End Date</th>
+                                <th class="text-center">Aging</th>
+
+
                                 <th class="text-center">Actions</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
                                 <td class="text-center">1</td>
+                                <td>204164014</td>
+                                <td>PT ADARO ENERGY TBK </td>
+                                <td>PT ADARO ENERGY</td>
+                                <td>OISR4331-V/K9</td>
+                                <td>FDO2515M0T0</td>
+                                <td>--</td>
+                                <td>Jun 9, 2022</td>
+                                <td>238</td>
 
-                                <td><a href="javascript:void(0)">DCW32-0002</a></td>
-                                <td>PT ANOMALI LINTAS ENERG</td>
-                                <td>kemenkes</td>
-                                <td>MR-44-HW</td>
-                                <td>FD027021GY</td>
-                                <td>10000000</td>
-                                <td>5-nov-23</td>
 
                                 <td class="text-center">
                                     <div class="btn-group">
@@ -90,15 +94,33 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-center">1</td>
+                                <td class="text-center">2</td>
+                                <td>203690095</td>
+                                <td>PT ADARO POWER</td>
+                                <td>PT EXPERT DATA VOICE SOLUTION</td>
+                                <td>UCSC-C220-M4S</td>
+                                <td>FCH2145V00S</td>
+                                <td>--</td>
+                                <td>Nov 15, 2021</td>
+                                <td>32</td>
 
-                                <td><a href="javascript:void(0)">DCW32-0002</a></td>
-                                <td>PT ANOMALI LINTAS ENERG</td>
-                                <td>kemenkes</td>
-                                <td>MR-44-HW</td>
-                                <td>FD027021GY</td>
-                                <td>10000000</td>
-                                <td>5-nov-23</td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <a href="javascript:void(0)" data-toggle="tooltip" title="Edit" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i></a>
+                                        <a href="javascript:void(0)" data-toggle="tooltip" title="Delete" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">3</td>
+                                <td>203690095</td>
+                                <td>PT ADARO POWER</td>
+                                <td>PT EXPERT DATA VOICE SOLUTION</td>
+                                <td>UCSC-C220-M4S</td>
+                                <td>FCH2145V00S</td>
+                                <td>--</td>
+                                <td>Nov 15, 2022</td>
+                                <td>397</td>
 
                                 <td class="text-center">
                                     <div class="btn-group">

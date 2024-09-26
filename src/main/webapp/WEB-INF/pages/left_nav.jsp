@@ -20,7 +20,7 @@
                 <li>
                     <a href="#" class="sidebar-nav-menu"><i
                             class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i
-                            class="gi gi-user sidebar-nav-icon"></i><span
+                            class="gi gi-stats sidebar-nav-icon"></i><span
                             class="sidebar-nav-mini-hide">CM,PM Ticket & Time Line PM</span></a>
                     <ul>
                         <li>
@@ -39,17 +39,17 @@
                 <li>
                     <a href="#" class="sidebar-nav-menu"><i
                             class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i
-                            class="gi gi-user sidebar-nav-icon"></i><span
+                            class="gi gi-stats sidebar-nav-icon"></i><span
                             class="sidebar-nav-mini-hide">SLA,Smartnet & License</span></a>
                     <ul>
                         <li>
                             <a href="customer">Customer List Device Maitenance</a>
                         </li>
                         <li>
-                            <a href="#">Smartnet List</a>
+                            <a href="smartnet_list">Smartnet List</a>
                         </li>
                         <li>
-                            <a href="#">License List</a>
+                            <a href="license_list">License List</a>
                         </li>
 
                     </ul>
@@ -58,17 +58,17 @@
                 <li>
                     <a href="#" class="sidebar-nav-menu"><i
                             class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i
-                            class="gi gi-user sidebar-nav-icon"></i><span
+                            class="gi gi-stats sidebar-nav-icon"></i><span
                             class="sidebar-nav-mini-hide">Device Maintenance & Loan</span></a>
                     <ul>
                         <li>
-                            <a href="#">List Device Maitenance</a>
+                            <a href="list_device_maintenance">List Device Maitenance</a>
                         </li>
                         <li>
-                            <a href="#">Loan Device</a>
+                            <a href="loan_device">Loan Device</a>
                         </li>
                         <li>
-                            <a href="#">Loan Device Usage</a>
+                            <a href="loan_usage">Loan Device Usage</a>
                         </li>
 
                     </ul>
@@ -77,14 +77,14 @@
                 <li>
                     <a href="#" class="sidebar-nav-menu"><i
                             class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i
-                            class="gi gi-user sidebar-nav-icon"></i><span
+                            class="gi gi-stats sidebar-nav-icon"></i><span
                             class="sidebar-nav-mini-hide">History Of Smartnet & Device PM</span></a>
                     <ul>
                         <li>
                             <a href="history">History Of Smartnet</a>
                         </li>
                         <li>
-                            <a href="#">List Device PM</a>
+                            <a href="list_device_pm">List Device PM</a>
                         </li>
 
                     </ul>
@@ -93,14 +93,14 @@
                 <li>
                     <a href="#" class="sidebar-nav-menu"><i
                             class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i
-                            class="gi gi-user sidebar-nav-icon"></i><span
+                            class="gi gi-stats sidebar-nav-icon"></i><span
                             class="sidebar-nav-mini-hide">Project List & ETA Device</span></a>
                     <ul>
                         <li>
-                            <a href="#">Project List</a>
+                            <a href="project_list">Project List</a>
                         </li>
                         <li>
-                            <a href="#">ETA Device</a>
+                            <a href="eta_device">ETA Device</a>
                         </li>
 
 

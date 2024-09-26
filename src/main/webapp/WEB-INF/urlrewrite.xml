@@ -62,6 +62,46 @@
 	</rule>
 
 	<rule>
+		<from>^/smartnet_list</from>
+		<to>/WEB-INF/smartnet_list.jsp</to>
+	</rule>
+
+	<rule>
+		<from>^/license_list</from>
+		<to>/WEB-INF/license_list.jsp</to>
+	</rule>
+
+	<rule>
+		<from>^/list_device_maintenance</from>
+		<to>/WEB-INF/list_device_maintenance.jsp</to>
+	</rule>
+
+	<rule>
+		<from>^/loan_device</from>
+		<to>/WEB-INF/loan_device.jsp</to>
+	</rule>
+
+	<rule>
+		<from>^/loan_usage</from>
+		<to>/WEB-INF/loan_usage.jsp</to>
+	</rule>
+
+	<rule>
+		<from>^/list_device_pm</from>
+		<to>/WEB-INF/list_device_pm.jsp</to>
+	</rule>
+
+	<rule>
+		<from>^/project_list</from>
+		<to>/WEB-INF/project_list.jsp</to>
+	</rule>
+
+	<rule>
+		<from>^/eta_device</from>
+		<to>/WEB-INF/eta_device.jsp</to>
+	</rule>
+
+	<rule>
 		<from>^/business-roles$</from>
 		<to>/WEB-INF/businessRoleManagement.jsp</to>
 	</rule>

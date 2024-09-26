@@ -49,7 +49,7 @@
                 <!-- Datatables Content -->
                 <div class="block full">
                     <div class="block-title">
-                        <h2><strong>History Of Smartnet List</strong></h2>
+                        <h2><strong>Project List</strong></h2>
                         <button type="button" class="btn btn-primary pull-right">Add New</button>
                     </div>
                     <div class="search-container">
@@ -60,27 +60,33 @@
                             <thead>
                             <tr>
                                 <th class="text-center">No</th>
-                                <th class="text-center">Contract</th>
-                                <th class="text-center">Customer</th>
-                                <th class="text-center">End User</th>
-                                <th class="text-center">Product Number</th>
-                                <th class="text-center">S/N</th>
-                                <th class="text-center">Broken S/N</th>
-                                <th class="text-center">End Date</th>
+                                <th class="text-center">Project</th>
+                                <th class="text-center">Job Code</th>
+                                <th class="text-center">Q</th>
+                                <th class="text-center">BOQ Received</th>
+                                <th class="text-center">Target BAST/UAT</th>
+                                <th class="text-center">Deadline Date</th>
+                                <th class="text-center">Real BAST/UAT</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Notes</th>
+
                                 <th class="text-center">Actions</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
                                 <td class="text-center">1</td>
+                                <td>Brimob Phase 2 (Vidcon)</td>
+                                <td>OP20-0036</td>
+                                <td>2021-Q2</td>
+                                <td>Jan 22, 2021</td>
+                                <td>Week 4 Aug 2021</td>
+                                <td>Mar 1, 2021</td>
+                                <td>Sep 6, 2021</td>
+                                <td>Heavy</td>
+                                <td>--</td>
 
-                                <td><a href="javascript:void(0)">DCW32-0002</a></td>
-                                <td>PT ANOMALI LINTAS ENERG</td>
-                                <td>kemenkes</td>
-                                <td>MR-44-HW</td>
-                                <td>FD027021GY</td>
-                                <td>10000000</td>
-                                <td>5-nov-23</td>
+
 
                                 <td class="text-center">
                                     <div class="btn-group">
@@ -90,15 +96,37 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-center">1</td>
+                                <td class="text-center">2</td>
+                                <td>Carolus (H3C Phase 3)</td>
+                                <td>OP21-0038</td>
+                                <td>2021-Q2</td>
+                                <td>Mar 22, 2021</td>
+                                <td>Week 4 Juni 2021</td>
+                                <td>Apr 21, 2021</td>
+                                <td>June 14. 2021</td>
+                                <td>Heavy</td>
+                                <td>--</td>
 
-                                <td><a href="javascript:void(0)">DCW32-0002</a></td>
-                                <td>PT ANOMALI LINTAS ENERG</td>
-                                <td>kemenkes</td>
-                                <td>MR-44-HW</td>
-                                <td>FD027021GY</td>
-                                <td>10000000</td>
-                                <td>5-nov-23</td>
+
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <a href="javascript:void(0)" data-toggle="tooltip" title="Edit" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i></a>
+                                        <a href="javascript:void(0)" data-toggle="tooltip" title="Delete" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">3</td>
+                                <td>Pedima (Meraki MX64)</td>
+                                <td>OP21-0035</td>
+                                <td>2021-Q2</td>
+                                <td>Apr 8, 2021</td>
+                                <td>Week 2 Mei 2021</td>
+                                <td>May 8, 2021</td>
+                                <td>May 4, 2021 (SVR)</td>
+                                <td>Heavy</td>
+                                <td>--</td>
+
 
                                 <td class="text-center">
                                     <div class="btn-group">

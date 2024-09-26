@@ -49,7 +49,7 @@
                 <!-- Datatables Content -->
                 <div class="block full">
                     <div class="block-title">
-                        <h2><strong>History Of Smartnet List</strong></h2>
+                        <h2><strong>List Device PM</strong></h2>
                         <button type="button" class="btn btn-primary pull-right">Add New</button>
                     </div>
                     <div class="search-container">
@@ -60,27 +60,29 @@
                             <thead>
                             <tr>
                                 <th class="text-center">No</th>
-                                <th class="text-center">Contract</th>
                                 <th class="text-center">Customer</th>
-                                <th class="text-center">End User</th>
-                                <th class="text-center">Product Number</th>
-                                <th class="text-center">S/N</th>
-                                <th class="text-center">Broken S/N</th>
-                                <th class="text-center">End Date</th>
+                                <th class="text-center">Device Type</th>
+                                <th class="text-center">Hostname</th>
+                                <th class="text-center">Username</th>
+                                <th class="text-center">Password</th>
+                                <th class="text-center">IP Address</th>
+                                <th class="text-center">Location</th>
+
                                 <th class="text-center">Actions</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
                                 <td class="text-center">1</td>
+                                <td>ACC</td>
+                                <td>Access Point</td>
+                                <td>C-AP-TBS008</td>
+                                <td>cisco</td>
+                                <td>Cisco</td>
+                                <td>10.7.130.207/26</td>
+                                <td>Jakarta</td>
 
-                                <td><a href="javascript:void(0)">DCW32-0002</a></td>
-                                <td>PT ANOMALI LINTAS ENERG</td>
-                                <td>kemenkes</td>
-                                <td>MR-44-HW</td>
-                                <td>FD027021GY</td>
-                                <td>10000000</td>
-                                <td>5-nov-23</td>
+
 
                                 <td class="text-center">
                                     <div class="btn-group">
@@ -90,15 +92,33 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-center">1</td>
+                                <td class="text-center">2</td>
+                                <td>AIA</td>
+                                <td>WS-C2960S-F48FPS-L (Access Switch)</td>
+                                <td>SLIDJKTHQO26</td>
+                                <td>edavos</td>
+                                <td>Edavos99!</td>
+                                <td>10.53.40.11</td>
+                                <td>AIA Central</td>
 
-                                <td><a href="javascript:void(0)">DCW32-0002</a></td>
-                                <td>PT ANOMALI LINTAS ENERG</td>
-                                <td>kemenkes</td>
-                                <td>MR-44-HW</td>
-                                <td>FD027021GY</td>
-                                <td>10000000</td>
-                                <td>5-nov-23</td>
+
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <a href="javascript:void(0)" data-toggle="tooltip" title="Edit" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i></a>
+                                        <a href="javascript:void(0)" data-toggle="tooltip" title="Delete" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">3</td>
+                                <td>AIA</td>
+                                <td>Cisco CISCO2921/K9</td>
+                                <td>RWIDJKTHQO02</td>
+                                <td>edavos</td>
+                                <td>Edavos99!</td>
+                                <td>0.53.42.125</td>
+                                <td>AIA Central</td>
+
 
                                 <td class="text-center">
                                     <div class="btn-group">

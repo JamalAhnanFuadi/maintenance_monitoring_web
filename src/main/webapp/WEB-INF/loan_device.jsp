@@ -49,7 +49,7 @@
                 <!-- Datatables Content -->
                 <div class="block full">
                     <div class="block-title">
-                        <h2><strong>History Of Smartnet List</strong></h2>
+                        <h2><strong>LOAN Device</strong></h2>
                         <button type="button" class="btn btn-primary pull-right">Add New</button>
                     </div>
                     <div class="search-container">
@@ -60,27 +60,31 @@
                             <thead>
                             <tr>
                                 <th class="text-center">No</th>
-                                <th class="text-center">Contract</th>
+                                <th class="text-center">LN No</th>
                                 <th class="text-center">Customer</th>
-                                <th class="text-center">End User</th>
-                                <th class="text-center">Product Number</th>
+                                <th class="text-center">PIC</th>
+                                <th class="text-center">Product No</th>
                                 <th class="text-center">S/N</th>
-                                <th class="text-center">Broken S/N</th>
-                                <th class="text-center">End Date</th>
+                                <th class="text-center">Loan Date</th>
+                                <th class="text-center">ETA Date</th>
+                                <th class="text-center">Aging</th>
+
+
                                 <th class="text-center">Actions</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
                                 <td class="text-center">1</td>
+                                <td>LN20-0001</td>
+                                <td>HENDRA SOENARDI LAW FIRM</td>
+                                <td>jamal</td>
+                                <td>Adapter MX64</td>
+                                <td>1 unit</td>
+                                <td>Jan 6, 2020</td>
+                                <td>Mar 31, 2020</td>
+                                <td>--</td>
 
-                                <td><a href="javascript:void(0)">DCW32-0002</a></td>
-                                <td>PT ANOMALI LINTAS ENERG</td>
-                                <td>kemenkes</td>
-                                <td>MR-44-HW</td>
-                                <td>FD027021GY</td>
-                                <td>10000000</td>
-                                <td>5-nov-23</td>
 
                                 <td class="text-center">
                                     <div class="btn-group">
@@ -90,15 +94,39 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-center">1</td>
+                                <td class="text-center">2</td>
+                                <td>LN20-0002</td>
+                                <td>PT OMNI INTIVISION</td>
+                                <td>ahnan</td>
+                                <td>MX64-HW</td>
+                                <td>Q2MN-379L-5GMX</td>
+                                <td>Jan 9, 2020</td>
+                                <td>Feb 10, 2020</td>
+                                <td>--</td>
 
-                                <td><a href="javascript:void(0)">DCW32-0002</a></td>
-                                <td>PT ANOMALI LINTAS ENERG</td>
-                                <td>kemenkes</td>
-                                <td>MR-44-HW</td>
-                                <td>FD027021GY</td>
-                                <td>10000000</td>
-                                <td>5-nov-23</td>
+
+
+
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <a href="javascript:void(0)" data-toggle="tooltip" title="Edit" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i></a>
+                                        <a href="javascript:void(0)" data-toggle="tooltip" title="Delete" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">3</td>
+                                <td>LN20-0003</td>
+                                <td>RS. ST. CAROLUS</td>
+                                <td>fuadi</td>
+                                <td>WX1810H-PWR</td>
+                                <td>219801A18BC17C000054</td>
+                                <td>Jan 29, 2020</td>
+                                <td>Feb 10, 2020</td>
+                                <td>--</td>
+
+
+
 
                                 <td class="text-center">
                                     <div class="btn-group">

@@ -49,7 +49,7 @@
                 <!-- Datatables Content -->
                 <div class="block full">
                     <div class="block-title">
-                        <h2><strong>History Of Smartnet List</strong></h2>
+                        <h2><strong>License List</strong></h2>
                         <button type="button" class="btn btn-primary pull-right">Add New</button>
                     </div>
                     <div class="search-container">
@@ -60,27 +60,29 @@
                             <thead>
                             <tr>
                                 <th class="text-center">No</th>
-                                <th class="text-center">Contract</th>
+                                <th class="text-center">PAK</th>
+                                <th class="text-center">Contract No</th>
+                                <th class="text-center">Subs ID</th>
+                                <th class="text-center">License Key</th>
                                 <th class="text-center">Customer</th>
-                                <th class="text-center">End User</th>
-                                <th class="text-center">Product Number</th>
-                                <th class="text-center">S/N</th>
-                                <th class="text-center">Broken S/N</th>
+                                <th class="text-center">Product No</th>
                                 <th class="text-center">End Date</th>
+
                                 <th class="text-center">Actions</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
                                 <td class="text-center">1</td>
+                                <td>--</td>
+                                <td>204369390</td>
+                                <td>Sub635997</td>
+                                <td>A-FLEX-NUM-MC</td>
+                                <td>ADARO ENERGY</td>
+                                <td>LIC-MX84-SEC-1YR</td>
+                                <td>Jun 9, 2022</td>
 
-                                <td><a href="javascript:void(0)">DCW32-0002</a></td>
-                                <td>PT ANOMALI LINTAS ENERG</td>
-                                <td>kemenkes</td>
-                                <td>MR-44-HW</td>
-                                <td>FD027021GY</td>
-                                <td>10000000</td>
-                                <td>5-nov-23</td>
+
 
                                 <td class="text-center">
                                     <div class="btn-group">
@@ -90,15 +92,33 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-center">1</td>
+                                <td class="text-center">2</td>
+                                <td>--</td>
+                                <td>5S1725599</td>
+                                <td>Sub635997</td>
+                                <td>Z2H6-P68W-4T9E</td>
+                                <td>ADI BAYU (ABACUS)</td>
+                                <td>A-FLEX</td>
+                                <td>Nov 15, 2021</td>
 
-                                <td><a href="javascript:void(0)">DCW32-0002</a></td>
-                                <td>PT ANOMALI LINTAS ENERG</td>
-                                <td>kemenkes</td>
-                                <td>MR-44-HW</td>
-                                <td>FD027021GY</td>
-                                <td>10000000</td>
-                                <td>5-nov-23</td>
+
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <a href="javascript:void(0)" data-toggle="tooltip" title="Edit" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i></a>
+                                        <a href="javascript:void(0)" data-toggle="tooltip" title="Delete" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">3</td>
+                                <td>--</td>
+                                <td>203610793</td>
+                                <td>Sub635997</td>
+                                <td>A-FLEX-3</td>
+                                <td>ADI BAYU (ABACUS)</td>
+                                <td>A-FLEX-NUCM-MC</td>
+                                <td>Nov 15, 2022</td>
+
 
                                 <td class="text-center">
                                     <div class="btn-group">

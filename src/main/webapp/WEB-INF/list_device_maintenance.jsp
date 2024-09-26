@@ -49,7 +49,7 @@
                 <!-- Datatables Content -->
                 <div class="block full">
                     <div class="block-title">
-                        <h2><strong>History Of Smartnet List</strong></h2>
+                        <h2><strong>List Device Maintenance</strong></h2>
                         <button type="button" class="btn btn-primary pull-right">Add New</button>
                     </div>
                     <div class="search-container">
@@ -60,27 +60,29 @@
                             <thead>
                             <tr>
                                 <th class="text-center">No</th>
-                                <th class="text-center">Contract</th>
-                                <th class="text-center">Customer</th>
-                                <th class="text-center">End User</th>
-                                <th class="text-center">Product Number</th>
+                                <th class="text-center">Product No</th>
                                 <th class="text-center">S/N</th>
-                                <th class="text-center">Broken S/N</th>
-                                <th class="text-center">End Date</th>
+                                <th class="text-center">Function</th>
+                                <th class="text-center">Feature</th>
+                                <th class="text-center">Location</th>
+                                <th class="text-center">Loan</th>
+                                <th class="text-center">User</th>
+
                                 <th class="text-center">Actions</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
                                 <td class="text-center">1</td>
+                                <td>CISCO2911-V/K9</td>
+                                <td>FGL1937114R</td>
+                                <td>Router</td>
+                                <td>Cisco Router 2911</td>
+                                <td>MTC</td>
+                                <td>LN21-0037</td>
+                                <td>FEDEX EXPRESS INTERNATIONAL- EDAVOS</td>
 
-                                <td><a href="javascript:void(0)">DCW32-0002</a></td>
-                                <td>PT ANOMALI LINTAS ENERG</td>
-                                <td>kemenkes</td>
-                                <td>MR-44-HW</td>
-                                <td>FD027021GY</td>
-                                <td>10000000</td>
-                                <td>5-nov-23</td>
+
 
                                 <td class="text-center">
                                     <div class="btn-group">
@@ -90,15 +92,33 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-center">1</td>
+                                <td class="text-center">2</td>
+                                <td>CISCO2911-V/K9</td>
+                                <td>FGL182010HK</td>
+                                <td>Router</td>
+                                <td>Cisco Router 2911</td>
+                                <td>MTC</td>
+                                <td>LN15-0015</td>
+                                <td>PT BHIMASENA POWER INDONESIA BATANG - EDAVOS</td>
 
-                                <td><a href="javascript:void(0)">DCW32-0002</a></td>
-                                <td>PT ANOMALI LINTAS ENERG</td>
-                                <td>kemenkes</td>
-                                <td>MR-44-HW</td>
-                                <td>FD027021GY</td>
-                                <td>10000000</td>
-                                <td>5-nov-23</td>
+
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <a href="javascript:void(0)" data-toggle="tooltip" title="Edit" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i></a>
+                                        <a href="javascript:void(0)" data-toggle="tooltip" title="Delete" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">3</td>
+                                <td>CISCO2911-V/K9</td>
+                                <td>FGL192511M9</td>
+                                <td>Router</td>
+                                <td>Cisco Router 2911</td>
+                                <td>MTC</td>
+                                <td>Ferly - Randy</td>
+                                <td>EDAVOS</td>
+
 
                                 <td class="text-center">
                                     <div class="btn-group">
