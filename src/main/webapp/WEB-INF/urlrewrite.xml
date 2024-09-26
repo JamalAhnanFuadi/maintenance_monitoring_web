@@ -53,6 +53,15 @@
 	</rule>
 
 	<rule>
+		<from>^/preventive_maintenance</from>
+		<to>/WEB-INF/preventive_maintenance.jsp</to>
+	</rule>
+	<rule>
+		<from>^/time_line_pm</from>
+		<to>/WEB-INF/time_line_pm.jsp</to>
+	</rule>
+
+	<rule>
 		<from>^/business-roles$</from>
 		<to>/WEB-INF/businessRoleManagement.jsp</to>
 	</rule>

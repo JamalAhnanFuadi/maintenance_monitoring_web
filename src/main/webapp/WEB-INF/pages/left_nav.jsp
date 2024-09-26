@@ -18,15 +18,94 @@
                     <span class="sidebar-header-title">Dasboards</span>
                 </li>
                 <li>
-                    <a href="index"><i class="gi gi-stats sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Dashboard 1</span></a>
+                    <a href="#" class="sidebar-nav-menu"><i
+                            class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i
+                            class="gi gi-user sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">CM,PM Ticket & Time Line PM</span></a>
+                    <ul>
+                        <li>
+                            <a href="corrective_maintenance">Corrective Maintenance</a>
+                        </li>
+                        <li>
+                            <a href="preventive_maintenance">Preventive Maintennance</a>
+                        </li>
+                        <li>
+                            <a href="time_line_pm">Time Line PM</a>
+                        </li>
+
+                    </ul>
                 </li>
+
                 <li>
-                    <a href="#"><i class="gi gi-stats sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Dashboard 2</span></a>
+                    <a href="#" class="sidebar-nav-menu"><i
+                            class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i
+                            class="gi gi-user sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">SLA,Smartnet & License</span></a>
+                    <ul>
+                        <li>
+                            <a href="customer">Customer List Device Maitenance</a>
+                        </li>
+                        <li>
+                            <a href="#">Smartnet List</a>
+                        </li>
+                        <li>
+                            <a href="#">License List</a>
+                        </li>
+
+                    </ul>
                 </li>
 
+                <li>
+                    <a href="#" class="sidebar-nav-menu"><i
+                            class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i
+                            class="gi gi-user sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">Device Maintenance & Loan</span></a>
+                    <ul>
+                        <li>
+                            <a href="#">List Device Maitenance</a>
+                        </li>
+                        <li>
+                            <a href="#">Loan Device</a>
+                        </li>
+                        <li>
+                            <a href="#">Loan Device Usage</a>
+                        </li>
 
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#" class="sidebar-nav-menu"><i
+                            class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i
+                            class="gi gi-user sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">History Of Smartnet & Device PM</span></a>
+                    <ul>
+                        <li>
+                            <a href="history">History Of Smartnet</a>
+                        </li>
+                        <li>
+                            <a href="#">List Device PM</a>
+                        </li>
+
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#" class="sidebar-nav-menu"><i
+                            class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i
+                            class="gi gi-user sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">Project List & ETA Device</span></a>
+                    <ul>
+                        <li>
+                            <a href="#">Project List</a>
+                        </li>
+                        <li>
+                            <a href="#">ETA Device</a>
+                        </li>
+
+
+                    </ul>
+                </li>
 
 
 
@@ -65,14 +144,7 @@
                     <a href="list_mtc"><i class="gi gi-stats sidebar-nav-icon"></i><span
                             class="sidebar-nav-mini-hide">List Maintenance</span></a>
                 </li>
-                <li>
-                    <a href="history"><i class="gi gi-stats sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">History Of Maintenance</span></a>
-                </li>
-                <li>
-                    <a href="corrective_maintenance"><i class="gi gi-stats sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Corrective Maintenance Ticket</span></a>
-                </li>
+
                 <li>
                     <a href="#" class="sidebar-nav-menu"><i
                             class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i
