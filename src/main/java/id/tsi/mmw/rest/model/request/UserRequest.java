@@ -1,8 +1,8 @@
-package id.tsi.mmw.model;
+package id.tsi.mmw.rest.model.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class User {
+public class UserRequest {
 
     @JsonProperty("uid")
     private String uid;
@@ -13,9 +13,6 @@ public class User {
     @JsonProperty("lastname")
     private String lastname;
 
-    @JsonProperty("fullname")
-    private String fullname;
-
     @JsonProperty("email")
     private String email;
 
@@ -25,16 +22,7 @@ public class User {
     @JsonProperty("dob")
     private String dob;
 
-    @JsonProperty("status")
-    private boolean status;
-
-    @JsonProperty("createDt")
-    private String createDt;
-
-    @JsonProperty("modifyDt")
-    private String modifyDt;
-
-    public User() {
+    public UserRequest() {
         // default constructor
     }
 
@@ -62,14 +50,6 @@ public class User {
         this.lastname = lastname;
     }
 
-    public String getFullname() {
-        return fullname;
-    }
-
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -92,29 +72,5 @@ public class User {
 
     public void setDob(String dob) {
         this.dob = dob;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-    public String getCreateDt() {
-        return createDt;
-    }
-
-    public void setCreateDt(String createDt) {
-        this.createDt = createDt;
-    }
-
-    public String getModifyDt() {
-        return modifyDt;
-    }
-
-    public void setModifyDt(String modifyDt) {
-        this.modifyDt = modifyDt;
     }
 }

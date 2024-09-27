@@ -46,7 +46,6 @@ public class MasterUserGroupService extends BaseService {
         final String methodName = "update";
         Response response = buildSuccessResponse();
         start(methodName);
-        user.setUid();
         boolean result = masterUserGroupController.update(user);
 
         completed(methodName);

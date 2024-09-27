@@ -15,4 +15,7 @@ public class Property {
     public static final String JWT_SECRET = "jwt.secret";
     public static final String JWT_EXPIRATION = "jwt.expiration";
 
+    public static final String ENCRYPTION_SALT_LENGTH = "encryption.salt.length";
+    public static final String USER_DEFAULT_PASSWORD = "user.default.password";
+
 }

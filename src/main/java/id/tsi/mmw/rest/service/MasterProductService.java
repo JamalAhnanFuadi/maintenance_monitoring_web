@@ -46,7 +46,7 @@ public class MasterProductService extends BaseService{
         final String methodName = "update";
         Response response = buildSuccessResponse();
         start(methodName);
-        user.setUid();
+
         boolean result = masterProductController.update(user);
 
         completed(methodName);

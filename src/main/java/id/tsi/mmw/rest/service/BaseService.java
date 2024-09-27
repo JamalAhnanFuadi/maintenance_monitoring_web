@@ -1,6 +1,8 @@
 package id.tsi.mmw.rest.service;
 
+import id.tsi.mmw.manager.PropertyManager;
 import id.tsi.mmw.property.Constants;
+import id.tsi.mmw.property.Property;
 import id.tsi.mmw.util.log.AppLogger;
 import id.tsi.mmw.rest.model.response.ServiceResponse;
 
@@ -20,7 +22,7 @@ public class BaseService {
     public BaseService() {
         // Empty Constructor
     }
-    // Logging
+    // START of logging management
     protected AppLogger getLogger(Class<?> clazz) {
         return new AppLogger(clazz);
     }
@@ -28,12 +30,25 @@ public class BaseService {
     protected void start(String methodName) {
         log.info(methodName, "start");
     }
-
     protected void completed(String methodName) {
         log.info(methodName, "completed");
     }
 
-    // Session management
+    // END of logging management
+
+    // START of property management
+    protected String getProperty(String key) {
+        return PropertyManager.getInstance().getProperty(key);
+    }
+    protected int getIntegerProperty(String key) {
+        return PropertyManager.getInstance().getIntProperty(key);
+    }
+    protected boolean getBooleanProperty(String key) {
+        return PropertyManager.getInstance().getBoolProperty(key);
+    }
+    // END of property management
+
+    // START ofSession management
     protected void clearSession() {
         HttpSession session = httpServletRequest.getSession(false);
         if (session != null) {
@@ -89,8 +104,9 @@ public class BaseService {
             getSession().removeAttribute(key);
         }
     }
+    // END of Session management
 
-    // Response management
+    // START of Response management
     private Response buildResponse(Response.Status status, String message) {
         return Response.status(status).entity(new ServiceResponse(status, message)).build();
     }
@@ -109,6 +125,11 @@ public class BaseService {
     protected Response buildBadRequestResponse() {
         return buildResponse(Response.Status.BAD_REQUEST, "Bad Request");
     }
+    protected Response buildBadRequestResponse(String message) {
+        return buildResponse(Response.Status.BAD_REQUEST, message);
+    }
+
+    // END of Response Management
 
 }
 
