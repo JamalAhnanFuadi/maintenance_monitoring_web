@@ -3,19 +3,16 @@ package id.tsi.mmw.util.json;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import id.tsi.mmw.util.log.BaseLogger;
 
 public class JsonHelper {
 
     private static final BaseLogger log = new BaseLogger(JsonHelper.class);
-    private static final ObjectMapper OBJECT_MAPPER =
-            new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                    .setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    private static final ObjectMapper OBJECT_MAPPER = CustomObjectMapper.getInstance().getObjectMapper();
+
 
     private static final String FROM_JSON = "fromJson";
 

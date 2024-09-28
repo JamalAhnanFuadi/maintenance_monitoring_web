@@ -46,7 +46,6 @@ public class AuthenticationService extends BaseService {
      * @return The response indicating the authentication status.
      */
     @POST
-    @Path("login")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response login(AuthenticationRequest authRequest) {
         String methodName = "login";
@@ -99,6 +98,10 @@ public class AuthenticationService extends BaseService {
                         // Update user login timestamp upon successful authentication
                         log.info("Update user login timestamp");
                         authenticationController.updateLoginTimestamp(userId, startProcessingDT);
+
+                        // Get User access role
+
+
 
                         // Clear any existing session
                         clearSession();

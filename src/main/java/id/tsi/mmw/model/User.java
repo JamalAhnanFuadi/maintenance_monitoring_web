@@ -34,6 +34,12 @@ public class User {
     @JsonProperty("modifyDt")
     private String modifyDt;
 
+    @JsonProperty("accessGroupUid")
+    private String accessGroupUid;
+
+    @JsonProperty("accessGroupName")
+    private String accessGroupName;
+
     public User() {
         // default constructor
     }
@@ -116,5 +122,21 @@ public class User {
 
     public void setModifyDt(String modifyDt) {
         this.modifyDt = modifyDt;
+    }
+
+    public String getAccessGroupUid() {
+        return accessGroupUid;
+    }
+
+    public void setAccessGroupUid(String accessGroupUid) {
+        this.accessGroupUid = accessGroupUid;
+    }
+
+    public String getAccessGroupName() {
+        return accessGroupName;
+    }
+
+    public void setAccessGroupName(String accessGroupName) {
+        this.accessGroupName = accessGroupName;
     }
 }

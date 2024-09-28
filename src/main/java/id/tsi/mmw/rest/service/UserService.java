@@ -3,10 +3,13 @@ package id.tsi.mmw.rest.service;
 import id.tsi.mmw.controller.UserController;
 import id.tsi.mmw.manager.EncryptionManager;
 import id.tsi.mmw.model.Authentication;
+import id.tsi.mmw.model.Pagination;
 import id.tsi.mmw.model.User;
 import id.tsi.mmw.property.Constants;
 import id.tsi.mmw.property.Property;
+import id.tsi.mmw.rest.model.request.PaginationRequest;
 import id.tsi.mmw.rest.model.request.UserRequest;
+import id.tsi.mmw.rest.model.response.UserPaginationResponse;
 import id.tsi.mmw.rest.validator.UserValidator;
 import id.tsi.mmw.util.helper.DateHelper;
 import id.tsi.mmw.util.json.JsonHelper;
@@ -38,14 +41,47 @@ public class UserService extends BaseService {
 
     @GET
     @PermitAll
-    public Response getUserList() {
+    public Response getUserList(PaginationRequest request) {
         final String methodName = "getUserList";
         start(methodName);
+        log.info(methodName, "Get User List");
+        log.info(methodName, JsonHelper.toJson(request));
+        Response response;
 
-        List<User> userList = userController.getUserList();
+        boolean validateRequest = validator.validate(request);
+        log.debug(methodName, "Request payload validation : " + validateRequest);
+        if(validateRequest) {
+
+            List<User> users = userController.getUserListPagination(
+                    request.getPageSize(),
+                    paginationOffset(request.getPageNumber(), request.getPageSize()),
+                    request.getOrderBy(),
+                    request.getSortOrder(),
+                    request.getSearchFilter());
+
+            Pagination pagination = userController.countTotalRecordsAndPages(request.getPageSize(), request.getSearchFilter());
+
+            // Set the pagination properties in the pagination object
+            pagination.setPageNumber(request.getPageNumber());
+            pagination.setPageSize(request.getPageSize());
+            pagination.setSearchFilter(request.getSearchFilter());
+            pagination.setCurrentPages(users.size());
+            pagination.setOrderBy(request.getOrderBy());
+            pagination.setSortOrder(request.getSortOrder());
+
+            // Create a new UserPaginationResponse object and set the pagination and users properties
+            UserPaginationResponse usersResponse = new UserPaginationResponse();
+            usersResponse.setFilter(pagination);
+            usersResponse.setUsers(users);
+
+            response = buildSuccessResponse(usersResponse);
+        }else {
+            response =  buildBadRequestResponse(Constants.MESSAGE_INVALID_REQUEST);
+        }
         completed(methodName);
-        return buildSuccessResponse(userList);
+        return response;
     }
+
     @GET
     @PermitAll
     @Path("{uid}")

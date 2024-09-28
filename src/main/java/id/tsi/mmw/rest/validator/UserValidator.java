@@ -2,7 +2,7 @@ package id.tsi.mmw.rest.validator;
 
 import id.tsi.mmw.rest.model.request.UserRequest;
 
-public class UserValidator extends BaseValidator {
+public class UserValidator extends PaginationValidator {
 
     public UserValidator() {
         // Empty Constructor

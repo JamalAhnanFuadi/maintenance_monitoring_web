@@ -131,5 +131,8 @@ public class BaseService {
 
     // END of Response Management
 
+    protected int paginationOffset(int pageNumber, int pageSize) {
+        return (pageNumber - 1) * pageSize;
+    }
 }
 

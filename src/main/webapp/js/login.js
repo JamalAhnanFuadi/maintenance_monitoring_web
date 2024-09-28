@@ -27,7 +27,7 @@ function initVue() {
             login: function () {
                 const vm = this;
                 axios.post(
-                    '/monitoring/rest/authentication/login', {
+                    '/monitoring/rest/authentication', {
                         username: vm.username,
                         password: vm.password
                     }).then(function (response) {

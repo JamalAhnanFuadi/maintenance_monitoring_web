@@ -27,7 +27,7 @@ public class AuthenticationController extends BaseController {
         String result = null;
 
         // SQL query to fetch the salt for the given UID from the database
-        String sql = "SELECT salt FROM authentications WHERE uid = :uid;";
+        String sql = "SELECT salt FROM authentication WHERE uid = :uid;";
 
         // Get a database connection handle
         try (Handle handle = getHandle(); Query q = handle.createQuery(sql)) {
@@ -62,7 +62,7 @@ public class AuthenticationController extends BaseController {
         boolean result = false;
 
         // SQL query to check if the user credentials are valid and login is allowed
-        String sql = "SELECT if(COUNT(*)>0,'true','false') AS Result FROM authentications " +
+        String sql = "SELECT if(COUNT(*)>0,'true','false') AS Result FROM authentication " +
                 " WHERE uid = :uid AND password_hash = :password AND login_allowed = 1;";
 
         // Get a database connection handle
@@ -93,7 +93,7 @@ public class AuthenticationController extends BaseController {
         start(methodName);
 
         // SQL query to update the 'last_login_dt' field in the 'authentications' table
-        String sql = "UPDATE authentications " +
+        String sql = "UPDATE authentication " +
                 "SET last_login_dt = :processingTime " +
                 "WHERE uid= :uid;";
 

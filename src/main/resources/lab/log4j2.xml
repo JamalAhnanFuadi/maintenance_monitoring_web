@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE log4j:configuration PUBLIC
-  "-//APACHE//DTD LOG4J 1.2//EN" "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
 
-<Configuration status="INFO" name="example-config">
+<Configuration status="INFO" name="config">
 	<Properties>
 		<Property name="PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{1} - %msg%n</Property>
 		<Property name="LOG_DIR">${sys:catalina.base}/logs</Property>
@@ -13,9 +11,9 @@
 		</Console>
 
 		<RollingFile name="rollingFile"
-			fileName="${LOG_DIR}/maintenance.log"
-			filePattern="${LOG_DIR}/maintenance.%d{dd-MMM}.log.gz"
-			ignoreExceptions="false">
+					 fileName="${LOG_DIR}/umx2.log"
+					 filePattern="${LOG_DIR}/umx2.%d{dd-MMM}.log.gz"
+					 ignoreExceptions="false">
 			<PatternLayout>
 				<Pattern>${PATTERN}</Pattern>
 			</PatternLayout>
@@ -29,11 +27,22 @@
 	<Loggers>
 		<Root level="error">
 			<AppenderRef ref="STDOUT" />
+			<AppenderRef ref="rollingFile" />
 		</Root>
 
 		<Logger name="id" level="debug" additivity="false">
 			<AppenderRef ref="STDOUT" />
-			<appenderRef ref="rollingFile" />
+			<AppenderRef ref="rollingFile" />
 		</Logger>
+
+		<Logger name="com" level="debug" additivity="false">
+			<AppenderRef ref="STDOUT" />
+			<AppenderRef ref="rollingFile" />
+		</Logger>
+
+		<Logger name="com.zaxxer.hikari" level="info" additivity="false">
+			<AppenderRef ref="rollingFile" />
+		</Logger>
+
 	</Loggers>
 </Configuration>
