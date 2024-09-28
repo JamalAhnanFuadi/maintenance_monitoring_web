@@ -27,27 +27,43 @@ public class UserController extends BaseController {
     public boolean validateEmail(String email) {
         final String methodName = "validateEmail";
         start(methodName);
-
-        // Initialize the result variable to false
         boolean result = false;
 
         // Define the SQL query to check if the email exists in the 'users' table
-        String sql = "SELECT if(COUNT(*)>0,'true','false') FROM user WHERE  email = :email;";
-
-        // Get a database connection handle and create a query
+        String sql = "SELECT if(COUNT(*)>0,'true','false') " +
+                " FROM user " +
+                " WHERE  email = :email;";
         try (Handle handle = getHandle(); Query q = handle.createQuery(sql)) {
-
-            // Bind the email parameter to the query
             q.bind("email", email);
-
-            // Execute the query and retrieve the validation result as a boolean
             result = q.mapTo(Boolean.class).one();
 
-        } catch (SQLException e) {
-            // Log any SQL exception that occurs
+        } catch (Exception e) {
             log.error(methodName, e);
         }
+        completed(methodName);
+        return result;
+    }
 
+    /**
+     * Validates the user UID by checking if it exists in the database table.
+     *
+     * @param userUid The user UID to validate
+     * @return true if the user UID exists, false otherwise
+     */
+    public boolean validateUserUid(String userUid) {
+        final String methodName = "validateUserUid";
+        start(methodName);
+        boolean result = false;
+        String sql = "SELECT if(COUNT(*)>0,'true','false') " +
+                " FROM user " +
+                " WHERE  uid = :userUid;";
+        try (Handle handle = getHandle(); Query q = handle.createQuery(sql)) {
+            q.bind("userUid", userUid);
+            result = q.mapTo(Boolean.class).one();
+
+        } catch (Exception e) {
+            log.error(methodName, e);
+        }
         completed(methodName);
         return result;
     }
@@ -66,17 +82,12 @@ public class UserController extends BaseController {
         String sql = "SELECT uid, firstname, lastname, fullname, email, mobile_number, dob, status, create_dt, modify_dt " +
                 "FROM user WHERE email = :email;";
 
-        // Initialize the user object to null
         User user = null;
 
         try (Handle handle = getHandle(); Query q = handle.createQuery(sql)) {
-            // Bind the email parameter to the SQL query
             q.bind("email", email);
-
-            // Execute the query and map the result to a User object
             user = q.mapToBean(User.class).one();
         } catch (SQLException e) {
-            // Log any SQL exception that occurs during the query execution
             log.error(methodName, e);
         }
 
@@ -105,8 +116,8 @@ public class UserController extends BaseController {
         // LEFT JOIN the user_access_group table to get the access group ID and name.
         // We also need to sort the results by the provided sort by and order.
         // If a search filter is provided, we need to add a WHERE clause to filter the results.
-        String sql = " SELECT u.uid, u.firstname, u.lastname, u.fullname, u.email, "
-                + " u.mobile_number, u.dob, u.status, u.create_dt, u.modify_dt, "
+        String sql = "SELECT u.uid, u.firstname, u.lastname, u.fullname, u.email, "
+                + " u.status, u.create_dt, u.modify_dt, "
                 + " ag.uid AS access_group_uid, ag.display_name AS access_group_name "
                 + " FROM user u "
                 + " LEFT JOIN user_access_group uag ON uag.user_uid = u.uid "
@@ -260,15 +271,19 @@ public class UserController extends BaseController {
         return result;
     }
 
-    public User getUserByUid(String uid) {
+    public User getUserByUid(String userUid) {
         final String methodName = "getUserByUid";
         start(methodName);
 
         User user = new User();
-        final String sql = "SELECT uid, firstname, lastname, fullname, email, mobile_number, dob, status, create_dt, modify_dt" +
-                " FROM users WHERE uid = :uid";
+        final String sql = "SELECT u.uid, u.firstname, u.lastname, u.fullname, u.email, u.mobile_number, ag.uid AS access_group_uid, " +
+                " ag.display_name AS access_group_name, u.dob, u.status, u.create_dt, u.modify_dt " +
+                " FROM user u " +
+                " LEFT JOIN user_access_group uag ON uag.user_uid = u.uid  " +
+                " LEFT JOIN access_group ag ON ag.uid = uag.access_group_uid " +
+                " WHERE u.uid =  :userUid";
         try (Handle h = getHandle(); Query q = h.createQuery(sql)) {
-            q.bind("uid", uid);
+            q.bind("userUid", userUid);
             user = q.mapToBean(User.class).one();
         } catch (Exception ex) {
             log.error(methodName, ex);

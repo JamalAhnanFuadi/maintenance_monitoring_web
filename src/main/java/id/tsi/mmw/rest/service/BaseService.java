@@ -128,6 +128,9 @@ public class BaseService {
     protected Response buildBadRequestResponse(String message) {
         return buildResponse(Response.Status.BAD_REQUEST, message);
     }
+    protected Response buildConflictResponse(String message) {
+        return buildResponse(Response.Status.CONFLICT, message);
+    }
 
     // END of Response Management
 

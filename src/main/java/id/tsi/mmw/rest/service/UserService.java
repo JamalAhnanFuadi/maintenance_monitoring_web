@@ -1,15 +1,18 @@
 package id.tsi.mmw.rest.service;
 
+import id.tsi.mmw.controller.AccessMatrixController;
 import id.tsi.mmw.controller.UserController;
 import id.tsi.mmw.manager.EncryptionManager;
 import id.tsi.mmw.model.Authentication;
 import id.tsi.mmw.model.Pagination;
 import id.tsi.mmw.model.User;
+import id.tsi.mmw.model.UserAccessMatrix;
 import id.tsi.mmw.property.Constants;
 import id.tsi.mmw.property.Property;
 import id.tsi.mmw.rest.model.request.PaginationRequest;
 import id.tsi.mmw.rest.model.request.UserRequest;
 import id.tsi.mmw.rest.model.response.UserPaginationResponse;
+import id.tsi.mmw.rest.model.response.UserResponse;
 import id.tsi.mmw.rest.validator.UserValidator;
 import id.tsi.mmw.util.helper.DateHelper;
 import id.tsi.mmw.util.json.JsonHelper;
@@ -32,6 +35,9 @@ public class UserService extends BaseService {
     @Inject
     private UserController userController;
 
+    @Inject
+    private AccessMatrixController accessMatrixController;
+
     private UserValidator validator;
 
     public UserService() {
@@ -39,6 +45,18 @@ public class UserService extends BaseService {
         validator = new UserValidator();
     }
 
+    /**
+     * Gets a list of users given a pagination request.
+     *
+     * This function takes a pagination request and uses it to retrieve a list of users
+     * from the database. The function validates the request first, and only proceeds
+     * if the request is valid. If the request is invalid, the function will return
+     * HTTP 400 Bad Request.
+     *
+     * @param request The pagination request containing the page number, page size,
+     *                search filter, and sort order.
+     * @return A response containing a list of users and pagination properties.
+     */
     @GET
     @PermitAll
     public Response getUserList(PaginationRequest request) {
@@ -48,10 +66,13 @@ public class UserService extends BaseService {
         log.info(methodName, JsonHelper.toJson(request));
         Response response;
 
+        // Validate the request payload
         boolean validateRequest = validator.validate(request);
         log.debug(methodName, "Request payload validation : " + validateRequest);
-        if(validateRequest) {
 
+        // If the request is valid, proceed with retrieving the user list
+        if(validateRequest) {
+            // Retrieve the list of users from the database
             List<User> users = userController.getUserListPagination(
                     request.getPageSize(),
                     paginationOffset(request.getPageNumber(), request.getPageSize()),
@@ -59,6 +80,7 @@ public class UserService extends BaseService {
                     request.getSortOrder(),
                     request.getSearchFilter());
 
+            // Retrieve the total records and pages from the database
             Pagination pagination = userController.countTotalRecordsAndPages(request.getPageSize(), request.getSearchFilter());
 
             // Set the pagination properties in the pagination object
@@ -74,28 +96,65 @@ public class UserService extends BaseService {
             usersResponse.setFilter(pagination);
             usersResponse.setUsers(users);
 
+            // Build a success response containing the user list and pagination properties
             response = buildSuccessResponse(usersResponse);
-        }else {
-            response =  buildBadRequestResponse(Constants.MESSAGE_INVALID_REQUEST);
+        } else {
+            // Build a bad request response if the request is invalid
+            response = buildBadRequestResponse(Constants.MESSAGE_INVALID_REQUEST);
         }
+
         completed(methodName);
         return response;
     }
 
+    /**
+     * Retrieve user detail by UID.
+     * <p>
+     * This REST endpoint will retrieve user detail by its UID.
+     * <p>
+     * The REST endpoint will return HTTP 400 Bad Request if the user id is invalid.
+     * <p>
+     * The REST endpoint will return HTTP 200 OK if the user id is valid.
+     *
+     * @param uid The unique identifier of the user
+     * @return The user detail response
+     */
     @GET
     @PermitAll
     @Path("{uid}")
     public Response getUserDetail(@PathParam("uid") String uid) {
         final String methodName = "getUserDetail";
         start(methodName);
-        Response response = buildBadRequestResponse();
+        Response response;
 
-        User user = userController.getUserByUid(uid);
+        // Log the user id that is being requested
+        log.info(methodName, "Get User Detail (" + uid + ")");
 
-        if(user.getUid() != null) {
-            response = buildSuccessResponse(user);
+        // Validate the user id by checking if it exists in the database
+        boolean validateUser = userController.validateUserUid(uid);
+        log.debug(methodName, "User validation : " + validateUser);
+
+        // If the user id is valid, retrieve the user detail from the database
+        if(validateUser){
+            User user = userController.getUserByUid(uid);
+            // fetch User access matrix information
+            if(user.getAccessGroupUid() != null && !user.getAccessGroupUid().isEmpty()) {
+                List<UserAccessMatrix> userAccessMatrix = accessMatrixController.getUserAccessMatrix(user.getUid(),user.getAccessGroupUid());
+                user.setUserAccessMatrix(userAccessMatrix);
+            }
+
+            // Create a new UserResponse object and set the user property
+            UserResponse userResponse = new UserResponse();
+            userResponse.setUser(user);
+
+            // Build a success response containing the user detail
+            response = buildSuccessResponse(userResponse);
+        } else {
+            // Build a bad request response if the user id is invalid
+            response = buildBadRequestResponse("Invalid User id");
         }
 
+        // Log that the REST endpoint has completed
         completed(methodName);
         return response;
     }
@@ -165,7 +224,7 @@ public class UserService extends BaseService {
 
 
             }else {
-
+                response = buildConflictResponse("User email already exists");
             }
         }else {
             response = buildBadRequestResponse(Constants.MESSAGE_INVALID_REQUEST);
