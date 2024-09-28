@@ -23,6 +23,7 @@ import javax.inject.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -200,7 +201,9 @@ public class UserService extends BaseService {
 
                 user.setEmail(request.getEmail());
                 user.setMobileNumber(request.getMobileNumber());
-                user.setDob(request.getDob());
+                LocalDate dobLD = DateHelper.parseDate(request.getDob());
+                LocalDateTime dobLDT = dobLD.atStartOfDay();
+                user.setDob(DateHelper.formatDBDateTime(dobLDT));
 
                 String processingTime = DateHelper.formatDateTime(LocalDateTime.now());
                 user.setCreateDt(processingTime);
@@ -217,12 +220,15 @@ public class UserService extends BaseService {
                 authentication.setPasswordHash(hashedPassword);
                 authentication.setLoginAllowed(false);
                 authentication.setCreateDt(processingTime);
-                authentication.setLastPasswordSet(processingTime);
 
                 // proceed user creation to database
-
-
-
+                boolean created = userController.create(user, authentication);
+                if(created) {
+                    // TO DO send email to user after user created to activate login and change the password
+                    response = buildSuccessResponse();
+                }else {
+                    response = buildBadRequestResponse("User creation failed");
+                }
             }else {
                 response = buildConflictResponse("User email already exists");
             }

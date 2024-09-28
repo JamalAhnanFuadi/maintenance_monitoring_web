@@ -1,8 +1,10 @@
 package id.tsi.mmw.controller;
 
+import id.tsi.mmw.model.Authentication;
 import id.tsi.mmw.model.Pagination;
 import id.tsi.mmw.model.User;
 import org.jdbi.v3.core.Handle;
+import org.jdbi.v3.core.statement.PreparedBatch;
 import org.jdbi.v3.core.statement.Query;
 import org.jdbi.v3.core.statement.Update;
 
@@ -204,17 +206,16 @@ public class UserController extends BaseController {
         return filter;
     }
 
-    public List<User> getUserList() {
-        final String methodName = "getUserList";
+    public boolean create(User user, Authentication authentication) {
+        final String methodName = "create";
         start(methodName);
-        List<User> result = new ArrayList<>();
-        String sql = "Select uid, firstname, lastname, fullname, email, mobile_number, dob, status, create_dt, modify_dt from users";
-        try (Handle handle = getHandle(); Query q = handle.createQuery(sql)) {
-            // Execute the query and get the result as a Boolean
-            result = q.mapToBean(User.class).list();
-        } catch (SQLException e) {
-            // Log any SQL exception that occurs during the authentication process
-            log.error(methodName, e);
+        boolean result = false;
+
+        try (Handle h = getHandle()) {
+            // Execute the operations within a transaction
+            result = h.inTransaction(handle -> createUserBatch(handle, user) &&  createAuthenticationBatch(handle, authentication));
+        } catch (Exception ex) {
+            log.error(methodName, ex);
         }
 
         completed(methodName);
@@ -222,22 +223,37 @@ public class UserController extends BaseController {
 
     }
 
-    public boolean create(User user) {
-        final String methodName = "create";
-        start(methodName);
-        boolean result = false;
-        final String sql = "INSERT INTO [users] (uid, firstname, lastname, fullname, email, mobile_number, dob, status, create_dt, modify_dt)values (:uid, :firstname, :lastname, :fullname, :email, :mobile_number, :dob, :status, :create_dt, :modify_dt)";
+    /**
+     * Inserts a user into the database using a prepared batch statement.
+     *
+     * @param handle the handle to the database connection
+     * @param user the user object to insert
+     * @return true if the insertion was successful, false otherwise
+     */
+    private boolean createUserBatch(Handle handle, User user){
+        String sql = "INSERT INTO user " +
+                "(uid, firstname, lastname, fullname, email, mobile_number, dob, status, create_dt) " +
+                "VALUES" +
+                "( :uid, :firstname, :lastname, :fullname, :email, :mobileNumber, :dob, :status, :createDt);";
+        PreparedBatch insertUser = handle.prepareBatch(sql);
+        insertUser.bindBean(user);
+        return executeBatch(insertUser);
+    }
 
-        try (Handle h = getHandle(); Update u = h.createUpdate(sql)) {
-            u.bindBean(user);
-            result = executeUpdate(u);
-        } catch (Exception ex) {
-            log.error(methodName, ex);
-        }
-        completed(methodName);
-        return result;
-
-
+    /**
+     * Executes a batch insert of an {@link Authentication} object into the {@code authentication} table.
+     *
+     * @param handle the {@link Handle} to use for the batch insert
+     * @param authentication the {@link Authentication} object to insert
+     * @return true if the batch insert was successful, false otherwise
+     */
+    private boolean createAuthenticationBatch(Handle handle, Authentication authentication){
+        String sql = "INSERT INTO authentication " +
+                "(uid, salt, password_hash, login_allowed, create_dt)" +
+                "VALUES( :uid, :salt, :passwordHash, :loginAllowed, :createDt);";
+        PreparedBatch insertAuthentication = handle.prepareBatch(sql);
+        insertAuthentication.bindBean(authentication);
+        return executeBatch(insertAuthentication);
     }
 
     public boolean update(User user) {
