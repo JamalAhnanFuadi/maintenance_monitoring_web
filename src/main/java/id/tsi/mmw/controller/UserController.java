@@ -256,6 +256,38 @@ public class UserController extends BaseController {
         return executeBatch(insertAuthentication);
     }
 
+    /**
+     * Updates the 'status' field of a user with the specified 'uid' to the specified 'status'.
+     *
+     * @param uid    The unique identifier of the user to update
+     * @param status The new status of the user (true for active, false for inactive)
+     */
+    public boolean updateUserStatus(String uid, boolean status) {
+        final String methodName = "updateUserStatus";
+        start(methodName);
+        boolean result = false;
+        // SQL query to update the 'status' field in the 'user' table
+        String sql = "UPDATE user " +
+                "SET status = :status " + // Set the 'status' field to the value of the 'status' parameter
+                "WHERE uid= :uid;"; // Filter the update operation to the 'user' with the specified 'uid'
+
+        try (Handle handle = getHandle(); Update u = handle.createUpdate(sql)) {
+
+            // Bind the 'status' and 'uid' parameters to the update object
+            u.bind("status", status);
+            u.bind("uid", uid);
+
+            // Execute the update operation
+            result = executeUpdate(u);
+
+        } catch (SQLException e) {
+            // Log any SQL exception that occurs during the update operation
+            log.error(methodName, e);
+        }
+        completed(methodName);
+        return result;
+    }
+
     public boolean update(User user) {
         final String methodName = "update";
         start(methodName);

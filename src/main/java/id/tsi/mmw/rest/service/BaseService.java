@@ -134,7 +134,21 @@ public class BaseService {
 
     // END of Response Management
 
-    protected int paginationOffset(int pageNumber, int pageSize) {
+    /**
+     * This function takes a page number and page size and returns the starting
+     * offset for the pagination query.
+     *
+     * The formula is (pageNumber - 1) * pageSize. This is because the page number
+     * is 1-indexed, and the offset is 0-indexed.
+     *
+     * For example, if we have a page size of 10, and we want to get the second
+     * page, the offset would be 10.
+     *
+     * @param pageNumber The page number to get the offset for
+     * @param pageSize The page size
+     * @return The starting offset for the pagination query
+     */
+    protected int paginationOffsetBuilder(int pageNumber, int pageSize) {
         return (pageNumber - 1) * pageSize;
     }
 }

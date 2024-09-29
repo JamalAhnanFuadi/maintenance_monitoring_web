@@ -76,7 +76,7 @@ public class UserService extends BaseService {
             // Retrieve the list of users from the database
             List<User> users = userController.getUserListPagination(
                     request.getPageSize(),
-                    paginationOffset(request.getPageNumber(), request.getPageSize()),
+                    paginationOffsetBuilder(request.getPageNumber(), request.getPageSize()),
                     request.getOrderBy(),
                     request.getSortOrder(),
                     request.getSearchFilter());
@@ -160,6 +160,26 @@ public class UserService extends BaseService {
         return response;
     }
 
+    /**
+     * Creates a new user with the given request payload.
+     *
+     * This function will validate the request payload first, and only proceed
+     * if the payload is valid. If the payload is invalid, the function will return
+     * HTTP 400 Bad Request.
+     *
+     * If the payload is valid, the function will check if the user email is already
+     * exist in the database. If the email is already exist, the function will return
+     * HTTP 409 Conflict with a message "User email already exists".
+     *
+     * If the email is not exist, the function will generate a user primary key,
+     * generate user information to be create to database, generate user authentication
+     * information, and proceed user creation to database. If the user creation is
+     * successful, the function will return HTTP 201 Created with a message "User created".
+     * Otherwise, the function will return HTTP 400 Bad Request with a message "User creation failed".
+     *
+     * @param request The request payload containing the user information.
+     * @return A response containing the result of the user creation.
+     */
     @POST
     public Response create(UserRequest request) {
         final String methodName = "create";
@@ -168,24 +188,31 @@ public class UserService extends BaseService {
         log.info(methodName, "Create User");
         log.info(methodName, JsonHelper.toJson(request));
 
-        // validate request payload,
+        // validate request payload. This is done by calling the validator.create() method,
+        // which will validate the request payload and return true if the payload is valid,
+        // otherwise false.
         boolean validPayload = validator.create(request);
         log.debug(methodName, "Request payload validation : " + validPayload);
 
         // if payload is valid, continue proceed,
         // else return bad request
         if(validPayload) {
-            // validate if user email is already exist
+            // validate if user email is already exist. This is done by calling the
+            // userController.validateEmail() method, which will validate if the user email
+            // is already exist in the database and return true if the email is already exist,
+            // otherwise false.
             boolean userExist = userController.validateEmail(request.getEmail());
             log.debug(methodName, "Email validation : " + userExist);
 
             // if user not exist, continue user creation process
             // else return user already exist response
             if(!userExist) {
-                // generate user primary key
+                // generate user primary key. This is done by generating a UUID string.
                 String uuid = UUID.randomUUID().toString();
 
-                // Generate user information to be create to database
+                // Generate user information to be create to database.
+                // This is done by creating a new User object and set the properties:
+                // uid, firstname, lastname, fullname, email, mobile number, date of birth
                 User user = new User();
                 user.setUid(uuid);
                 user.setFirstname(request.getFirstname());
@@ -209,7 +236,10 @@ public class UserService extends BaseService {
                 user.setCreateDt(processingTime);
                 user.setModifyDt(processingTime);
 
-                // generate user authentication information
+                // generate user authentication information. This is done by generating
+                // a salt string, hashing the default password with the salt, and creating
+                // a new Authentication object and set the properties: uid, salt, passwordHash,
+                // loginAllowed, and createDt.
                 String salt = EncryptionManager.getInstance().generateRandomString(getIntegerProperty(Property.ENCRYPTION_SALT_LENGTH));
                 String defaultPassword = getProperty(Property.USER_DEFAULT_PASSWORD);
                 String hashedPassword = EncryptionManager.getInstance().hash(defaultPassword, salt);
@@ -239,17 +269,17 @@ public class UserService extends BaseService {
         return response;
     }
 
-/*    @PUT
+    @PUT
     public Response update(User user) {
         final String methodName = "update";
         Response response = buildSuccessResponse();
         start(methodName);
-        user.setUid();
+
         boolean result = userController.update(user);
 
         completed(methodName);
         return response;
-    }*/
+    }
 
     @DELETE
     @Path("{uid}")
