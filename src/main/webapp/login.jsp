@@ -63,10 +63,10 @@
 
 <!-- javascript imports -->
 <%@include file="/WEB-INF/pages/js_import.jsp"%>
-<script src="lib/moment/js/moment.min.js"></script>
-<script src="lib/bootstrap-notify/js/bootstrap-notify.min.js"></script>
-<script src="js/customVue.js"></script>
-<script src="js/login.js"></script>
+<script src="${pageContext.request.contextPath}/lib/moment/js/moment.min.js"></script>
+<script src="${pageContext.request.contextPath}/lib/bootstrap-notify/js/bootstrap-notify.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/customVue.js"></script>
+<script type="module" src="${pageContext.request.contextPath}/js/login.js"></script>
 
 <!-- Automatically provides/replaces `Promise` if missing or broken. -->
 <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js"></script>

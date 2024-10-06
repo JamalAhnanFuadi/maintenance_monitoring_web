@@ -281,25 +281,51 @@ public class UserService extends BaseService {
         return response;
     }
 
+    /**
+     * Deletes a user from the database.
+     *
+     * This function takes a user UID as a parameter and deletes the user from the database.
+     * If the user does not exist in the database, the function will return a 400 Bad Request
+     * with a message indicating that the user was not found. If the user deletion is successful,
+     * the function will return a 200 OK response. Otherwise, the function will return a 400 Bad
+     * Request with a message indicating that the user deletion failed.
+     *
+     * @param uid The user UID to delete.
+     * @return A response indicating the deletion status.
+     */
     @DELETE
     @Path("{uid}")
-    public Response delete(@PathParam("uid")String uid) {
+    public Response delete(@PathParam("uid") String uid) {
         final String methodName = "delete";
         start(methodName);
 
-        Response response = buildBadRequestResponse();
-        User user = userController.getUserByUid(uid);
+        Response response;
+        log.info(methodName, "Delete User (" + uid + ")");
 
-        if(user.getUid() != null) {
-            boolean result = userController.delete(uid);
-            if(result)
-            {
+        // First we need to check if the user exists in the database. If the user does not exist,
+        // we will return a 400 Bad Request with a message indicating that the user was not found.
+        boolean userExist = userController.validateUserUid(uid);
+        log.debug(methodName, "User validation : " + userExist);
+
+        if (userExist) {
+            // If the user exists, we will proceed to delete the user from the database.
+            // If the deletion is successful, we will return a 200 OK response. Otherwise, we
+            // will return a 400 Bad Request with a message indicating that the user deletion
+            // failed.
+            boolean deleted = userController.delete(uid);
+            log.debug(methodName, "User deletion : " + deleted);
+            if (deleted) {
                 response = buildSuccessResponse();
+            } else {
+                response = buildBadRequestResponse("User deletion failed");
             }
+        } else {
+            // If the user does not exist, we will return a 400 Bad Request with a message
+            // indicating that the user was not found.
+            response = buildBadRequestResponse("User not found");
         }
         completed(methodName);
         return response;
-
     }
 }
 

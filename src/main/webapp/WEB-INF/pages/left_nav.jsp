@@ -89,7 +89,7 @@
                     <span class="sidebar-header-title">Menu</span>
                 </li>
                 <li>
-                    <a href="/monitoring/rest/authentication/logout"><i class="gi gi-log_out sidebar-nav-icon"></i><span
+                    <a href="${pageContext.request.contextPath}/rest/authentications/logout"><i class="gi gi-log_out sidebar-nav-icon"></i><span
                             class="sidebar-nav-mini-hide">logout</span></a>
                 </li>
             </ul>

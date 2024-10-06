@@ -1,61 +1,43 @@
-$(document).ready(function () {
-    initVue();
-});
-
-function initVue() {
-    new Vue({
-        el: '#vue',
-        data: {
-            username: null,
-            password: null,
-            authenticated: null
-        },
-        mounted: function () {
-            this.session();
-        },
-        methods: {
-            session: function () {
-                const vm = this;
-                axios.get('/monitoring/rest/authentication/session')
-                    .then(function (response) {
-                        location.href = 'index';
-                    }).catch(function (error) {
-                    vm.authenticated = false;
-                    //console.log(error);
-                });
-            },
-            login: function () {
-                const vm = this;
-                axios.post(
-                    '/monitoring/rest/authentication', {
-                        username: vm.username,
-                        password: vm.password
-                    }).then(function (response) {
+import { notifyError } from './monitoring.js';
+new Vue({
+    el: "#login-container",
+    data: {
+        username: null,
+        password: null,
+        authenticated: null
+    },
+    mounted: function () {
+        this.session();
+    },
+    methods: {
+        session: function () {
+            const vm = this;
+            axios.get('/monitoring/rest/authentications/session')
+                .then(function (response) {
                     location.href = 'index';
                 }).catch(function (error) {
-                    notifyError('Failed login', 'Wrong username and/or password');
-                    console.log(error);
-                });
+                vm.authenticated = false;
+            });
+        },
+        login: function () {
+            const vm = this;
+            axios.post(
+                '/monitoring/rest/authentications', {
+                    username: vm.username,
+                    password: vm.password
+                }).then(function (response) {
+                location.href = 'index';
+            }).catch(function (error) {
+                notifyError('Failed login', 'Wrong username and/or password');
+            });
 
-                vm.password = "";
+            vm.password = "";
 
-                if (vm.$refs.username.value == "") {
-                    vm.$refs.username.focus();
-                } else {
-                    vm.$refs.password.focus();
-                }
-            },
-            logout: function () {
-                const vm = this;
-                axios.get('/monitoring/rest/authentication/logout')
-                    .then(function (response) {
-                        vm.session();
-                    }).catch(function (error) {
-                    vm.session();
-                    notifyError('Network Error', 'Logout failed');
-                    console.log(error);
-                });
+            if (vm.$refs.username.value == "") {
+                vm.$refs.username.focus();
+            } else {
+                vm.$refs.password.focus();
             }
         }
-    });
-}
+    }
+});

@@ -22,7 +22,7 @@ import java.net.URI;
 import java.time.LocalDateTime;
 
 @Singleton
-@Path("authentication")
+@Path("authentications")
 @Produces(MediaType.APPLICATION_JSON)
 public class AuthenticationService extends BaseService {
 
@@ -159,4 +159,17 @@ public class AuthenticationService extends BaseService {
         completed(methodName);
         return buildSuccessResponse();
     }
+
+    @GET
+    @Path("profile")
+    @PermitAll
+    public Response getLoginProfile() {
+        final String methodName = "getLoginProfile";
+        start(methodName);
+
+        User user = getSessionAttribute(Constants.SESSION_USER, User.class);
+        completed(methodName);
+        return buildSuccessResponse(user);
+    }
+
 }
