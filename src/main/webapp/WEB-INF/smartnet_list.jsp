@@ -49,34 +49,25 @@
                 <!-- Datatables Content -->
                 <div class="block full">
                     <div class="block-title">
-                        <h2><strong>List User</strong></h2>
-
+                        <h2><strong>Smartnet List</strong></h2>
                         <button type="button" class="btn btn-primary pull-right">Add New</button>
                     </div>
-
                     <div class="search-container">
                         <input type="text" id="SearchInput" placeholder="Search...">
                     </div>
-
                     <div class="table-responsive">
-
-
                         <table id="example-datatable" class="table table-vcenter table-condensed table-bordered">
                             <thead>
                             <tr>
-                                <th>No</th>
-                                <th class="text-center">ID</th>
-                                <th class="text-center"><i class="gi gi-user"></i></th>
-                                <th class="text-center">First Name</th>
-                                <th class="text-center">Last Name</th>
-                                <th class="text-center">Full Name</th>
-                                <th class="text-center">Email</th>
-                                <th class="text-center">Mobile Number</th>
-                                <th class="text-center">Date Of Birth</th>
-                                <th class="text-center">Status</th>
-                                <th class="text-center">Created At</th>
-                                <th class="text-center">Update At</th>
-
+                                <th class="text-center">No</th>
+                                <th class="text-center">Contract No</th>
+                                <th class="text-center">Customer</th>
+                                <th class="text-center">End User</th>
+                                <th class="text-center">Product No</th>
+                                <th class="text-center">S/N</th>
+                                <th class="text-center">Broken S/N</th>
+                                <th class="text-center">End Date</th>
+                                <th class="text-center">Aging</th>
 
 
                                 <th class="text-center">Actions</th>
@@ -84,19 +75,15 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <td>1</td>
-                                <td class="text-center">123i</td>
-                                <td class="text-center"><img src="img/placeholders/avatars/avatar15.jpg" alt="avatar" class="img-circle"></td>
-                                <td>contoh</td>
-                                <td>user</td>
-                                <td>contoh user</td>
-                                <td>contohuser@gmail.com</td>
-                                <td>1234567890</td>
-                                <td>1990-05-15</td>
-                                <td><span class="label label-info">active</span></td>
-                                <td>2024-01-10 08:15:00</td>
-                                <td>2024-09-16 14:23:45</td>
-
+                                <td class="text-center">1</td>
+                                <td>204164014</td>
+                                <td>PT ADARO ENERGY TBK </td>
+                                <td>PT ADARO ENERGY</td>
+                                <td>OISR4331-V/K9</td>
+                                <td>FDO2515M0T0</td>
+                                <td>--</td>
+                                <td>Jun 9, 2022</td>
+                                <td>238</td>
 
 
                                 <td class="text-center">
@@ -107,20 +94,33 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>2</td>
-                                <td class="text-center">321</td>
-                                <td class="text-center"><img src="img/placeholders/avatars/avatar15.jpg" alt="avatar" class="img-circle"></td>
-                                <td>contoh</td>
-                                <td>user</td>
-                                <td>contoh user</td>
-                                <td>contohuser@gmail.com</td>
-                                <td>1234567890</td>
-                                <td>1990-05-15</td>
-                                <td> <span class="label label-warning">inactive</span></td>
-                                <td>2024-01-10 08:15:00</td>
-                                <td>2024-09-16 14:23:45</td>
+                                <td class="text-center">2</td>
+                                <td>203690095</td>
+                                <td>PT ADARO POWER</td>
+                                <td>PT EXPERT DATA VOICE SOLUTION</td>
+                                <td>UCSC-C220-M4S</td>
+                                <td>FCH2145V00S</td>
+                                <td>--</td>
+                                <td>Nov 15, 2021</td>
+                                <td>32</td>
 
-
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <a href="javascript:void(0)" data-toggle="tooltip" title="Edit" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i></a>
+                                        <a href="javascript:void(0)" data-toggle="tooltip" title="Delete" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">3</td>
+                                <td>203690095</td>
+                                <td>PT ADARO POWER</td>
+                                <td>PT EXPERT DATA VOICE SOLUTION</td>
+                                <td>UCSC-C220-M4S</td>
+                                <td>FCH2145V00S</td>
+                                <td>--</td>
+                                <td>Nov 15, 2022</td>
+                                <td>397</td>
 
                                 <td class="text-center">
                                     <div class="btn-group">
@@ -131,22 +131,21 @@
                             </tr>
                             </tbody>
 
+                    </div>
+                    <!-- END Dummy Content -->
                 </div>
-                <!-- END Dummy Content -->
+                <!-- END Page Content -->
             </div>
-            <!-- END Page Content -->
+            <!-- END Main Container -->
         </div>
-        <!-- END Main Container -->
+        <!-- END Page Container -->
     </div>
-    <!-- END Page Container -->
-</div>
-<!-- END Page Wrapper -->
+    <!-- END Page Wrapper -->
 
-<!-- Scroll to top link, initialized in js/app.js - scrollToTop() -->
-<a href="#" id="to-top"><i class="fa fa-angle-double-up"></i></a>
+    <!-- Scroll to top link, initialized in js/app.js - scrollToTop() -->
+    <a href="#" id="to-top"><i class="fa fa-angle-double-up"></i></a>
 
-<%@include file="/WEB-INF/pages/js_import.jsp" %>
-
+    <%@include file="/WEB-INF/pages/js_import.jsp" %>
     <script>
         const searchInput = document.getElementById('SearchInput');
         const dataTable = document.getElementById('example-datatable');

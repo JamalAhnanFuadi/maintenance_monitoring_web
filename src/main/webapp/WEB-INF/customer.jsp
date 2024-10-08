@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -49,34 +49,28 @@
                 <!-- Datatables Content -->
                 <div class="block full">
                     <div class="block-title">
-                        <h2><strong>List User</strong></h2>
-
+                        <h2><strong>Customer List Maintenance</strong></h2>
                         <button type="button" class="btn btn-primary pull-right">Add New</button>
                     </div>
-
                     <div class="search-container">
                         <input type="text" id="SearchInput" placeholder="Search...">
                     </div>
-
                     <div class="table-responsive">
-
-
                         <table id="example-datatable" class="table table-vcenter table-condensed table-bordered">
                             <thead>
                             <tr>
                                 <th>No</th>
                                 <th class="text-center">ID</th>
                                 <th class="text-center"><i class="gi gi-user"></i></th>
-                                <th class="text-center">First Name</th>
-                                <th class="text-center">Last Name</th>
-                                <th class="text-center">Full Name</th>
-                                <th class="text-center">Email</th>
-                                <th class="text-center">Mobile Number</th>
-                                <th class="text-center">Date Of Birth</th>
-                                <th class="text-center">Status</th>
-                                <th class="text-center">Created At</th>
-                                <th class="text-center">Update At</th>
-
+                                <th>Customer</th>
+                                <th>End User</th>
+                                <th>Service Level</th>
+                                <th>Job Code</th>
+                                <th>Product Number</th>
+                                <th>S/N</th>
+                                <th>Notes</th>
+                                <th>MTC Begin Date</th>
+                                <th>MTC End Date</th>
 
 
                                 <th class="text-center">Actions</th>
@@ -85,17 +79,17 @@
                             <tbody>
                             <tr>
                                 <td>1</td>
-                                <td class="text-center">123i</td>
+                                <td class="text-center">123</td>
                                 <td class="text-center"><img src="img/placeholders/avatars/avatar15.jpg" alt="avatar" class="img-circle"></td>
-                                <td>contoh</td>
-                                <td>user</td>
-                                <td>contoh user</td>
-                                <td>contohuser@gmail.com</td>
-                                <td>1234567890</td>
-                                <td>1990-05-15</td>
-                                <td><span class="label label-info">active</span></td>
-                                <td>2024-01-10 08:15:00</td>
-                                <td>2024-09-16 14:23:45</td>
+                                <td><a href="javascript:void(0)">PT. ANOMALI LINTAS ENERGY</a></td>
+                                <td>kemenkes</td>
+                                <td>Device Waranty</td>
+                                <td>OP23-0093</td>
+                                <td>MR-44-HW</td>
+                                <td>FD027021GY</td>
+                                <td>smartnet</td>
+                                <td>25-nov-23</td>
+                                <td>5-nov-24</td>
 
 
 
@@ -108,17 +102,17 @@
                             </tr>
                             <tr>
                                 <td>2</td>
-                                <td class="text-center">321</td>
+                                <td class="text-center">123</td>
                                 <td class="text-center"><img src="img/placeholders/avatars/avatar15.jpg" alt="avatar" class="img-circle"></td>
-                                <td>contoh</td>
-                                <td>user</td>
-                                <td>contoh user</td>
-                                <td>contohuser@gmail.com</td>
-                                <td>1234567890</td>
-                                <td>1990-05-15</td>
-                                <td> <span class="label label-warning">inactive</span></td>
-                                <td>2024-01-10 08:15:00</td>
-                                <td>2024-09-16 14:23:45</td>
+                                <td><a href="javascript:void(0)">PT. ANOMALI LINTAS ENERGY</a></td>
+                                <td>kemenkes</td>
+                                <td>Device Waranty</td>
+                                <td>OP23-0093</td>
+                                <td>MR-44-HW</td>
+                                <td>FD027021GY</td>
+                                <td>smartnet</td>
+                                <td>25-nov-23</td>
+                                <td>5-nov-24</td>
 
 
 
@@ -131,22 +125,21 @@
                             </tr>
                             </tbody>
 
+                    </div>
+                    <!-- END Dummy Content -->
                 </div>
-                <!-- END Dummy Content -->
+                <!-- END Page Content -->
             </div>
-            <!-- END Page Content -->
+            <!-- END Main Container -->
         </div>
-        <!-- END Main Container -->
+        <!-- END Page Container -->
     </div>
-    <!-- END Page Container -->
-</div>
-<!-- END Page Wrapper -->
+    <!-- END Page Wrapper -->
 
-<!-- Scroll to top link, initialized in js/app.js - scrollToTop() -->
-<a href="#" id="to-top"><i class="fa fa-angle-double-up"></i></a>
+    <!-- Scroll to top link, initialized in js/app.js - scrollToTop() -->
+    <a href="#" id="to-top"><i class="fa fa-angle-double-up"></i></a>
 
-<%@include file="/WEB-INF/pages/js_import.jsp" %>
-
+    <%@include file="/WEB-INF/pages/js_import.jsp" %>
     <script>
         const searchInput = document.getElementById('SearchInput');
         const dataTable = document.getElementById('example-datatable');

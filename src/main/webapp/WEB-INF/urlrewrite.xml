@@ -20,6 +20,88 @@
 	</rule>
 
 	<rule>
+		<from>^/master_user_group$</from>
+		<to>/WEB-INF/master_user_group.jsp</to>
+	</rule>
+	<rule>
+		<from>^/user_group</from>
+		<to>/WEB-INF/user_group.jsp</to>
+	</rule>
+	<rule>
+		<from>^/organization</from>
+		<to>/WEB-INF/organization.jsp</to>
+	</rule>
+	<rule>
+		<from>^/list_mtc</from>
+		<to>/WEB-INF/list_mtc.jsp</to>
+	</rule>
+	<rule>
+		<from>^/active</from>
+		<to>/WEB-INF/active.jsp</to>
+	</rule>
+	<rule>
+		<from>^/customer$</from>
+		<to>/WEB-INF/customer.jsp</to>
+	</rule>
+	<rule>
+		<from>^/history$</from>
+		<to>/WEB-INF/history.jsp</to>
+	</rule>
+	<rule>
+		<from>^/corrective_maintenance</from>
+		<to>/WEB-INF/corrective_maintenance.jsp</to>
+	</rule>
+
+	<rule>
+		<from>^/preventive_maintenance</from>
+		<to>/WEB-INF/preventive_maintenance.jsp</to>
+	</rule>
+	<rule>
+		<from>^/time_line_pm</from>
+		<to>/WEB-INF/time_line_pm.jsp</to>
+	</rule>
+
+	<rule>
+		<from>^/smartnet_list</from>
+		<to>/WEB-INF/smartnet_list.jsp</to>
+	</rule>
+
+	<rule>
+		<from>^/license_list</from>
+		<to>/WEB-INF/license_list.jsp</to>
+	</rule>
+
+	<rule>
+		<from>^/list_device_maintenance</from>
+		<to>/WEB-INF/list_device_maintenance.jsp</to>
+	</rule>
+
+	<rule>
+		<from>^/loan_device</from>
+		<to>/WEB-INF/loan_device.jsp</to>
+	</rule>
+
+	<rule>
+		<from>^/loan_usage</from>
+		<to>/WEB-INF/loan_usage.jsp</to>
+	</rule>
+
+	<rule>
+		<from>^/list_device_pm</from>
+		<to>/WEB-INF/list_device_pm.jsp</to>
+	</rule>
+
+	<rule>
+		<from>^/project_list</from>
+		<to>/WEB-INF/project_list.jsp</to>
+	</rule>
+
+	<rule>
+		<from>^/eta_device</from>
+		<to>/WEB-INF/eta_device.jsp</to>
+	</rule>
+
+	<rule>
 		<from>^/business-roles$</from>
 		<to>/WEB-INF/businessRoleManagement.jsp</to>
 	</rule>

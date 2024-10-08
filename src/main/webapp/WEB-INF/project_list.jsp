@@ -49,53 +49,42 @@
                 <!-- Datatables Content -->
                 <div class="block full">
                     <div class="block-title">
-                        <h2><strong>List User</strong></h2>
-
+                        <h2><strong>Project List</strong></h2>
                         <button type="button" class="btn btn-primary pull-right">Add New</button>
                     </div>
-
                     <div class="search-container">
                         <input type="text" id="SearchInput" placeholder="Search...">
                     </div>
-
                     <div class="table-responsive">
-
-
                         <table id="example-datatable" class="table table-vcenter table-condensed table-bordered">
                             <thead>
                             <tr>
-                                <th>No</th>
-                                <th class="text-center">ID</th>
-                                <th class="text-center"><i class="gi gi-user"></i></th>
-                                <th class="text-center">First Name</th>
-                                <th class="text-center">Last Name</th>
-                                <th class="text-center">Full Name</th>
-                                <th class="text-center">Email</th>
-                                <th class="text-center">Mobile Number</th>
-                                <th class="text-center">Date Of Birth</th>
+                                <th class="text-center">No</th>
+                                <th class="text-center">Project</th>
+                                <th class="text-center">Job Code</th>
+                                <th class="text-center">Q</th>
+                                <th class="text-center">BOQ Received</th>
+                                <th class="text-center">Target BAST/UAT</th>
+                                <th class="text-center">Deadline Date</th>
+                                <th class="text-center">Real BAST/UAT</th>
                                 <th class="text-center">Status</th>
-                                <th class="text-center">Created At</th>
-                                <th class="text-center">Update At</th>
-
-
+                                <th class="text-center">Notes</th>
 
                                 <th class="text-center">Actions</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
-                                <td>1</td>
-                                <td class="text-center">123i</td>
-                                <td class="text-center"><img src="img/placeholders/avatars/avatar15.jpg" alt="avatar" class="img-circle"></td>
-                                <td>contoh</td>
-                                <td>user</td>
-                                <td>contoh user</td>
-                                <td>contohuser@gmail.com</td>
-                                <td>1234567890</td>
-                                <td>1990-05-15</td>
-                                <td><span class="label label-info">active</span></td>
-                                <td>2024-01-10 08:15:00</td>
-                                <td>2024-09-16 14:23:45</td>
+                                <td class="text-center">1</td>
+                                <td>Brimob Phase 2 (Vidcon)</td>
+                                <td>OP20-0036</td>
+                                <td>2021-Q2</td>
+                                <td>Jan 22, 2021</td>
+                                <td>Week 4 Aug 2021</td>
+                                <td>Mar 1, 2021</td>
+                                <td>Sep 6, 2021</td>
+                                <td>Heavy</td>
+                                <td>--</td>
 
 
 
@@ -107,19 +96,36 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>2</td>
-                                <td class="text-center">321</td>
-                                <td class="text-center"><img src="img/placeholders/avatars/avatar15.jpg" alt="avatar" class="img-circle"></td>
-                                <td>contoh</td>
-                                <td>user</td>
-                                <td>contoh user</td>
-                                <td>contohuser@gmail.com</td>
-                                <td>1234567890</td>
-                                <td>1990-05-15</td>
-                                <td> <span class="label label-warning">inactive</span></td>
-                                <td>2024-01-10 08:15:00</td>
-                                <td>2024-09-16 14:23:45</td>
+                                <td class="text-center">2</td>
+                                <td>Carolus (H3C Phase 3)</td>
+                                <td>OP21-0038</td>
+                                <td>2021-Q2</td>
+                                <td>Mar 22, 2021</td>
+                                <td>Week 4 Juni 2021</td>
+                                <td>Apr 21, 2021</td>
+                                <td>June 14. 2021</td>
+                                <td>Heavy</td>
+                                <td>--</td>
 
+
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <a href="javascript:void(0)" data-toggle="tooltip" title="Edit" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i></a>
+                                        <a href="javascript:void(0)" data-toggle="tooltip" title="Delete" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">3</td>
+                                <td>Pedima (Meraki MX64)</td>
+                                <td>OP21-0035</td>
+                                <td>2021-Q2</td>
+                                <td>Apr 8, 2021</td>
+                                <td>Week 2 Mei 2021</td>
+                                <td>May 8, 2021</td>
+                                <td>May 4, 2021 (SVR)</td>
+                                <td>Heavy</td>
+                                <td>--</td>
 
 
                                 <td class="text-center">
@@ -131,22 +137,21 @@
                             </tr>
                             </tbody>
 
+                    </div>
+                    <!-- END Dummy Content -->
                 </div>
-                <!-- END Dummy Content -->
+                <!-- END Page Content -->
             </div>
-            <!-- END Page Content -->
+            <!-- END Main Container -->
         </div>
-        <!-- END Main Container -->
+        <!-- END Page Container -->
     </div>
-    <!-- END Page Container -->
-</div>
-<!-- END Page Wrapper -->
+    <!-- END Page Wrapper -->
 
-<!-- Scroll to top link, initialized in js/app.js - scrollToTop() -->
-<a href="#" id="to-top"><i class="fa fa-angle-double-up"></i></a>
+    <!-- Scroll to top link, initialized in js/app.js - scrollToTop() -->
+    <a href="#" id="to-top"><i class="fa fa-angle-double-up"></i></a>
 
-<%@include file="/WEB-INF/pages/js_import.jsp" %>
-
+    <%@include file="/WEB-INF/pages/js_import.jsp" %>
     <script>
         const searchInput = document.getElementById('SearchInput');
         const dataTable = document.getElementById('example-datatable');

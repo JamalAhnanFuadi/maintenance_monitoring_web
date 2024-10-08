@@ -274,7 +274,6 @@ public class UserService extends BaseService {
         final String methodName = "update";
         Response response = buildSuccessResponse();
         start(methodName);
-
         boolean result = userController.update(user);
 
         completed(methodName);

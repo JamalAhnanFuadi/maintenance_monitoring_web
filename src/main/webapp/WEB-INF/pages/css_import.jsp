@@ -49,3 +49,64 @@
         font-weight: bold;
     }
 </style>
+<style>
+    .table-responsive{
+        max-height: 100%; /* Atur tinggi maksimum kontainer */
+        overflow-y: auto; /* Gulir vertikal */
+        overflow-x: auto; /* Gulir horizontal jika perlu */
+        border: 1px solid #ccc; /* Border kontainer */
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%; /* Lebar tabel */
+    }
+
+    th, td {
+        border: 1px solid #000; /* Border sel */
+        padding: 10px;
+        text-align: left;
+        vertical-align: top;
+        min-height: 40px; /* Tinggi minimum untuk setiap sel */
+    }
+    th {
+        border: 3px solid #000; /* Garis tebal untuk header */
+        padding: 10px;
+        background-color: #f2f2f2; /* Warna latar untuk header */
+        text-align: left;
+    }
+
+    td {
+        border: 2px solid #000; /* Garis untuk sel */
+        padding: 10px;
+        text-align: left;
+    }
+
+
+</style>
+<style>
+.search-container {
+position: relative; /* Untuk memposisikan ikon */
+width: 100%; /* Lebar penuh */
+}
+
+#SearchInput {
+width: 100%; /* Lebar penuh */
+padding: 10px 40px; /* Ruang di dalam input (kanan untuk ikon) */
+border: 1px solid #ccc; /* Garis tepi abu-abu */
+border-radius: 5px; /* Sudut membulat */
+font-size: 16px; /* Ukuran font */
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Bayangan ringan */
+transition: border-color 0.3s; /* Transisi saat fokus */
+}
+
+#SearchInput:focus {
+border-color: #007bff; /* Ubah warna tepi saat fokus */
+outline: none; /* Menghilangkan outline default */
+}
+
+#SearchInput::placeholder {
+color: #999; /* Warna placeholder */
+opacity: 1; /* Mengatur opacity */
+}
+</style>

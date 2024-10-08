@@ -18,25 +18,97 @@
                     <span class="sidebar-header-title">Dasboards</span>
                 </li>
                 <li>
-                    <a href="index"><i class="gi gi-stats sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Dashboard 1</span></a>
+                    <a href="#" class="sidebar-nav-menu"><i
+                            class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i
+                            class="gi gi-stats sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">CM,PM Ticket & Time Line PM</span></a>
+                    <ul>
+                        <li>
+                            <a href="corrective_maintenance">Corrective Maintenance</a>
+                        </li>
+                        <li>
+                            <a href="preventive_maintenance">Preventive Maintennance</a>
+                        </li>
+                        <li>
+                            <a href="time_line_pm">Time Line PM</a>
+                        </li>
+
+                    </ul>
                 </li>
+
                 <li>
-                    <a href="#"><i class="gi gi-stats sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Dashboard 2</span></a>
+                    <a href="#" class="sidebar-nav-menu"><i
+                            class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i
+                            class="gi gi-stats sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">SLA,Smartnet & License</span></a>
+                    <ul>
+                        <li>
+                            <a href="customer">Customer List Device Maitenance</a>
+                        </li>
+                        <li>
+                            <a href="smartnet_list">Smartnet List</a>
+                        </li>
+                        <li>
+                            <a href="license_list">License List</a>
+                        </li>
+
+                    </ul>
                 </li>
-                <li class="sidebar-header">
-                    <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip" title="Master data"><i class="gi gi-server"></i></a></span>
-                    <span class="sidebar-header-title">Reports</span>
-                </li>
+
                 <li>
-                    <a href="#"><i class="gi gi-server_flag sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Service Reports</span></a>
+                    <a href="#" class="sidebar-nav-menu"><i
+                            class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i
+                            class="gi gi-stats sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">Device Maintenance & Loan</span></a>
+                    <ul>
+                        <li>
+                            <a href="list_device_maintenance">List Device Maitenance</a>
+                        </li>
+                        <li>
+                            <a href="loan_device">Loan Device</a>
+                        </li>
+                        <li>
+                            <a href="loan_usage">Loan Device Usage</a>
+                        </li>
+
+                    </ul>
                 </li>
+
                 <li>
-                    <a href="#"><i class="gi gi-server_new sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Maintenance Reports</span></a>
+                    <a href="#" class="sidebar-nav-menu"><i
+                            class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i
+                            class="gi gi-stats sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">History Of Smartnet & Device PM</span></a>
+                    <ul>
+                        <li>
+                            <a href="history">History Of Smartnet</a>
+                        </li>
+                        <li>
+                            <a href="list_device_pm">List Device PM</a>
+                        </li>
+
+                    </ul>
                 </li>
+
+                <li>
+                    <a href="#" class="sidebar-nav-menu"><i
+                            class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i
+                            class="gi gi-stats sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">Project List & ETA Device</span></a>
+                    <ul>
+                        <li>
+                            <a href="project_list">Project List</a>
+                        </li>
+                        <li>
+                            <a href="eta_device">ETA Device</a>
+                        </li>
+
+
+                    </ul>
+                </li>
+
+
+
                 <li class="sidebar-header">
                     <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip" title="Master data"><i class="gi gi-cargo"></i></a></span>
                     <span class="sidebar-header-title">Master Data</span>
@@ -51,25 +123,28 @@
                             <a href="users">Users</a>
                         </li>
                         <li>
-                            <a href="#">User Group</a>
+                            <a href="master_user_group">Master User Group</a>
                         </li>
                         <li>
-                            <a href="#">User Access Matric</a>
+                            <a href="user_group">User Group</a>
                         </li>
+
                     </ul>
                 </li>
                 <li>
-                    <a href="#"><i class="gi gi-group sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Group Management</span></a>
+                    <a href="organization"><i class="gi gi-group sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">Organization</span></a>
+                </li>
+
+                <li>
+                    <a href="active"><i class="gi gi-stats sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">Active</span></a>
                 </li>
                 <li>
-                    <a href="#"><i class="gi gi-stats sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Products</span></a>
+                    <a href="list_mtc"><i class="gi gi-stats sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">List Maintenance</span></a>
                 </li>
-                <li>
-                    <a href="#"><i class="gi gi-stats sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Customers</span></a>
-                </li>
+
                 <li>
                     <a href="#" class="sidebar-nav-menu"><i
                             class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i
