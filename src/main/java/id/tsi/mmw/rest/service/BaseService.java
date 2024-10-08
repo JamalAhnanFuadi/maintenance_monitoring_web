@@ -24,6 +24,7 @@ public class BaseService {
     protected AppLogger getLogger(Class<?> clazz) {
         return new AppLogger(clazz);
     }
+    protected static final String INVALID_REQUEST = "Invalid Request";
 
     protected void start(String methodName) {
         log.info(methodName, "start");
@@ -110,5 +111,15 @@ public class BaseService {
         return buildResponse(Response.Status.BAD_REQUEST, "Bad Request");
     }
 
+    protected Response buildInvalidRequestResponse() {
+        return buildResponse(Response.Status.BAD_REQUEST, INVALID_REQUEST);
+    }
+
+    protected Response getConflictedResponse(String message) {
+        return buildResponse(Response.Status.CONFLICT, message);
+    }
+    protected Response getErrorResponse() {
+        return buildResponse(Response.Status.INTERNAL_SERVER_ERROR, "Internal Server Error");
+    }
 }
 

@@ -53,6 +53,7 @@ public class UserService extends BaseService {
 
     @POST
     public Response create(User user) {
+
         final String methodName = "create";
         Response response = null;
         start(methodName);
@@ -67,7 +68,7 @@ public class UserService extends BaseService {
         final String methodName = "update";
         Response response = buildSuccessResponse();
         start(methodName);
-        user.setUid();
+
         boolean result = userController.update(user);
 
         completed(methodName);
@@ -94,6 +95,7 @@ public class UserService extends BaseService {
 
     }
 }
+
 
 
 
