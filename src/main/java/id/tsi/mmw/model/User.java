@@ -1,7 +1,11 @@
 package id.tsi.mmw.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class User {
 
     @JsonProperty("uid")
@@ -33,6 +37,15 @@ public class User {
 
     @JsonProperty("modifyDt")
     private String modifyDt;
+
+    @JsonProperty("accessGroupUid")
+    private String accessGroupUid;
+
+    @JsonProperty("accessGroupName")
+    private String accessGroupName;
+
+    @JsonProperty("userAccessMatrix")
+    List<UserAccessMatrix> userAccessMatrix;
 
     public User() {
         // default constructor
@@ -116,5 +129,29 @@ public class User {
 
     public void setModifyDt(String modifyDt) {
         this.modifyDt = modifyDt;
+    }
+
+    public String getAccessGroupUid() {
+        return accessGroupUid;
+    }
+
+    public void setAccessGroupUid(String accessGroupUid) {
+        this.accessGroupUid = accessGroupUid;
+    }
+
+    public String getAccessGroupName() {
+        return accessGroupName;
+    }
+
+    public void setAccessGroupName(String accessGroupName) {
+        this.accessGroupName = accessGroupName;
+    }
+
+    public List<UserAccessMatrix> getUserAccessMatrix() {
+        return userAccessMatrix;
+    }
+
+    public void setUserAccessMatrix(List<UserAccessMatrix> userAccessMatrix) {
+        this.userAccessMatrix = userAccessMatrix;
     }
 }

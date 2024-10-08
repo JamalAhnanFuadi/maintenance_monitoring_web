@@ -1,6 +1,8 @@
 package id.tsi.mmw.rest.service;
 
+import id.tsi.mmw.manager.PropertyManager;
 import id.tsi.mmw.property.Constants;
+import id.tsi.mmw.property.Property;
 import id.tsi.mmw.util.log.AppLogger;
 import id.tsi.mmw.rest.model.response.ServiceResponse;
 
@@ -20,7 +22,7 @@ public class BaseService {
     public BaseService() {
         // Empty Constructor
     }
-    // Logging
+    // START of logging management
     protected AppLogger getLogger(Class<?> clazz) {
         return new AppLogger(clazz);
     }
@@ -34,7 +36,21 @@ public class BaseService {
         log.info(methodName, "completed");
     }
 
-    // Session management
+    // END of logging management
+
+    // START of property management
+    protected String getProperty(String key) {
+        return PropertyManager.getInstance().getProperty(key);
+    }
+    protected int getIntegerProperty(String key) {
+        return PropertyManager.getInstance().getIntProperty(key);
+    }
+    protected boolean getBooleanProperty(String key) {
+        return PropertyManager.getInstance().getBoolProperty(key);
+    }
+    // END of property management
+
+    // START ofSession management
     protected void clearSession() {
         HttpSession session = httpServletRequest.getSession(false);
         if (session != null) {
@@ -90,8 +106,9 @@ public class BaseService {
             getSession().removeAttribute(key);
         }
     }
+    // END of Session management
 
-    // Response management
+    // START of Response management
     private Response buildResponse(Response.Status status, String message) {
         return Response.status(status).entity(new ServiceResponse(status, message)).build();
     }
@@ -110,7 +127,32 @@ public class BaseService {
     protected Response buildBadRequestResponse() {
         return buildResponse(Response.Status.BAD_REQUEST, "Bad Request");
     }
+    protected Response buildBadRequestResponse(String message) {
+        return buildResponse(Response.Status.BAD_REQUEST, message);
+    }
+    protected Response buildConflictResponse(String message) {
+        return buildResponse(Response.Status.CONFLICT, message);
+    }
 
+    // END of Response Management
+
+    /**
+     * This function takes a page number and page size and returns the starting
+     * offset for the pagination query.
+     *
+     * The formula is (pageNumber - 1) * pageSize. This is because the page number
+     * is 1-indexed, and the offset is 0-indexed.
+     *
+     * For example, if we have a page size of 10, and we want to get the second
+     * page, the offset would be 10.
+     *
+     * @param pageNumber The page number to get the offset for
+     * @param pageSize The page size
+     * @return The starting offset for the pagination query
+     */
+    protected int paginationOffsetBuilder(int pageNumber, int pageSize) {
+        return (pageNumber - 1) * pageSize;
+    }
     protected Response buildInvalidRequestResponse() {
         return buildResponse(Response.Status.BAD_REQUEST, INVALID_REQUEST);
     }

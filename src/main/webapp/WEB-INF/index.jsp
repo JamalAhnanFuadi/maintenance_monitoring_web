@@ -22,44 +22,45 @@
     <!-- Page Container -->
     <div id="page-container"
          class="header-fixed-top sidebar-partial sidebar-visible-lg sidebar-no-animations footer-fixed">
+        <div id="landingPage">
+            <!-- Main Sidebar -->
+            <%@include file="/WEB-INF/pages/left_nav.jsp" %>
+            <!-- END Main Sidebar -->
 
-        <!-- Main Sidebar -->
-        <%@include file="/WEB-INF/pages/left_nav.jsp" %>
-        <!-- END Main Sidebar -->
+            <!-- Main Container -->
+            <div id="main-container">
 
-        <!-- Main Container -->
-        <div id="main-container">
+                <!-- Header -->
+                <%@include file="/WEB-INF/pages/top_nav.jsp" %>
+                <!-- END Header -->
 
-            <!-- Header -->
-            <%@include file="/WEB-INF/pages/top_nav.jsp" %>
-            <!-- END Header -->
-
-            <!-- Page content -->
-            <div id="page-content">
-                <!-- Fixed Top Header + Footer Header -->
-                <div class="content-header">
-                    <div class="header-section">
-                        <h1>
-                            <i class="gi gi-show_big_thumbnails"></i>Welcome, {username}
-                        </h1>
-                    </div>
-                </div>
-                <!-- END Fixed Top Header + Footer Header -->
-
-                <!-- Dummy Content -->
-                <div class="block full block-alt-noborder">
-                    <h3 class="sub-header text-center"><strong>Dummy Content</strong> for layout demostration</h3>
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
-
+                <!-- Page content -->
+                <div id="page-content">
+                    <!-- Fixed Top Header + Footer Header -->
+                    <div class="content-header">
+                        <div class="header-section">
+                            <h1>
+                                <i class="gi gi-show_big_thumbnails"></i>Welcome,  <b>{{fullname}}</b>
+                            </h1>
                         </div>
                     </div>
+                    <!-- END Fixed Top Header + Footer Header -->
+
+                    <!-- Dummy Content -->
+                    <div class="block full block-alt-noborder">
+                        <h3 class="sub-header text-center"><strong>Dummy Content</strong> for layout demostration</h3>
+                        <div class="row">
+                            <div class="col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END Dummy Content -->
                 </div>
-                <!-- END Dummy Content -->
+                <!-- END Page Content -->
             </div>
-            <!-- END Page Content -->
+            <!-- END Main Container -->
         </div>
-        <!-- END Main Container -->
     </div>
     <!-- END Page Container -->
 </div>
@@ -69,5 +70,9 @@
 <a href="#" id="to-top"><i class="fa fa-angle-double-up"></i></a>
 
 <%@include file="/WEB-INF/pages/js_import.jsp" %>
+<script src="${pageContext.request.contextPath}/lib/moment/js/moment.min.js"></script>
+<script src="${pageContext.request.contextPath}/lib/bootstrap-notify/js/bootstrap-notify.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/customVue.js"></script>
+<script type="module" src="${pageContext.request.contextPath}/js/index.js"></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 // consider using es6's import / export functions
-function notifySuccess(title, message = '') {
+export function notifySuccess(title, message = '') {
 
     $.notify({
         "icon": 'glyphicon glyphicon-ok',
@@ -21,7 +21,7 @@ function notifySuccess(title, message = '') {
     });
 }
 
-function notifyInfo(title, messages = '') {
+export function notifyInfo(title, messages = '') {
    var message = "";
     $.notify({
         "icon": 'glyphicon glyphicon-ok',
@@ -43,7 +43,7 @@ function notifyInfo(title, messages = '') {
     });
 }
 
-function notifyError(title, message = '') {
+export function notifyError(title, message = '') {
     $.notify({
         "icon": 'glyphicon glyphicon-ok',
         "title": title,
