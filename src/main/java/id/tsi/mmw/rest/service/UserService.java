@@ -46,64 +46,23 @@ public class UserService extends BaseService {
         validator = new UserValidator();
     }
 
-    /**
-     * Gets a list of users given a pagination request.
-     *
-     * This function takes a pagination request and uses it to retrieve a list of users
-     * from the database. The function validates the request first, and only proceeds
-     * if the request is valid. If the request is invalid, the function will return
-     * HTTP 400 Bad Request.
-     *
-     * @param request The pagination request containing the page number, page size,
-     *                search filter, and sort order.
-     * @return A response containing a list of users and pagination properties.
-     */
     @GET
     @PermitAll
-    public Response getUserList(PaginationRequest request) {
+    public Response getUserList() {
         final String methodName = "getUserList";
         start(methodName);
         log.info(methodName, "Get User List");
-        log.info(methodName, JsonHelper.toJson(request));
         Response response;
 
-        // Validate the request payload
-        boolean validateRequest = validator.validate(request);
-        log.debug(methodName, "Request payload validation : " + validateRequest);
+        // Retrieve the list of users from the database
+        List<User> users = userController.getUserList();
 
-        // If the request is valid, proceed with retrieving the user list
-        if(validateRequest) {
-            // Retrieve the list of users from the database
-            List<User> users = userController.getUserListPagination(
-                    request.getPageSize(),
-                    paginationOffsetBuilder(request.getPageNumber(), request.getPageSize()),
-                    request.getOrderBy(),
-                    request.getSortOrder(),
-                    request.getSearchFilter());
+        // Create a new UserPaginationResponse object and set the pagination and users properties
+        UserPaginationResponse usersResponse = new UserPaginationResponse();
+        usersResponse.setUsers(users);
 
-            // Retrieve the total records and pages from the database
-            Pagination pagination = userController.countTotalRecordsAndPages(request.getPageSize(), request.getSearchFilter());
-
-            // Set the pagination properties in the pagination object
-            pagination.setPageNumber(request.getPageNumber());
-            pagination.setPageSize(request.getPageSize());
-            pagination.setSearchFilter(request.getSearchFilter());
-            pagination.setCurrentPages(users.size());
-            pagination.setOrderBy(request.getOrderBy());
-            pagination.setSortOrder(request.getSortOrder());
-
-            // Create a new UserPaginationResponse object and set the pagination and users properties
-            UserPaginationResponse usersResponse = new UserPaginationResponse();
-            usersResponse.setFilter(pagination);
-            usersResponse.setUsers(users);
-
-            // Build a success response containing the user list and pagination properties
-            response = buildSuccessResponse(usersResponse);
-        } else {
-            // Build a bad request response if the request is invalid
-            response = buildBadRequestResponse(Constants.MESSAGE_INVALID_REQUEST);
-        }
-
+        // Build a success response containing the user list and pagination properties
+        response = buildSuccessResponse(usersResponse);
         completed(methodName);
         return response;
     }
@@ -136,11 +95,11 @@ public class UserService extends BaseService {
         log.debug(methodName, "User validation : " + validateUser);
 
         // If the user id is valid, retrieve the user detail from the database
-        if(validateUser){
+        if (validateUser) {
             User user = userController.getUserByUid(uid);
             // fetch User access matrix information
-            if(user.getAccessGroupUid() != null && !user.getAccessGroupUid().isEmpty()) {
-                List<UserAccessMatrix> userAccessMatrix = accessMatrixController.getUserAccessMatrix(user.getUid(),user.getAccessGroupUid());
+            if (user.getAccessGroupUid() != null && !user.getAccessGroupUid().isEmpty()) {
+                List<UserAccessMatrix> userAccessMatrix = accessMatrixController.getUserAccessMatrix(user.getUid(), user.getAccessGroupUid());
                 user.setUserAccessMatrix(userAccessMatrix);
             }
 
@@ -162,15 +121,15 @@ public class UserService extends BaseService {
 
     /**
      * Creates a new user with the given request payload.
-     *
+     * <p>
      * This function will validate the request payload first, and only proceed
      * if the payload is valid. If the payload is invalid, the function will return
      * HTTP 400 Bad Request.
-     *
+     * <p>
      * If the payload is valid, the function will check if the user email is already
      * exist in the database. If the email is already exist, the function will return
      * HTTP 409 Conflict with a message "User email already exists".
-     *
+     * <p>
      * If the email is not exist, the function will generate a user primary key,
      * generate user information to be create to database, generate user authentication
      * information, and proceed user creation to database. If the user creation is
@@ -196,7 +155,7 @@ public class UserService extends BaseService {
 
         // if payload is valid, continue proceed,
         // else return bad request
-        if(validPayload) {
+        if (validPayload) {
             // validate if user email is already exist. This is done by calling the
             // userController.validateEmail() method, which will validate if the user email
             // is already exist in the database and return true if the email is already exist,
@@ -206,7 +165,7 @@ public class UserService extends BaseService {
 
             // if user not exist, continue user creation process
             // else return user already exist response
-            if(!userExist) {
+            if (!userExist) {
                 // generate user primary key. This is done by generating a UUID string.
                 String uuid = UUID.randomUUID().toString();
 
@@ -219,10 +178,9 @@ public class UserService extends BaseService {
                 user.setLastname(request.getLastname());
 
                 // Concat fistname and lastname to fullname if last name is not empty
-                if(request.getLastname() != null || !request.getLastname().isEmpty()) {
+                if (request.getLastname() != null || !request.getLastname().isEmpty()) {
                     user.setFullname(request.getFirstname() + " " + request.getLastname());
-                }
-                else {
+                } else {
                     user.setFirstname(request.getFirstname());
                 }
 
@@ -253,16 +211,16 @@ public class UserService extends BaseService {
 
                 // proceed user creation to database
                 boolean created = userController.create(user, authentication);
-                if(created) {
+                if (created) {
                     // TO DO send email to user after user created to activate login and change the password
                     response = buildSuccessResponse();
-                }else {
+                } else {
                     response = buildBadRequestResponse("User creation failed");
                 }
-            }else {
+            } else {
                 response = buildConflictResponse("User email already exists");
             }
-        }else {
+        } else {
             response = buildBadRequestResponse(Constants.MESSAGE_INVALID_REQUEST);
         }
         completed(methodName);
@@ -283,7 +241,7 @@ public class UserService extends BaseService {
 
     /**
      * Deletes a user from the database.
-     *
+     * <p>
      * This function takes a user UID as a parameter and deletes the user from the database.
      * If the user does not exist in the database, the function will return a 400 Bad Request
      * with a message indicating that the user was not found. If the user deletion is successful,

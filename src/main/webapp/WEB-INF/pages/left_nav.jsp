@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <!-- Main Sidebar -->
-<div id="sidebar" class="themed-background-default themed-color-default">
+<div id="sidebar" class="themed-color-dark-lake themed-background-dark-lake">
     <!-- Wrapper for scrolling functionality -->
     <div id="sidebar-scroll">
         <!-- Sidebar Content -->

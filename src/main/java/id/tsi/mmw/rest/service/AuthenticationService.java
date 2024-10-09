@@ -153,7 +153,7 @@ public class AuthenticationService extends BaseService {
     @Path("session")
     @PermitAll
     public Response session() {
-        final String methodName = "logout";
+        final String methodName = "session";
         start(methodName);
 
         completed(methodName);

@@ -97,48 +97,21 @@ public class UserController extends BaseController {
         return user;
     }
 
-
-    /**
-     * Retrieves a list of users with pagination. The list is sorted by the provided sort by and order.
-     * A search filter can be provided to filter the results.
-     *
-     * @param pageSize       The maximum number of records to return
-     * @param offset     The offset of the first record to return
-     * @param sortBy         The field to sort by
-     * @param sortOrder      The order to sort by (ASC or DESC)
-     * @param searchFilter   The search filter to apply to the results
-     * @return A list of User objects
-     */
-    public List<User> getUserListPagination(int pageSize, int offset, String sortBy, String sortOrder, String searchFilter) {
+    public List<User> getUserList() {
         final String methodName = "getUserList";
         start(methodName);
         List<User> result = new ArrayList<>();
 
-        // Define the SQL query to fetch the users. The query is a bit complex because we need to
-        // LEFT JOIN the user_access_group table to get the access group ID and name.
-        // We also need to sort the results by the provided sort by and order.
-        // If a search filter is provided, we need to add a WHERE clause to filter the results.
-        String sql = "SELECT u.uid, u.firstname, u.lastname, u.fullname, u.email, "
-                + " u.status, u.create_dt, u.modify_dt, "
-                + " ag.uid AS access_group_uid, ag.display_name AS access_group_name "
-                + " FROM user u "
-                + " LEFT JOIN user_access_group uag ON uag.user_uid = u.uid "
-                + " LEFT JOIN access_group ag ON ag.uid = uag.access_group_uid ";
-
-        // If a search filter is provided, add a WHERE clause to filter the results
-        String whereClause = "";
-        if (searchFilter != null && !searchFilter.isEmpty()) {
-            whereClause = " WHERE u.fullname LIKE '%" + searchFilter + "%' ";
-        }
-
-        // Add the ORDER BY and LIMIT clauses
-        sql += whereClause + " ORDER BY u." + sortBy + " " + sortOrder +  " LIMIT :pageSize OFFSET :offset";
+        String sql = "SELECT u.uid, u.fullname, u.email, u.department, u.status, u.create_dt, u.modify_dt, " +
+                " ag.uid AS access_group_uid, ag.display_name AS access_group_name " +
+                " FROM user u " +
+                " LEFT JOIN user_access_group uag ON uag.user_uid = u.uid " +
+                " LEFT JOIN access_group ag ON ag.uid = uag.access_group_uid " +
+                " ORDER BY u.fullname;";
 
         log.debug(methodName, "SQL : " + sql);
         // Bind the limit and offset parameters to the query
         try (Handle handle = getHandle(); Query q = handle.createQuery(sql)) {
-            q.bind("pageSize", pageSize);
-            q.bind("offset", offset);
             // Execute the query and get the result as a list of User objects
             result = q.mapToBean(User.class).list();
         } catch (Exception e) {
