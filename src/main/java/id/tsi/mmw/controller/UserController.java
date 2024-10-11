@@ -124,14 +124,14 @@ public class UserController extends BaseController {
 
     }
 
-    public boolean create(User user, Authentication authentication) {
+    public boolean create(User user) {
         final String methodName = "create";
         start(methodName);
         boolean result = false;
 
         try (Handle h = getHandle()) {
             // Execute the operations within a transaction
-            result = h.inTransaction(handle -> createUserBatch(handle, user) &&  createAuthenticationBatch(handle, authentication));
+            result = h.inTransaction(handle -> createUserBatch(handle, user));
         } catch (Exception ex) {
             log.error(methodName, ex);
         }
@@ -150,28 +150,12 @@ public class UserController extends BaseController {
      */
     private boolean createUserBatch(Handle handle, User user){
         String sql = "INSERT INTO user " +
-                "(uid, firstname, lastname, fullname, email, mobile_number, dob, status, create_dt) " +
+                "(uid, firstname, lastname, fullname, department, email, mobile_number, dob, status, create_dt) " +
                 "VALUES" +
-                "( :uid, :firstname, :lastname, :fullname, :email, :mobileNumber, :dob, :status, :createDt);";
+                "( :uid, :firstname, :lastname, :fullname, :department, :email, :mobileNumber, :dob, :status, :createDt);";
         PreparedBatch insertUser = handle.prepareBatch(sql);
         insertUser.bindBean(user);
         return executeBatch(insertUser);
-    }
-
-    /**
-     * Executes a batch insert of an {@link Authentication} object into the {@code authentication} table.
-     *
-     * @param handle the {@link Handle} to use for the batch insert
-     * @param authentication the {@link Authentication} object to insert
-     * @return true if the batch insert was successful, false otherwise
-     */
-    private boolean createAuthenticationBatch(Handle handle, Authentication authentication){
-        String sql = "INSERT INTO authentication " +
-                "(uid, salt, password_hash, login_allowed, create_dt)" +
-                "VALUES( :uid, :salt, :passwordHash, :loginAllowed, :createDt);";
-        PreparedBatch insertAuthentication = handle.prepareBatch(sql);
-        insertAuthentication.bindBean(authentication);
-        return executeBatch(insertAuthentication);
     }
 
     /**
@@ -211,7 +195,9 @@ public class UserController extends BaseController {
         start(methodName);
         boolean result = false;
         final String sql =
-                "UPDATE [users] SET uid =:uid, firstname =:firstname, lastname =:lastname, fullname =:fullname, email =:email, mobile_number =:mobile_number , dob =:dob, status =:status, create_dt =:create_dt , modify_dt =:modify_dt ";
+                "UPDATE user SET firstname = :firstname, lastname = :lastname, fullname = :fullname, " +
+                        " mobile_number = :mobileNumber, dob =:dob, modify_dt =:modifyDt " +
+                        " WHERE uid = :uid";
         try (Handle h = getHandle(); Update u = h.createUpdate(sql)) {
             u.bindBean(user);
             result = executeUpdate(u);

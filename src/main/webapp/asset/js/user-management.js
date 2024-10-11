@@ -126,50 +126,39 @@ $(document).on('click', '.edit-btn', function () {
     });
 });
 
-function openAddUserModal() {
-    // Clear the form fields
-    $('#val_firstname').val('');
-    $('#val_lastname').val('');
-    $('#val_email').val('');
-    $('#val_mobileNumber').val('');
-    $('#val_department').val('').trigger("chosen:updated"); // Reset Chosen dropdown
-    $('#val_dob').val('');
-
-    // Change modal title and button labels for adding a user
-    $('.modal-title').text('Add User'); // Change modal title to "Add User"
-    $('#btn-close-modal').text('Reset'); // Ensure button label is "Close"
-    $('#btn-save-user').text('Submit'); // Change button label to "Add User"
-
-    // Open the modal
-    $('#user-modal').modal('show');
-}
-
 function openUpdateUserModal(user) {
     // Reset the form fields
     $('#user-form')[0].reset();
-    // Reset the validation (remove error classes and messages)
+    // Reset validation (remove error classes and messages)
     $('#user-form').find('.form-group').removeClass('has-error has-success');
     $('#user-form').find('.help-block').remove();
 
-    // Populate the form fields with the user data
+    // Populate the form fields with user data
     $('#val_firstname').val(user.firstname);
     $('#val_lastname').val(user.lastname);
-    $('#val_email').val(user.email);
     $('#val_mobileNumber').val(user.mobileNumber);
-    $('#val_department').val(user.department).trigger("chosen:updated"); // Update Chosen dropdown
+    $('#val_department').val(user.department).trigger("chosen:updated");
 
-    // Convert user.dob to yyyy-mm-dd format for the date input
+    // Convert user.dob to yyyy-mm-dd format
     const dob = new Date(user.dob);
-    const formattedDob = dob.toISOString().split('T')[0]; // Get yyyy-mm-dd format
-    $('#val_dob').val(formattedDob); // Set the value for date input
+    const formattedDob = dob.toISOString().split('T')[0];
+    $('#val_dob').val(formattedDob);
 
-    $('.modal-title').text('Update User'); // Change modal title to "Update User"
-    $('#submit-button').text('Save Changes'); // Change button label to "Save Changes"
-    $('#reset-button').text('Close'); // Change button label to "Save Changes"
+    // Set the email and ensure it is editable
+    $('#val_email').val(user.email).prop('readonly', true).prop('disabled', true);
+
+    $('#submit-button').data('id', user.uid); // Replace with the actual property for user ID
+
+    // Change modal title and button labels
+    $('.modal-title').text('Update User');
+    $('#submit-button').text('Save Changes');
+    $('#reset-button').text('Close');
 
     // Open the modal
     $('#user-modal').modal('show');
+
 }
+
 
 // Function to populate the dropdown from API
 function populateDepartments() {
@@ -311,23 +300,27 @@ $(document).on('click', '.delete-btn', function () {
     // Create the Confirm Delete button
     var confirmDeleteButton = $('<button>', {
         id: 'confirm-delete-button',
-        class: 'btn btn-danger',
+        class: 'btn btn-sm btn-danger',
         text: 'Confirm Delete',
         click: function () {
+
+            $(this).prop('disabled', true).prepend('<i class="fa fa-spinner fa-spin"></i> ');
+            $('#cancel-button').prop('disabled', true).prepend('<i class="fa fa-spinner fa-spin"></i> ');
 
             // Handle the delete action here
             $.ajax({
                 url: `/monitoring/rest/users/${userId}`,
                 type: 'DELETE',
                 data: { id: userId }, // Send the userId to the server
-                success: function(response) {
-                    // Handle success response
-                    $('#delete-user-modal').modal('hide'); // Close the modal after the action
-                    Notification.notifySuccess('Success', "Success delete user " + fullName);
-                    $('#user-management').DataTable().destroy();
-                    TablesDatatables.init();
+                success: function (response) {
+                    setTimeout(function () {
+                        Notification.notifySuccess('Success', "Successfully delete user " + fullName);
+                        $('#delete-user-modal').modal('hide'); // Close the modal
+                        $('#user-management').DataTable().destroy();
+                        TablesDatatables.init();
+                    }, 3000); // 3000 milliseconds = 3 seconds;
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     // Handle error response
                     Notification.notifyError('Error', "Failed delete user " + fullName);
                 }
@@ -338,7 +331,7 @@ $(document).on('click', '.delete-btn', function () {
     // Create the Cancel button
     var cancelButton = $('<button>', {
         id: 'cancel-button',
-        class: 'btn btn-default',
+        class: 'btn btn-sm btn-default',
         text: 'Cancel',
         click: function () {
             $('#delete-user-modal').modal('hide'); // Just close the modal
@@ -353,26 +346,145 @@ $(document).on('click', '.delete-btn', function () {
 });
 
 $(document).on('click', '#submit-button', function () {
+    event.preventDefault(); // Prevent default form submission
+
+    var userId = $(this).data('id');
 
     // Perform validation
     const isValid = validateForm(); // Call your validation function
+    if (isValid) {
 
-    if ($(this).text().trim() === 'Submit') {
-        console.log('Trigger add user')
-    }
+        // Disable the submit and reset buttons, add spinner icon
+        $(this).prop('disabled', true).prepend('<i class="fa fa-spinner fa-spin"></i> ');
+        $('#reset-button').prop('disabled', true).prepend('<i class="fa fa-spinner fa-spin"></i> ');
 
-    if ($(this).text().trim() === 'Save Changes') {
-        console.log('Trigger update user')
+        // Gather user data from input fields
+        const userData = {
+            uid : userId, // Get userId for update if it exists
+            firstname: $('#val_firstname').val(), // Get first name
+            lastname: $('#val_lastname').val(),   // Get last name
+            email: $('#val_email').val(),         // Get email
+            mobileNumber: $('#val_mobileNumber').val(), // Get mobile number
+            department: $('#val_department').val(), // Get department
+            dob: $('#val_dob').val() // Get date of birth
+        };
+        if ($(this).text().trim() === 'Submit') {
+            $.ajax({
+                url: '/monitoring/rest/users', // Your endpoint
+                method: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(userData),
+                success: function (response, status, xhr) {
+                    if (xhr.status === 200) {
+                        // Delay the closing of the modal and refreshing the user list
+                        setTimeout(function () {
+                            Notification.notifySuccess('Success', "Successfully add new user");
+                            $('#user-modal').modal('hide'); // Close the modal
+                            $('#user-management').DataTable().destroy();
+                            TablesDatatables.init();
+                        }, 3000); // 3000 milliseconds = 3 seconds
+                    } else {
+                        Notification.notifyError('Error', "Unexpected response: " + xhr.status);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // Handle error response based on the status code
+                    switch (xhr.status) {
+                        case 400: // Bad Request
+                            // Attempt to extract the description from the response
+                            let errorMessage = "Invalid input. Please check your data.";
+                            if (xhr.responseJSON && xhr.responseJSON.description) {
+                                errorMessage = xhr.responseJSON.description; // Get the description from the response
+                            }
+                            Notification.notifyError('Error', errorMessage);
+                            break;
+                        case 401: // Unauthorized
+                            Notification.notifyError('Error', "You are not authorized to perform this action.");
+                            break;
+                        case 404: // Not Found
+                            Notification.notifyError('Error', "User not found.");
+                            break;
+                        case 500: // Internal Server Error
+                            Notification.notifyError('Error', "An unexpected error occurred. Please try again later.");
+                            break;
+                        default: // Other status codes
+                            Notification.notifyError('Error', "Failed adding new user. Status: " + xhr.status);
+                            break;
+                    }
+                }
+
+            });
+        }
+
+        if ($(this).text().trim() === 'Save Changes') {
+            $.ajax({
+                url: '/monitoring/rest/users', // Your endpoint
+                method: 'PUT',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(userData),
+                success: function (response, status, xhr) {
+                    if (xhr.status === 200) {
+                        // Delay the closing of the modal and refreshing the user list
+                        setTimeout(function () {
+                            Notification.notifySuccess('Success', "Successfully update user");
+                            $('#user-modal').modal('hide'); // Close the modal
+                            $('#user-management').DataTable().destroy();
+                            TablesDatatables.init();
+                        }, 3000); // 3000 milliseconds = 3 seconds
+                    } else {
+                        Notification.notifyError('Error', "Unexpected response: " + xhr.status);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // Handle error response based on the status code
+                    switch (xhr.status) {
+                        case 400: // Bad Request
+                            // Attempt to extract the description from the response
+                            let errorMessage = "Invalid input. Please check your data.";
+                            if (xhr.responseJSON && xhr.responseJSON.description) {
+                                errorMessage = xhr.responseJSON.description; // Get the description from the response
+                            }
+                            Notification.notifyError('Error', errorMessage);
+                            break;
+                        case 401: // Unauthorized
+                            Notification.notifyError('Error', "You are not authorized to perform this action.");
+                            break;
+                        case 404: // Not Found
+                            Notification.notifyError('Error', "User not found.");
+                            break;
+                        case 500: // Internal Server Error
+                            Notification.notifyError('Error', "An unexpected error occurred. Please try again later.");
+                            break;
+                        default: // Other status codes
+                            Notification.notifyError('Error', "Failed adding new user. Status: " + xhr.status);
+                            break;
+                    }
+                }
+
+            });
+        }
+
+        setTimeout(function () {
+            $('#submit-button').prop('disabled', false).find('i.fa-spinner').remove();
+            $('#reset-button').prop('disabled', false).find('i.fa-spinner').remove();
+
+        }, 3000); // 3000 milliseconds = 3 seconds
     }
 });
 
 $(document).on('click', '#add-user-button', function () {
     // Reset the form fields
     $('#user-form')[0].reset();
+    $('#val_department').val('').trigger('chosen:updated'); // Reset the Chosen dropdown
 
     // Reset the validation (remove error classes and messages)
     $('#user-form').find('.form-group').removeClass('has-error has-success');
     $('#user-form').find('.help-block').remove();
+
+    // Set the email and ensure it is editable
+    $('#val_email').val('').prop('readonly', false).prop('disabled', false);
 
     // Set the modal title for adding
     $('.modal-title').text('Add User');
@@ -382,6 +494,19 @@ $(document).on('click', '#add-user-button', function () {
     // Optionally hide the user ID input if you're using it for editing
     $('#user-id').val(''); // Clear the user ID if you have one
 });
+
+$(document).on('click', '#reset-button', function () {
+    // Reset input fields
+    $('#val_firstname').val('');
+    $('#val_lastname').val('');
+    $('#val_email').val('');
+    $('#val_mobileNumber').val('');
+    $('#val_dob').val('');
+
+    // Reset the dropdown
+    $('#val_department').val('').trigger('chosen:updated'); // Reset the Chosen dropdown
+});
+
 $(document).ready(function () {
     $(".select-chosen").chosen(); // Initialize Chosen
 

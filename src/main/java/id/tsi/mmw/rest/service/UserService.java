@@ -185,7 +185,8 @@ public class UserService extends BaseService {
 
                 user.setEmail(request.getEmail());
                 user.setMobileNumber(request.getMobileNumber());
-                LocalDate dobLD = DateHelper.parseDate(request.getDob());
+                user.setDepartment(request.getDepartment());
+                LocalDate dobLD = DateHelper.parseFEDate(request.getDob());
                 LocalDateTime dobLDT = dobLD.atStartOfDay();
                 user.setDob(DateHelper.formatDBDateTime(dobLDT));
 
@@ -193,7 +194,7 @@ public class UserService extends BaseService {
                 user.setCreateDt(processingTime);
                 user.setModifyDt(processingTime);
 
-                // generate user authentication information. This is done by generating
+/*                // generate user authentication information. This is done by generating
                 // a salt string, hashing the default password with the salt, and creating
                 // a new Authentication object and set the properties: uid, salt, passwordHash,
                 // loginAllowed, and createDt.
@@ -206,10 +207,10 @@ public class UserService extends BaseService {
                 authentication.setSalt(salt);
                 authentication.setPasswordHash(hashedPassword);
                 authentication.setLoginAllowed(false);
-                authentication.setCreateDt(processingTime);
+                authentication.setCreateDt(processingTime);*/
 
                 // proceed user creation to database
-                boolean created = userController.create(user, authentication);
+                boolean created = userController.create(user);
                 if (created) {
                     // TO DO send email to user after user created to activate login and change the password
                     response = buildSuccessResponse();
@@ -227,13 +228,72 @@ public class UserService extends BaseService {
     }
 
     @PUT
-    public Response update(User user) {
+    public Response update(UserRequest request) {
         final String methodName = "update";
-        Response response = buildSuccessResponse();
+        Response response;
         start(methodName);
+        log.info(methodName, "Update User");
+        log.info(methodName, JsonHelper.toJson(request));
 
-        boolean result = userController.update(user);
+        // validate request payload. This is done by calling the validator.create() method,
+        // which will validate the request payload and return true if the payload is valid,
+        // otherwise false.
+        boolean validPayload = validator.update(request);
+        log.debug(methodName, "Request payload validation : " + validPayload);
 
+        // if payload is valid, continue proceed,
+        // else return bad request
+        if (validPayload) {
+            // validate if user email is already exist. This is done by calling the
+            // userController.validateEmail() method, which will validate if the user email
+            // is already exist in the database and return true if the email is already exist,
+            // otherwise false.
+            boolean userExist = userController.validateUserUid(request.getUid());
+            log.debug(methodName, "User validation : " + userExist);
+
+            // if user not exist, continue user creation process
+            // else return user already exist response
+            if (userExist) {
+
+                // Generate user information to be create to database.
+                // This is done by creating a new User object and set the properties:
+                // uid, firstname, lastname, fullname, email, mobile number, date of birth
+                User user = new User();
+                user.setUid(request.getUid());
+                user.setFirstname(request.getFirstname());
+                user.setLastname(request.getLastname());
+
+                // Concat fistname and lastname to fullname if last name is not empty
+                if (request.getLastname() != null || !request.getLastname().isEmpty()) {
+                    user.setFullname(request.getFirstname() + " " + request.getLastname());
+                } else {
+                    user.setFirstname(request.getFirstname());
+                }
+
+                user.setEmail(request.getEmail());
+                user.setMobileNumber(request.getMobileNumber());
+                user.setDepartment(request.getDepartment());
+                LocalDate dobLD = DateHelper.parseFEDate(request.getDob());
+                LocalDateTime dobLDT = dobLD.atStartOfDay();
+                user.setDob(DateHelper.formatDBDateTime(dobLDT));
+
+                String processingTime = DateHelper.formatDateTime(LocalDateTime.now());
+                user.setModifyDt(processingTime);
+
+                // proceed user update to database
+                boolean created = userController.update(user);
+                if (created) {
+                    // TO DO send email to user after user created to activate login and change the password
+                    response = buildSuccessResponse();
+                } else {
+                    response = buildBadRequestResponse("User update failed");
+                }
+            } else {
+                response = buildConflictResponse("User not exists");
+            }
+        } else {
+            response = buildBadRequestResponse(Constants.MESSAGE_INVALID_REQUEST);
+        }
         completed(methodName);
         return response;
     }

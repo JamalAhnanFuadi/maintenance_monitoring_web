@@ -19,6 +19,9 @@ public class UserRequest {
     @JsonProperty("mobileNumber")
     private String mobileNumber;
 
+    @JsonProperty("department")
+    private String department;
+
     @JsonProperty("dob")
     private String dob;
 
@@ -64,6 +67,14 @@ public class UserRequest {
 
     public void setMobileNumber(String mobileNumber) {
         this.mobileNumber = mobileNumber;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
     }
 
     public String getDob() {

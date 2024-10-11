@@ -10,6 +10,7 @@ public class DateHelper {
     private static final DateTimeFormatter JSON_DT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private static final DateTimeFormatter D_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private static final DateTimeFormatter UI_D_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter DT_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
     private static final DateTimeFormatter DB_DT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -43,5 +44,9 @@ public class DateHelper {
 
     public static LocalDate parseDate(String str) {
         return LocalDate.parse(str, D_FORMAT);
+    }
+
+    public static LocalDate parseFEDate(String str) {
+        return LocalDate.parse(str, UI_D_FORMAT);
     }
 }

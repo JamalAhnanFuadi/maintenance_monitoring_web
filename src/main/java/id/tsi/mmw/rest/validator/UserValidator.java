@@ -14,6 +14,17 @@ public class UserValidator extends PaginationValidator {
                 && validate(request.getLastname())
                 && validate(request.getEmail())
                 && validate(request.getMobileNumber())
+                && validate(request.getDepartment())
+                && validate(request.getDob());
+    }
+    public boolean update(UserRequest request) {
+        return notNull(request)
+                && validate(request.getUid())
+                && validate(request.getFirstname())
+                && validate(request.getLastname())
+                && validate(request.getEmail())
+                && validate(request.getMobileNumber())
+                && validate(request.getDepartment())
                 && validate(request.getDob());
     }
 }
