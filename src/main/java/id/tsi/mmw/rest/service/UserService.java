@@ -46,6 +46,11 @@ public class UserService extends BaseService {
         validator = new UserValidator();
     }
 
+    /**
+     * Get the list of all users in the system.
+     *
+     * @return A JSON response containing the list of users and pagination properties.
+     */
     @GET
     @PermitAll
     public Response getUserList() {
@@ -97,12 +102,6 @@ public class UserService extends BaseService {
         // If the user id is valid, retrieve the user detail from the database
         if (validateUser) {
             User user = userController.getUserByUid(uid);
-            // fetch User access matrix information
-            if (user.getAccessGroupUid() != null && !user.getAccessGroupUid().isEmpty()) {
-                List<UserAccessMatrix> userAccessMatrix = accessMatrixController.getUserAccessMatrix(user.getUid(), user.getAccessGroupUid());
-                user.setUserAccessMatrix(userAccessMatrix);
-            }
-
             // Create a new UserResponse object and set the user property
             UserResponse userResponse = new UserResponse();
             userResponse.setUser(user);

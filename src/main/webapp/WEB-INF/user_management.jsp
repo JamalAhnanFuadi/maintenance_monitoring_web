@@ -60,14 +60,14 @@
                 <!-- Content -->
                 <div class="block full block-alt-noborder">
                     <div class="text-right">
-                        <button id="addUserBtn" class="btn btn-primary">
-                            <i class="fa fa-plus"></i> Add User
-                        </button>
+                        <a id="add-user-button" href="#user-modal" class="btn btn-sm btn-primary"
+                           data-toggle="modal"><i class="fa fa-plus"></i> Add User</a>
                     </div>
-                    <br/>
+                    <br />
                     <!-- Datatables Content -->
                     <div class="table-responsive">
-                        <table id="user-management" class="table table-vcenter table-striped table-bordered">
+                        <table id="user-management"
+                               class="table table-vcenter table-striped table-bordered">
                             <thead>
                             <tr>
                                 <th class="text-center"></th>
@@ -91,8 +91,8 @@
             <!-- Footer -->
             <footer class="clearfix">
                 <div class="pull-right">
-                    Crafted with <i class="fa fa-heart text-danger"></i> by <a
-                        href="#" target="_blank">The Special One</a>
+                    Crafted with <i class="fa fa-heart text-danger"></i> by <a href="#"
+                                                                               target="_blank">The Special One</a>
                 </div>
             </footer>
             <!-- END Footer -->
@@ -108,10 +108,113 @@
     <a href="#" id="to-top"><i class="fa fa-angle-double-up"></i></a>
 </div>
 
+
+<!-- Add/Update User modal -->
+<div id="user-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Add user</h3>
+            </div>
+            <div class="modal-body">
+                <form id="user-form" class="form-horizontal form-bordered">
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_firstname">First Name <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-md-6">
+                                <input type="text" id="val_firstname" name="val_firstname" class="form-control"
+                                       placeholder="First Name..">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_lastname">Last Name <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-md-6">
+                                <input type="text" id="val_lastname" name="val_lastname" class="form-control"
+                                       placeholder="Last Name..">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_email">Email <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-md-6">
+                                <input type="email" id="val_email" name="val_email" class="form-control"
+                                       placeholder="test@example.com">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_mobileNumber">Mobile Number <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-md-6">
+                                <input type="text" id="val_mobileNumber" name="val_mobileNumber"
+                                       class="form-control" placeholder="081234567805">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_department">
+                                Department <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-md-6">
+                                <select id="val_department" name="val_department"
+                                        class="form-control select-chosen" data-placeholder="Select department"
+                                        style="width: 250px;">
+                                    <option value=""></option>
+                                    <!-- Department list fetch from API -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_dob">Date of Birth <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-md-6">
+                                <input type="date" id="val_dob" name="val_dob" class="form-control">
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class=" modal-footer form-group form-actions">
+                        <div class="col-md-8 col-md-offset-4">
+                            <button id="submit-button" type="submit" class="btn btn-sm btn-primary"><i
+                                    class="fa fa-arrow-right"></i>
+                                Submit
+                            </button>
+                            <button id="reset-button" type="reset" class="btn btn-sm btn-warning"><i
+                                    class="fa fa-repeat"></i> Reset
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END Add/Update User modal -->
+
+<!-- Delete User modal -->
+<div id="delete-user-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Modal Title</h3>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END Delete User modal -->
+
+
 <%@include file="/WEB-INF/pages/js_import.jsp" %>
 <!-- Load and execute javascript code used only in this page -->
 <script src="${pageContext.request.contextPath}/asset/js/user-management.js"></script>
-<script>$(function(){ TablesDatatables.init(); });</script>
+<script>$(function () {
+    TablesDatatables.init();
+});</script>
 </body>
 
 </html>

@@ -107,7 +107,7 @@ public class UserController extends BaseController {
                 " FROM user u " +
                 " LEFT JOIN user_access_group uag ON uag.user_uid = u.uid " +
                 " LEFT JOIN access_group ag ON ag.uid = uag.access_group_uid " +
-                " ORDER BY u.fullname;";
+                " ORDER BY u.fullname ASC;";
 
         log.debug(methodName, "SQL : " + sql);
         // Bind the limit and offset parameters to the query
@@ -122,61 +122,6 @@ public class UserController extends BaseController {
         completed(methodName);
         return result;
 
-    }
-
-    /**
-     * Counts the total number of records and pages of users given a search filter.
-     *
-     * @param pageSize The page size to use for the pagination
-     * @param searchFilter The search filter to apply to the results
-     * @return A Pagination object containing the total number of records and the total number of pages
-     */
-    public Pagination countTotalRecordsAndPages(int pageSize, String searchFilter) {
-
-        final String methodName = "countTotalRecordsAndPages";
-        start(methodName);
-
-        // Define the SQL query to fetch the total number of records and the total number of pages
-        String sql = "SELECT COUNT(DISTINCT u.uid) AS totalRecords, CEILING(CAST(COUNT(DISTINCT u.uid) AS FLOAT) / :pageSize) AS totalPages FROM user u ";
-
-        // Add a WHERE clause if a search filter is provided
-        String whereClause = buildSearchFilter(searchFilter);
-        sql += whereClause;
-
-        // Log the final SQL query
-        log.debug(methodName, "SQL :" +sql);
-        Pagination result = new Pagination();
-        try (Handle handle = getHandle(); Query q = handle.createQuery(sql)) {
-            // Bind the pageSize parameter to the query
-            q.bind("pageSize", pageSize);
-
-            // Execute the query and map the result to a Pagination object
-            // The result should contain the total number of records and the total number of pages
-            result = q.mapToBean(Pagination.class).one();
-        } catch (Exception ex) {
-            // Log any SQL exception that occurs during the query execution
-            log.error(methodName, ex);
-        }
-        completed(methodName);
-        return result;
-    }
-
-    /**
-     * Builds a WHERE clause for a SQL query based on a search filter.
-     *
-     * If the search filter is null or empty, an empty string is returned.
-     * Otherwise, a WHERE clause is constructed with a LIKE operator to search for
-     * the filter string in the user's fullname field.
-     *
-     * @param searchFilter the search filter to apply to the results
-     * @return a WHERE clause as a String
-     */
-    private String buildSearchFilter(String searchFilter) {
-        String filter = "";
-        if (searchFilter != null && !searchFilter.isEmpty()) {
-            filter = " WHERE u.fullname LIKE '%" + searchFilter + "%' ";
-        }
-        return filter;
     }
 
     public boolean create(User user, Authentication authentication) {
@@ -281,7 +226,7 @@ public class UserController extends BaseController {
         final String methodName = "delete";
         start(methodName);
         boolean result = false;
-        final String sql = "DELETE FROM [users] WHERE uid = :uid";
+        final String sql = "DELETE FROM user WHERE uid = :uid";
         try (Handle h = getHandle(); Update u = h.createUpdate(sql)) {
             u.bind("uid", uid);
             result = executeUpdate(u);
@@ -297,12 +242,9 @@ public class UserController extends BaseController {
         start(methodName);
 
         User user = new User();
-        final String sql = "SELECT u.uid, u.firstname, u.lastname, u.fullname, u.email, u.mobile_number, ag.uid AS access_group_uid, " +
-                " ag.display_name AS access_group_name, u.dob, u.status, u.create_dt, u.modify_dt " +
-                " FROM user u " +
-                " LEFT JOIN user_access_group uag ON uag.user_uid = u.uid  " +
-                " LEFT JOIN access_group ag ON ag.uid = uag.access_group_uid " +
-                " WHERE u.uid =  :userUid";
+        final String sql = "SELECT uid, firstname, lastname, department, email, mobile_number, dob" +
+                " FROM user " +
+                " WHERE uid =  :userUid";
         try (Handle h = getHandle(); Query q = h.createQuery(sql)) {
             q.bind("userUid", userUid);
             user = q.mapToBean(User.class).one();
