@@ -42,19 +42,23 @@
                     <span class="sidebar-header-title">Master Data</span>
                 </li>
                 <li>
+                    <a href="application"><i class="gi gi-stats sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">Application</span></a>
+                </li>
+                <li>
                     <a href="#" class="sidebar-nav-menu"><i
                             class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i
                             class="gi gi-user sidebar-nav-icon"></i><span
                             class="sidebar-nav-mini-hide">User</span></a>
                     <ul>
                         <li>
-                            <a href="users">Users</a>
+                            <a href="user-management">User Management</a>
                         </li>
                         <li>
-                            <a href="#">User Group</a>
+                            <a href="user-access-group">User Access Group</a>
                         </li>
                         <li>
-                            <a href="#">User Access Matric</a>
+                            <a href="#">User Access Matrix</a>
                         </li>
                     </ul>
                 </li>

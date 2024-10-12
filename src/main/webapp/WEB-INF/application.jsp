@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>User Management</title>
+    <title>Application Management</title>
 
     <meta name="description" content="">
     <meta name="author" content="The Special One">
@@ -47,14 +47,13 @@
                 <div class="content-header">
                     <div class="header-section">
                         <h1>
-                            <i class="gi gi-show_big_thumbnails"></i> User Management
+                            <i class="gi gi-show_big_thumbnails"></i> Application Management
                         </h1>
                     </div>
                 </div>
                 <ul class="breadcrumb breadcrumb-top">
                     <li><a href="index">Home</a></li>
-                    <li><a href="#">User</a></li>
-                    <li><a href="#">User Management</a></li>
+                    <li><a href="#">Application Management</a></li>
                 </ul>
                 <!-- END Fixed Top Header Header -->
 
