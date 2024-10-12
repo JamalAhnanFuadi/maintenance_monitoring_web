@@ -196,7 +196,7 @@ public class UserController extends BaseController {
         boolean result = false;
         final String sql =
                 "UPDATE user SET firstname = :firstname, lastname = :lastname, fullname = :fullname, " +
-                        " mobile_number = :mobileNumber, dob =:dob, modify_dt =:modifyDt " +
+                        " mobile_number = :mobileNumber, dob =:dob, department = :department, modify_dt =:modifyDt " +
                         " WHERE uid = :uid";
         try (Handle h = getHandle(); Update u = h.createUpdate(sql)) {
             u.bindBean(user);
