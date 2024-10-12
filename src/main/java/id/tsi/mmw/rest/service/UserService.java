@@ -1,6 +1,7 @@
 package id.tsi.mmw.rest.service;
 
 import id.tsi.mmw.controller.AccessMatrixController;
+import id.tsi.mmw.controller.UserAccessGroupController;
 import id.tsi.mmw.controller.UserController;
 import id.tsi.mmw.manager.EncryptionManager;
 import id.tsi.mmw.model.Authentication;
@@ -11,6 +12,7 @@ import id.tsi.mmw.property.Constants;
 import id.tsi.mmw.property.Property;
 import id.tsi.mmw.rest.model.request.PaginationRequest;
 import id.tsi.mmw.rest.model.request.UserRequest;
+import id.tsi.mmw.rest.model.request.UserStatusRequest;
 import id.tsi.mmw.rest.model.response.UserPaginationResponse;
 import id.tsi.mmw.rest.model.response.UserResponse;
 import id.tsi.mmw.rest.validator.UserValidator;
@@ -37,7 +39,7 @@ public class UserService extends BaseService {
     private UserController userController;
 
     @Inject
-    private AccessMatrixController accessMatrixController;
+    private UserAccessGroupController userAccessGroupController;
 
     private UserValidator validator;
 
@@ -212,6 +214,7 @@ public class UserService extends BaseService {
                 // proceed user creation to database
                 boolean created = userController.create(user);
                 if (created) {
+                    boolean addToAccessGroup = userAccessGroupController.addUserToAccessGroup(user.getUid(), request.getAccessGroupUid());
                     // TO DO send email to user after user created to activate login and change the password
                     response = buildSuccessResponse();
                 } else {
@@ -283,7 +286,13 @@ public class UserService extends BaseService {
                 // proceed user update to database
                 boolean created = userController.update(user);
                 if (created) {
-                    // TO DO send email to user after user created to activate login and change the password
+                    boolean hasAccessGroup = userAccessGroupController.validateHasAccessGroup(request.getUid());
+                    if(hasAccessGroup){
+                        boolean updateToAccessGroup = userAccessGroupController.UpdateUserToAccessGroup(user.getUid(), request.getAccessGroupUid());
+                    }else {
+                        boolean addToAccessGroup = userAccessGroupController.addUserToAccessGroup(user.getUid(), request.getAccessGroupUid());
+                    }
+
                     response = buildSuccessResponse();
                 } else {
                     response = buildBadRequestResponse("User update failed");
@@ -341,6 +350,49 @@ public class UserService extends BaseService {
             // indicating that the user was not found.
             response = buildBadRequestResponse("User not found");
         }
+        completed(methodName);
+        return response;
+    }
+
+    @POST
+    @Path("status")
+    public Response updateStatus(UserStatusRequest request) {
+        final String methodName = "updateStatus";
+        start(methodName);
+
+        Response response;
+        log.info(methodName, "Update user status (" + request.getUid() + ") : " + request.isStatus());
+
+        boolean validPayload = validator.updateStatus(request);
+        log.debug(methodName, "Request payload validation : " + validPayload);
+
+        if (validPayload) {
+            // First we need to check if the user exists in the database. If the user does not exist,
+            // we will return a 400 Bad Request with a message indicating that the user was not found.
+            boolean userExist = userController.validateUserUid(request.getUid());
+            log.debug(methodName, "User validation : " + userExist);
+
+            if (userExist) {
+                // If the user exists, we will proceed to delete the user from the database.
+                // If the deletion is successful, we will return a 200 OK response. Otherwise, we
+                // will return a 400 Bad Request with a message indicating that the user deletion
+                // failed.
+                boolean update = userController.updateUserStatus(request.getUid(), request.isStatus());
+                log.debug(methodName, "User status update : " + update);
+                if (update) {
+                    response = buildSuccessResponse();
+                } else {
+                    response = buildBadRequestResponse("User update failed");
+                }
+            } else {
+                // If the user does not exist, we will return a 400 Bad Request with a message
+                // indicating that the user was not found.
+                response = buildBadRequestResponse("User not found");
+            }
+        } else {
+            response = buildBadRequestResponse(Constants.MESSAGE_INVALID_REQUEST);
+        }
+
         completed(methodName);
         return response;
     }

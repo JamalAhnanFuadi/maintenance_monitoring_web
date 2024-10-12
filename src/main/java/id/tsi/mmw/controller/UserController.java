@@ -228,9 +228,14 @@ public class UserController extends BaseController {
         start(methodName);
 
         User user = new User();
-        final String sql = "SELECT uid, firstname, lastname, department, email, mobile_number, dob" +
-                " FROM user " +
-                " WHERE uid =  :userUid";
+        String sql = "SELECT u.uid, u.firstname, u.lastname, u.mobile_number, u.email, u.department, u.status, u.dob, u.create_dt, u.modify_dt, " +
+                " ag.uid AS access_group_uid, ag.display_name AS access_group_name " +
+                " FROM user u " +
+                " LEFT JOIN user_access_group uag ON uag.user_uid = u.uid " +
+                " LEFT JOIN access_group ag ON ag.uid = uag.access_group_uid " +
+                " WHERE u.uid = :userUid " +
+                " ORDER BY u.fullname ASC;";
+
         try (Handle h = getHandle(); Query q = h.createQuery(sql)) {
             q.bind("userUid", userUid);
             user = q.mapToBean(User.class).one();

@@ -54,25 +54,37 @@ var TablesDatatables = (function () {
                     }
                 },
                 {
+                    data: 'status',
+                    className: 'text-center',
+                    render: function (data, type, row) {
+                        return `
+                            <label class="switch switch-primary"  data-toggle="tooltip"  data-placement="right"  title="${data ? 'Active' : 'Inactive'}"> 
+                                <input type="checkbox" ${data ? 'checked' : ''} class="status-toggle" data-uid="${row.uid}"> <span></span> 
+                            </label>`;
+                    }
+                },
+                {
                     data: null, // No specific data field, as this column will have action buttons
                     className: 'text-center', // Center the buttons
                     orderable: false, // Disable ordering for this column
                     render: function (data, type, row) {
+                        const isDeletable = row.status === false; // or row.status === 0 depending on your data structure
                         return `
                             <div class="btn-group">
                                 <button class="btn btn-sm btn-primary edit-btn" data-id="${row.uid}">Edit</button>
-                                <button class="btn btn-sm btn-danger delete-btn" data-id="${row.uid}" data-fullname="${row.fullname}">Delete</button>
+                                <button class="btn btn-sm btn-danger delete-btn" data-id="${row.uid}" data-fullname="${row.fullname}" ${isDeletable ? '' : 'disabled'} title="${isDeletable ? '' : 'Not deletable when status is active'}">Delete</button>
                             </div>`;
                     }
                 }
             ],
             columnDefs: [
-                { width: '5%', targets: 0 }, // Set width for the first column
-                { width: '25%', targets: 1 }, // Set width for the first column
-                { width: '20%', targets: 2 }, // Set width for the second column
+                { width: '3%', targets: 0 }, // Set width for the first column
+                { width: '15%', targets: 1 }, // Set width for the first column
+                { width: '15%', targets: 2 }, // Set width for the second column
                 { width: '15%', targets: 3 }, // Set width for the third column
                 { width: '15%', targets: 4 }, // Set width for the fourth column
-                { width: '10%', targets: 5 }  // Set width for the fifth (actions) column
+                { width: '10%', targets: 5 }, // Set width for the fourth column
+                { width: '15%', targets: 6 }  // Set width for the fifth (actions) column
             ],
             pageLength: 10,
             lengthMenu: [[10, 20, 30, -1], [10, 20, 30, 'All']],
@@ -90,10 +102,6 @@ var TablesDatatables = (function () {
     };
 })();
 
-$(document).ready(function () {
-
-});
-
 $(document).on('click', '.edit-btn', function () {
     var userId = $(this).data('id');
     // Fetch user data via AJAX
@@ -110,6 +118,7 @@ $(document).on('click', '.edit-btn', function () {
                     lastname: response.user.lastname,
                     email: response.user.email,
                     mobileNumber: response.user.mobileNumber,
+                    accessGroupUid: response.user.accessGroupUid ? response.user.accessGroupUid : '',
                     department: response.user.department ? response.user.department : '',
                     dob: response.user.dob
                 };
@@ -137,6 +146,7 @@ function openUpdateUserModal(user) {
     $('#val_firstname').val(user.firstname);
     $('#val_lastname').val(user.lastname);
     $('#val_mobileNumber').val(user.mobileNumber);
+    $('#val_usergroup').val(user.accessGroupUid).trigger("chosen:updated");
     $('#val_department').val(user.department).trigger("chosen:updated");
 
     // Convert user.dob to yyyy-mm-dd format
@@ -187,6 +197,32 @@ function populateDepartments() {
     });
 }
 
+function populateAccessGroup() {
+    $.ajax({
+        url: '/monitoring/rest/accessgroup', // API endpoint
+        method: 'GET',
+        dataType: 'json', // Expect JSON response
+        success: function (response) {
+            // Iterate through the API response and append options to the dropdown
+            response.forEach(function (department) {
+                $('#val_usergroup').append(
+                    $('<option>', {
+                        value: department.uid,
+                        text: department.displayName
+                    })
+                );
+            });
+
+            // If using Chosen or Select2, you may need to trigger an update after adding options
+            $('#val_usergroup').trigger("chosen:updated"); // For Chosen dropdown
+            // For Select2, you can use: $('#val_department').select2();
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching user group:", status, error);
+        }
+    });
+}
+
 // Function to initialize validation
 function validateForm() {
     // Check if the validation is already set up
@@ -221,6 +257,9 @@ function validateForm() {
                     required: true,
                     minlength: 11 // Adjust based on your mobile number format
                 },
+                val_usergroup: {
+                    required: true
+                },
                 val_department: {
                     required: true
                 },
@@ -242,6 +281,9 @@ function validateForm() {
                 val_mobileNumber: {
                     required: 'Please enter your mobile number',
                     minlength: 'Your mobile number must be at least 11 characters long' // Adjust accordingly
+                },
+                val_usergroup: {
+                    required: 'Please select a group'
                 },
                 val_department: {
                     required: 'Please select a department'
@@ -313,8 +355,8 @@ $(document).on('click', '.delete-btn', function () {
                 type: 'DELETE',
                 data: { id: userId }, // Send the userId to the server
                 success: function (response) {
+                    Notification.notifySuccess('Success', "Successfully delete user " + fullName);
                     setTimeout(function () {
-                        Notification.notifySuccess('Success', "Successfully delete user " + fullName);
                         $('#delete-user-modal').modal('hide'); // Close the modal
                         $('#user-management').DataTable().destroy();
                         TablesDatatables.init();
@@ -365,6 +407,7 @@ $(document).on('click', '#submit-button', function () {
             lastname: $('#val_lastname').val(),   // Get last name
             email: $('#val_email').val(),         // Get email
             mobileNumber: $('#val_mobileNumber').val(), // Get mobile number
+            accessGroupUid: $('#val_usergroup').val(), // Get department
             department: $('#val_department').val(), // Get department
             dob: $('#val_dob').val() // Get date of birth
         };
@@ -377,9 +420,9 @@ $(document).on('click', '#submit-button', function () {
                 data: JSON.stringify(userData),
                 success: function (response, status, xhr) {
                     if (xhr.status === 200) {
+                        Notification.notifySuccess('Success', "Successfully add new user");
                         // Delay the closing of the modal and refreshing the user list
                         setTimeout(function () {
-                            Notification.notifySuccess('Success', "Successfully add new user");
                             $('#user-modal').modal('hide'); // Close the modal
                             $('#user-management').DataTable().destroy();
                             TablesDatatables.init();
@@ -426,9 +469,10 @@ $(document).on('click', '#submit-button', function () {
                 data: JSON.stringify(userData),
                 success: function (response, status, xhr) {
                     if (xhr.status === 200) {
+                        Notification.notifySuccess('Success', "Successfully update user");
                         // Delay the closing of the modal and refreshing the user list
                         setTimeout(function () {
-                            Notification.notifySuccess('Success', "Successfully update user");
+
                             $('#user-modal').modal('hide'); // Close the modal
                             $('#user-management').DataTable().destroy();
                             TablesDatatables.init();
@@ -477,6 +521,7 @@ $(document).on('click', '#submit-button', function () {
 $(document).on('click', '#add-user-button', function () {
     // Reset the form fields
     $('#user-form')[0].reset();
+    $('#val_usergroup').val('').trigger('chosen:updated'); // Reset the Chosen dropdown
     $('#val_department').val('').trigger('chosen:updated'); // Reset the Chosen dropdown
 
     // Reset the validation (remove error classes and messages)
@@ -504,12 +549,69 @@ $(document).on('click', '#reset-button', function () {
     $('#val_dob').val('');
 
     // Reset the dropdown
+    $('#val_usergroup').val('').trigger('chosen:updated'); // Reset the Chosen dropdown
     $('#val_department').val('').trigger('chosen:updated'); // Reset the Chosen dropdown
 });
+
+$(document).on('change', '.status-toggle', function() {
+    const isChecked = $(this).is(':checked'); // Get the checkbox state (checked or not)
+    const uid = $(this).data('uid'); // Get the user ID from the data attribute
+
+    // Prepare the data to be sent to the server
+    const data = {
+        uid: uid,
+        status: isChecked // Set status to true if checked, false otherwise
+    };
+
+    // Make the AJAX call
+    $.ajax({
+        url: '/monitoring/rest/users/status', // Replace with your actual endpoint
+        method: 'POST', // or 'PUT' depending on your API
+        contentType: 'application/json', // Set content type to JSON
+        data: JSON.stringify(data), // Convert data object to JSON string
+        success: function (response, status, xhr) {
+            if (xhr.status === 200) {
+                Notification.notifySuccess('Success', "Successfully update user");
+                setTimeout(function () {
+                    TablesDatatables.init();
+                }, 2000); // 3000 milliseconds = 3 seconds
+            } else {
+                Notification.notifyError('Error', "Unexpected response: " + xhr.status);
+            }
+        },
+        error: function (xhr, status, error) {
+            // Handle error response based on the status code
+            switch (xhr.status) {
+                case 400: // Bad Request
+                    // Attempt to extract the description from the response
+                    let errorMessage = "Invalid input. Please check your data.";
+                    if (xhr.responseJSON && xhr.responseJSON.description) {
+                        errorMessage = xhr.responseJSON.description; // Get the description from the response
+                    }
+                    Notification.notifyError('Error', errorMessage);
+                    break;
+                case 401: // Unauthorized
+                    Notification.notifyError('Error', "You are not authorized to perform this action.");
+                    break;
+                case 404: // Not Found
+                    Notification.notifyError('Error', "User not found.");
+                    break;
+                case 500: // Internal Server Error
+                    Notification.notifyError('Error', "An unexpected error occurred. Please try again later.");
+                    break;
+                default: // Other status codes
+                    Notification.notifyError('Error', "Failed adding new user. Status: " + xhr.status);
+                    break;
+            }
+        }
+    });
+});
+
 
 $(document).ready(function () {
     $(".select-chosen").chosen(); // Initialize Chosen
 
     TablesDatatables.init(); // Initialize the datatable when the document is ready
     populateDepartments();
+    populateAccessGroup();
 });

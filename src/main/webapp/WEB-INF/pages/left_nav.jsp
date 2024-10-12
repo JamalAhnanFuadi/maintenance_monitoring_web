@@ -14,18 +14,6 @@
             <!-- Sidebar Navigation -->
             <ul class="sidebar-nav">
                 <li class="sidebar-header">
-                    <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip" title="Master data"><i class="gi gi-home"></i></a></span>
-                    <span class="sidebar-header-title">Dasboards</span>
-                </li>
-                <li>
-                    <a href="index"><i class="gi gi-stats sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Dashboard 1</span></a>
-                </li>
-                <li>
-                    <a href="#"><i class="gi gi-stats sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Dashboard 2</span></a>
-                </li>
-                <li class="sidebar-header">
                     <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip" title="Master data"><i class="gi gi-server"></i></a></span>
                     <span class="sidebar-header-title">Reports</span>
                 </li>
@@ -42,10 +30,6 @@
                     <span class="sidebar-header-title">Master Data</span>
                 </li>
                 <li>
-                    <a href="application"><i class="gi gi-stats sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Application</span></a>
-                </li>
-                <li>
                     <a href="#" class="sidebar-nav-menu"><i
                             class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i
                             class="gi gi-user sidebar-nav-icon"></i><span
@@ -53,9 +37,6 @@
                     <ul>
                         <li>
                             <a href="user-management">User Management</a>
-                        </li>
-                        <li>
-                            <a href="user-access-group">User Access Group</a>
                         </li>
                         <li>
                             <a href="#">User Access Matrix</a>

@@ -2324,55 +2324,41 @@ textarea.form-control {
 }
 
 .switch input {
-    position: absolute;
-    opacity: 0;
+    display: none; /* Hide the checkbox */
 }
 
 .switch span {
+    display: block;
+    width: 40px;  /* Slightly increased width */
+    height: 20px; /* Slightly increased height */
+    background-color: #eeeeee;
+    border-radius: 20px; /* Match height for a circular edge */
     position: relative;
-    display: inline-block;
-    width: 54px;
-    height: 28px;
-    border-radius: 28px;
-    background-color: #f9f9f9;
-    border: 1px solid #dddddd;
-    -webkit-transition: background-color 0.35s;
-    transition: background-color 0.35s;
+    transition: background-color 0.15s ease-out;
 }
 
 .switch span:after {
     content: "";
     position: absolute;
     left: 2px;
-    top: 1px;
-    bottom: 1px;
-    width: 24px;
+    top: 2px;
+    bottom: 2px;
+    width: 16px;  /* Slightly increased size of the switch handle */
     background-color: #ffffff;
     border: 1px solid #dddddd;
     border-radius: 50%;
-    -webkit-box-shadow: 1px 0 3px rgba(0, 0, 0, 0.05);
     box-shadow: 1px 0 3px rgba(0, 0, 0, 0.05);
-    -webkit-transition: all 0.15s ease-out;
     transition: all 0.15s ease-out;
 }
 
 .switch input:checked + span:after {
-    left: 26px;
+    left: 22px; /* Adjust for the larger width */
     border: none;
-    -webkit-box-shadow: -2px 0 3px rgba(0, 0, 0, 0.1);
     box-shadow: -2px 0 3px rgba(0, 0, 0, 0.1);
 }
 
 .switch input:checked + span {
     background-color: #eeeeee;
-}
-
-.switch-default span {
-    border-color: #dbe1e8;
-}
-
-.switch-default input:checked + span {
-    background-color: #dbe1e8;
 }
 
 .switch-primary span {
@@ -2382,6 +2368,7 @@ textarea.form-control {
 .switch-primary input:checked + span {
     background-color: #1bbae1;
 }
+
 
 .switch-info span {
     border-color: #7abce7;

@@ -75,7 +75,8 @@
                                 <th class="text-center"><i class="gi gi-user"></i></th>
                                 <th class="text-center">Email</th>
                                 <th class="text-center">Department</th>
-                                <th class="text-center">Access Group</th>
+                                <th class="text-center">User Group</th>
+                                <th class="text-center">Status</th>
                                 <th class="text-center">Actions</th>
                             </tr>
                             </thead>
@@ -151,6 +152,19 @@
                             <div class="col-md-6">
                                 <input type="text" id="val_mobileNumber" name="val_mobileNumber"
                                        class="form-control" placeholder="081234567805">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_usergroup">
+                                User Group <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-md-6">
+                                <select id="val_usergroup" name="val_usergroup"
+                                        class="form-control select-chosen" data-placeholder="Select user group"
+                                        style="width: 250px;">
+                                    <option value=""></option>
+                                    <!-- User group list fetch from API -->
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">

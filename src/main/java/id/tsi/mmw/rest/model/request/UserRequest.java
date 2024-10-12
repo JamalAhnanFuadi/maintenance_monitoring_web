@@ -25,6 +25,9 @@ public class UserRequest {
     @JsonProperty("dob")
     private String dob;
 
+    @JsonProperty("accessGroupUid")
+    private String accessGroupUid;
+
     public UserRequest() {
         // default constructor
     }
@@ -83,5 +86,13 @@ public class UserRequest {
 
     public void setDob(String dob) {
         this.dob = dob;
+    }
+
+    public String getAccessGroupUid() {
+        return accessGroupUid;
+    }
+
+    public void setAccessGroupUid(String accessGroupUid) {
+        this.accessGroupUid = accessGroupUid;
     }
 }
