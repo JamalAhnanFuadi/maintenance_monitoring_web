@@ -85,7 +85,7 @@
                 <div class="col-xs-4">
                 </div>
                 <div class="col-xs-8 text-right">
-                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-angle-right"></i> Login to Dashboard</button>
+                    <button id="login-btn" type="submit" class="btn btn-sm btn-primary"></i> Login to Dashboard</button>
                 </div>
             </div>
             <div class="form-group">
@@ -108,7 +108,7 @@
             </div>
             <div class="form-group form-actions">
                 <div class="col-xs-12 text-right">
-                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-angle-right"></i> Reset Password</button>
+                    <button type="submit" class="btn btn-sm btn-primary"></i> Reset Password</button>
                 </div>
             </div>
             <div class="form-group">

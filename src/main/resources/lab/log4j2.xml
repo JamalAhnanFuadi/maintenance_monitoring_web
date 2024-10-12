@@ -11,8 +11,8 @@
 		</Console>
 
 		<RollingFile name="rollingFile"
-					 fileName="${LOG_DIR}/umx2.log"
-					 filePattern="${LOG_DIR}/umx2.%d{dd-MMM}.log.gz"
+					 fileName="${LOG_DIR}/monitoring.log"
+					 filePattern="${LOG_DIR}/monitoring.%d{dd-MMM}.log.gz"
 					 ignoreExceptions="false">
 			<PatternLayout>
 				<Pattern>${PATTERN}</Pattern>

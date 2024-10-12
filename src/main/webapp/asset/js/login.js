@@ -31,6 +31,7 @@ var Login = function() {
             error: function(xhr, status, error) {
                 // Handle error
                 Notification.notifyError('Unauthorized', "Invalid email and/or password");
+                $('#login-btn').prop('disabled', false).find('i.fa-spinner').remove();
             }
         });
     };
@@ -92,6 +93,8 @@ var Login = function() {
                     // This is called when the form is valid
                     var email = $('#login-email').val();
                     var password = $('#login-password').val();
+                    $('#login-btn').prop('disabled', true).prepend('<i class="fa fa-spinner fa-spin"></i> ');
+
                     callLoginAPI(email, password); // Call the login API
                 }
             });
