@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <!-- Main Sidebar -->
-<div id="sidebar" class="themed-background-default themed-color-default">
+<div id="sidebar" class="themed-color-dark-lake themed-background-dark-lake">
     <!-- Wrapper for scrolling functionality -->
     <div id="sidebar-scroll">
         <!-- Sidebar Content -->
@@ -13,18 +13,6 @@
             <!-- END Brand -->
             <!-- Sidebar Navigation -->
             <ul class="sidebar-nav">
-                <li class="sidebar-header">
-                    <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip" title="Master data"><i class="gi gi-home"></i></a></span>
-                    <span class="sidebar-header-title">Dasboards</span>
-                </li>
-                <li>
-                    <a href="index"><i class="gi gi-stats sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Dashboard 1</span></a>
-                </li>
-                <li>
-                    <a href="#"><i class="gi gi-stats sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Dashboard 2</span></a>
-                </li>
                 <li class="sidebar-header">
                     <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip" title="Master data"><i class="gi gi-server"></i></a></span>
                     <span class="sidebar-header-title">Reports</span>
@@ -48,13 +36,10 @@
                             class="sidebar-nav-mini-hide">User</span></a>
                     <ul>
                         <li>
-                            <a href="users">Users</a>
+                            <a href="user-management">User Management</a>
                         </li>
                         <li>
-                            <a href="#">User Group</a>
-                        </li>
-                        <li>
-                            <a href="#">User Access Matric</a>
+                            <a href="#">User Access Matrix</a>
                         </li>
                     </ul>
                 </li>

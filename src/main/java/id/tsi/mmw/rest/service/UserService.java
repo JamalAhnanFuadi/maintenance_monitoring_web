@@ -1,6 +1,7 @@
 package id.tsi.mmw.rest.service;
 
 import id.tsi.mmw.controller.AccessMatrixController;
+import id.tsi.mmw.controller.UserAccessGroupController;
 import id.tsi.mmw.controller.UserController;
 import id.tsi.mmw.manager.EncryptionManager;
 import id.tsi.mmw.model.Authentication;
@@ -11,6 +12,7 @@ import id.tsi.mmw.property.Constants;
 import id.tsi.mmw.property.Property;
 import id.tsi.mmw.rest.model.request.PaginationRequest;
 import id.tsi.mmw.rest.model.request.UserRequest;
+import id.tsi.mmw.rest.model.request.UserStatusRequest;
 import id.tsi.mmw.rest.model.response.UserPaginationResponse;
 import id.tsi.mmw.rest.model.response.UserResponse;
 import id.tsi.mmw.rest.validator.UserValidator;
@@ -37,7 +39,7 @@ public class UserService extends BaseService {
     private UserController userController;
 
     @Inject
-    private AccessMatrixController accessMatrixController;
+    private UserAccessGroupController userAccessGroupController;
 
     private UserValidator validator;
 
@@ -47,63 +49,27 @@ public class UserService extends BaseService {
     }
 
     /**
-     * Gets a list of users given a pagination request.
+     * Get the list of all users in the system.
      *
-     * This function takes a pagination request and uses it to retrieve a list of users
-     * from the database. The function validates the request first, and only proceeds
-     * if the request is valid. If the request is invalid, the function will return
-     * HTTP 400 Bad Request.
-     *
-     * @param request The pagination request containing the page number, page size,
-     *                search filter, and sort order.
-     * @return A response containing a list of users and pagination properties.
+     * @return A JSON response containing the list of users and pagination properties.
      */
     @GET
     @PermitAll
-    public Response getUserList(PaginationRequest request) {
+    public Response getUserList() {
         final String methodName = "getUserList";
         start(methodName);
         log.info(methodName, "Get User List");
-        log.info(methodName, JsonHelper.toJson(request));
         Response response;
 
-        // Validate the request payload
-        boolean validateRequest = validator.validate(request);
-        log.debug(methodName, "Request payload validation : " + validateRequest);
+        // Retrieve the list of users from the database
+        List<User> users = userController.getUserList();
 
-        // If the request is valid, proceed with retrieving the user list
-        if(validateRequest) {
-            // Retrieve the list of users from the database
-            List<User> users = userController.getUserListPagination(
-                    request.getPageSize(),
-                    paginationOffsetBuilder(request.getPageNumber(), request.getPageSize()),
-                    request.getOrderBy(),
-                    request.getSortOrder(),
-                    request.getSearchFilter());
+        // Create a new UserPaginationResponse object and set the pagination and users properties
+        UserPaginationResponse usersResponse = new UserPaginationResponse();
+        usersResponse.setUsers(users);
 
-            // Retrieve the total records and pages from the database
-            Pagination pagination = userController.countTotalRecordsAndPages(request.getPageSize(), request.getSearchFilter());
-
-            // Set the pagination properties in the pagination object
-            pagination.setPageNumber(request.getPageNumber());
-            pagination.setPageSize(request.getPageSize());
-            pagination.setSearchFilter(request.getSearchFilter());
-            pagination.setCurrentPages(users.size());
-            pagination.setOrderBy(request.getOrderBy());
-            pagination.setSortOrder(request.getSortOrder());
-
-            // Create a new UserPaginationResponse object and set the pagination and users properties
-            UserPaginationResponse usersResponse = new UserPaginationResponse();
-            usersResponse.setFilter(pagination);
-            usersResponse.setUsers(users);
-
-            // Build a success response containing the user list and pagination properties
-            response = buildSuccessResponse(usersResponse);
-        } else {
-            // Build a bad request response if the request is invalid
-            response = buildBadRequestResponse(Constants.MESSAGE_INVALID_REQUEST);
-        }
-
+        // Build a success response containing the user list and pagination properties
+        response = buildSuccessResponse(usersResponse);
         completed(methodName);
         return response;
     }
@@ -136,14 +102,8 @@ public class UserService extends BaseService {
         log.debug(methodName, "User validation : " + validateUser);
 
         // If the user id is valid, retrieve the user detail from the database
-        if(validateUser){
+        if (validateUser) {
             User user = userController.getUserByUid(uid);
-            // fetch User access matrix information
-            if(user.getAccessGroupUid() != null && !user.getAccessGroupUid().isEmpty()) {
-                List<UserAccessMatrix> userAccessMatrix = accessMatrixController.getUserAccessMatrix(user.getUid(),user.getAccessGroupUid());
-                user.setUserAccessMatrix(userAccessMatrix);
-            }
-
             // Create a new UserResponse object and set the user property
             UserResponse userResponse = new UserResponse();
             userResponse.setUser(user);
@@ -162,15 +122,15 @@ public class UserService extends BaseService {
 
     /**
      * Creates a new user with the given request payload.
-     *
+     * <p>
      * This function will validate the request payload first, and only proceed
      * if the payload is valid. If the payload is invalid, the function will return
      * HTTP 400 Bad Request.
-     *
+     * <p>
      * If the payload is valid, the function will check if the user email is already
      * exist in the database. If the email is already exist, the function will return
      * HTTP 409 Conflict with a message "User email already exists".
-     *
+     * <p>
      * If the email is not exist, the function will generate a user primary key,
      * generate user information to be create to database, generate user authentication
      * information, and proceed user creation to database. If the user creation is
@@ -196,7 +156,7 @@ public class UserService extends BaseService {
 
         // if payload is valid, continue proceed,
         // else return bad request
-        if(validPayload) {
+        if (validPayload) {
             // validate if user email is already exist. This is done by calling the
             // userController.validateEmail() method, which will validate if the user email
             // is already exist in the database and return true if the email is already exist,
@@ -206,7 +166,7 @@ public class UserService extends BaseService {
 
             // if user not exist, continue user creation process
             // else return user already exist response
-            if(!userExist) {
+            if (!userExist) {
                 // generate user primary key. This is done by generating a UUID string.
                 String uuid = UUID.randomUUID().toString();
 
@@ -219,16 +179,16 @@ public class UserService extends BaseService {
                 user.setLastname(request.getLastname());
 
                 // Concat fistname and lastname to fullname if last name is not empty
-                if(request.getLastname() != null || !request.getLastname().isEmpty()) {
+                if (request.getLastname() != null || !request.getLastname().isEmpty()) {
                     user.setFullname(request.getFirstname() + " " + request.getLastname());
-                }
-                else {
+                } else {
                     user.setFirstname(request.getFirstname());
                 }
 
                 user.setEmail(request.getEmail());
                 user.setMobileNumber(request.getMobileNumber());
-                LocalDate dobLD = DateHelper.parseDate(request.getDob());
+                user.setDepartment(request.getDepartment());
+                LocalDate dobLD = DateHelper.parseFEDate(request.getDob());
                 LocalDateTime dobLDT = dobLD.atStartOfDay();
                 user.setDob(DateHelper.formatDBDateTime(dobLDT));
 
@@ -236,7 +196,7 @@ public class UserService extends BaseService {
                 user.setCreateDt(processingTime);
                 user.setModifyDt(processingTime);
 
-                // generate user authentication information. This is done by generating
+/*                // generate user authentication information. This is done by generating
                 // a salt string, hashing the default password with the salt, and creating
                 // a new Authentication object and set the properties: uid, salt, passwordHash,
                 // loginAllowed, and createDt.
@@ -249,20 +209,21 @@ public class UserService extends BaseService {
                 authentication.setSalt(salt);
                 authentication.setPasswordHash(hashedPassword);
                 authentication.setLoginAllowed(false);
-                authentication.setCreateDt(processingTime);
+                authentication.setCreateDt(processingTime);*/
 
                 // proceed user creation to database
-                boolean created = userController.create(user, authentication);
-                if(created) {
+                boolean created = userController.create(user);
+                if (created) {
+                    boolean addToAccessGroup = userAccessGroupController.addUserToAccessGroup(user.getUid(), request.getAccessGroupUid());
                     // TO DO send email to user after user created to activate login and change the password
                     response = buildSuccessResponse();
-                }else {
+                } else {
                     response = buildBadRequestResponse("User creation failed");
                 }
-            }else {
+            } else {
                 response = buildConflictResponse("User email already exists");
             }
-        }else {
+        } else {
             response = buildBadRequestResponse(Constants.MESSAGE_INVALID_REQUEST);
         }
         completed(methodName);
@@ -270,20 +231,85 @@ public class UserService extends BaseService {
     }
 
     @PUT
-    public Response update(User user) {
+    public Response update(UserRequest request) {
         final String methodName = "update";
-        Response response = buildSuccessResponse();
+        Response response;
         start(methodName);
+        log.info(methodName, "Update User");
+        log.info(methodName, JsonHelper.toJson(request));
 
-        boolean result = userController.update(user);
+        // validate request payload. This is done by calling the validator.create() method,
+        // which will validate the request payload and return true if the payload is valid,
+        // otherwise false.
+        boolean validPayload = validator.update(request);
+        log.debug(methodName, "Request payload validation : " + validPayload);
 
+        // if payload is valid, continue proceed,
+        // else return bad request
+        if (validPayload) {
+            // validate if user email is already exist. This is done by calling the
+            // userController.validateEmail() method, which will validate if the user email
+            // is already exist in the database and return true if the email is already exist,
+            // otherwise false.
+            boolean userExist = userController.validateUserUid(request.getUid());
+            log.debug(methodName, "User validation : " + userExist);
+
+            // if user not exist, continue user creation process
+            // else return user already exist response
+            if (userExist) {
+
+                // Generate user information to be create to database.
+                // This is done by creating a new User object and set the properties:
+                // uid, firstname, lastname, fullname, email, mobile number, date of birth
+                User user = new User();
+                user.setUid(request.getUid());
+                user.setFirstname(request.getFirstname());
+                user.setLastname(request.getLastname());
+
+                // Concat fistname and lastname to fullname if last name is not empty
+                if (request.getLastname() != null || !request.getLastname().isEmpty()) {
+                    user.setFullname(request.getFirstname() + " " + request.getLastname());
+                } else {
+                    user.setFirstname(request.getFirstname());
+                }
+
+                user.setEmail(request.getEmail());
+                user.setMobileNumber(request.getMobileNumber());
+                user.setDepartment(request.getDepartment());
+                LocalDate dobLD = DateHelper.parseFEDate(request.getDob());
+                LocalDateTime dobLDT = dobLD.atStartOfDay();
+                user.setDob(DateHelper.formatDBDateTime(dobLDT));
+
+                String processingTime = DateHelper.formatDateTime(LocalDateTime.now());
+                user.setModifyDt(processingTime);
+
+                // proceed user update to database
+                boolean created = userController.update(user);
+                if (created) {
+                    boolean hasAccessGroup = userAccessGroupController.validateHasAccessGroup(request.getUid());
+                    if(hasAccessGroup){
+                        boolean updateToAccessGroup = userAccessGroupController.UpdateUserToAccessGroup(user.getUid(), request.getAccessGroupUid());
+                    }else {
+                        boolean addToAccessGroup = userAccessGroupController.addUserToAccessGroup(user.getUid(), request.getAccessGroupUid());
+                    }
+
+                    response = buildSuccessResponse();
+                } else {
+                    response = buildBadRequestResponse("User update failed");
+                }
+            } else {
+                response = buildConflictResponse("User not exists");
+            }
+        } else {
+            response = buildBadRequestResponse(Constants.MESSAGE_INVALID_REQUEST);
+        }
         completed(methodName);
         return response;
     }
 
     /**
      * Deletes a user from the database.
-     *
+     * <p>
      * This function takes a user UID as a parameter and deletes the user from the database.
      * If the user does not exist in the database, the function will return a 400 Bad Request
      * with a message indicating that the user was not found. If the user deletion is successful,
@@ -324,6 +350,49 @@ public class UserService extends BaseService {
             // indicating that the user was not found.
             response = buildBadRequestResponse("User not found");
         }
+        completed(methodName);
+        return response;
+    }
+
+    @POST
+    @Path("status")
+    public Response updateStatus(UserStatusRequest request) {
+        final String methodName = "updateStatus";
+        start(methodName);
+
+        Response response;
+        log.info(methodName, "Update user status (" + request.getUid() + ") : " + request.isStatus());
+
+        boolean validPayload = validator.updateStatus(request);
+        log.debug(methodName, "Request payload validation : " + validPayload);
+
+        if (validPayload) {
+            // First we need to check if the user exists in the database. If the user does not exist,
+            // we will return a 400 Bad Request with a message indicating that the user was not found.
+            boolean userExist = userController.validateUserUid(request.getUid());
+            log.debug(methodName, "User validation : " + userExist);
+
+            if (userExist) {
+                // If the user exists, we will proceed to delete the user from the database.
+                // If the deletion is successful, we will return a 200 OK response. Otherwise, we
+                // will return a 400 Bad Request with a message indicating that the user deletion
+                // failed.
+                boolean update = userController.updateUserStatus(request.getUid(), request.isStatus());
+                log.debug(methodName, "User status update : " + update);
+                if (update) {
+                    response = buildSuccessResponse();
+                } else {
+                    response = buildBadRequestResponse("User update failed");
+                }
+            } else {
+                // If the user does not exist, we will return a 400 Bad Request with a message
+                // indicating that the user was not found.
+                response = buildBadRequestResponse("User not found");
+            }
+        } else {
+            response = buildBadRequestResponse(Constants.MESSAGE_INVALID_REQUEST);
+        }
+
         completed(methodName);
         return response;
     }

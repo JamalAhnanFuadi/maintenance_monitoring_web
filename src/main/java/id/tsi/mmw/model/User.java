@@ -29,6 +29,9 @@ public class User {
     @JsonProperty("dob")
     private String dob;
 
+    @JsonProperty("department")
+    private String department;
+
     @JsonProperty("status")
     private boolean status;
 
@@ -153,5 +156,13 @@ public class User {
 
     public void setUserAccessMatrix(List<UserAccessMatrix> userAccessMatrix) {
         this.userAccessMatrix = userAccessMatrix;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
     }
 }

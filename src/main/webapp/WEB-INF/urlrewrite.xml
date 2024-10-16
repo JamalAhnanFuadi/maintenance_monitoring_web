@@ -15,50 +15,18 @@
 	</rule>
 
 	<rule>
-		<from>^/users$</from>
+		<from>^/user-management$</from>
 		<to>/WEB-INF/user_management.jsp</to>
 	</rule>
 
 	<rule>
-		<from>^/business-roles$</from>
-		<to>/WEB-INF/businessRoleManagement.jsp</to>
+		<from>^/user-access-group$</from>
+		<to>/WEB-INF/user-access-group.jsp</to>
 	</rule>
 
 	<rule>
-		<from>^/executions$</from>
-		<to>/WEB-INF/executionHistory.jsp</to>
+		<from>^/application</from>
+		<to>/WEB-INF/application.jsp</to>
 	</rule>
-
-	<rule>
-		<from>^/executions/report$</from>
-		<to>/WEB-INF/executionReport.jsp</to>
-	</rule>
-
-	<rule>
-		<from>^/applications$</from>
-		<to>/WEB-INF/applicationManagement.jsp</to>
-	</rule>
-
-	<rule>
-		<from>^/whitelists$</from>
-		<to>/WEB-INF/whitelistManagement.jsp</to>
-	</rule>
-
-	<rule>
-		<from>^/configurations/global$</from>
-		<to>/WEB-INF/configurationSetting.jsp</to>
-	</rule>
-
-	<rule>
-		<from>^/configurations/application$</from>
-		<to>/WEB-INF/configurationApplication.jsp</to>
-	</rule>
-    
-      <rule>
-    <from>^/servers$</from>
-    <to>/WEB-INF/serverManagement.jsp</to>
-  </rule>
-    
-
 
 </urlrewrite>

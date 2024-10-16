@@ -19,8 +19,14 @@ public class UserRequest {
     @JsonProperty("mobileNumber")
     private String mobileNumber;
 
+    @JsonProperty("department")
+    private String department;
+
     @JsonProperty("dob")
     private String dob;
+
+    @JsonProperty("accessGroupUid")
+    private String accessGroupUid;
 
     public UserRequest() {
         // default constructor
@@ -66,11 +72,27 @@ public class UserRequest {
         this.mobileNumber = mobileNumber;
     }
 
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
     public String getDob() {
         return dob;
     }
 
     public void setDob(String dob) {
         this.dob = dob;
+    }
+
+    public String getAccessGroupUid() {
+        return accessGroupUid;
+    }
+
+    public void setAccessGroupUid(String accessGroupUid) {
+        this.accessGroupUid = accessGroupUid;
     }
 }
