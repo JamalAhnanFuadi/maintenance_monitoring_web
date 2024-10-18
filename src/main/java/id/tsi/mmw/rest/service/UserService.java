@@ -1,16 +1,12 @@
 package id.tsi.mmw.rest.service;
 
-import id.tsi.mmw.controller.AccessMatrixController;
 import id.tsi.mmw.controller.UserAccessGroupController;
 import id.tsi.mmw.controller.UserController;
-import id.tsi.mmw.manager.EncryptionManager;
-import id.tsi.mmw.model.Authentication;
-import id.tsi.mmw.model.Pagination;
+import id.tsi.mmw.filter.ApplicationFilter;
+import id.tsi.mmw.model.Principal;
 import id.tsi.mmw.model.User;
-import id.tsi.mmw.model.UserAccessMatrix;
 import id.tsi.mmw.property.Constants;
-import id.tsi.mmw.property.Property;
-import id.tsi.mmw.rest.model.request.PaginationRequest;
+import id.tsi.mmw.rest.model.request.EmailValidateRequest;
 import id.tsi.mmw.rest.model.request.UserRequest;
 import id.tsi.mmw.rest.model.request.UserStatusRequest;
 import id.tsi.mmw.rest.model.response.UserPaginationResponse;
@@ -46,6 +42,47 @@ public class UserService extends BaseService {
     public UserService() {
         log = getLogger(this.getClass());
         validator = new UserValidator();
+    }
+
+    @POST
+    @Path("/validate/email")
+    public Response validateEmail(EmailValidateRequest request) {
+        final String methodName = "validateEmail";
+        start(methodName);
+
+        Response response;
+        log.info(methodName, "Validate email (" + request.getEmail() + ")");
+
+        boolean validPayload = validator.validate(request);
+        log.debug(methodName, "Request payload validation : " + validPayload);
+
+        if (validPayload) {
+            // First we need to check if the user exists in the database. If the user does not exist,
+            // we will return a 400 Bad Request with a message indicating that the user was not found.
+            boolean userExist = userController.validateEmail(request.getEmail());
+            log.debug(methodName, "User validation : " + userExist);
+
+            if (userExist) {
+
+                User user = userController.getUserDetailByEmail(request.getEmail());
+
+                // If the user exists,
+                Principal principal = new Principal(request.getEmail());
+                setSessionAttribute(ApplicationFilter.SESSION_KEY, principal);
+                setSessionAttribute(Constants.SESSION_USER, user);
+
+                response = buildSuccessResponse();
+            } else {
+                // If the user does not exist, we will return a 400 Bad Request with a message
+                // indicating that the user was not found.
+                response = buildBadRequestResponse("User not found");
+            }
+        } else {
+            response = buildBadRequestResponse(Constants.MESSAGE_INVALID_REQUEST);
+        }
+
+        completed(methodName);
+        return response;
     }
 
     /**
@@ -141,6 +178,7 @@ public class UserService extends BaseService {
      * @return A response containing the result of the user creation.
      */
     @POST
+    @PermitAll
     public Response create(UserRequest request) {
         final String methodName = "create";
         Response response = null;
@@ -231,6 +269,7 @@ public class UserService extends BaseService {
     }
 
     @PUT
+    @PermitAll
     public Response update(UserRequest request) {
         final String methodName = "update";
         Response response;
@@ -321,6 +360,7 @@ public class UserService extends BaseService {
      */
     @DELETE
     @Path("{uid}")
+    @PermitAll
     public Response delete(@PathParam("uid") String uid) {
         final String methodName = "delete";
         start(methodName);
@@ -356,6 +396,7 @@ public class UserService extends BaseService {
 
     @POST
     @Path("status")
+    @PermitAll
     public Response updateStatus(UserStatusRequest request) {
         final String methodName = "updateStatus";
         start(methodName);

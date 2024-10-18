@@ -18,4 +18,14 @@ public class Property {
     public static final String ENCRYPTION_SALT_LENGTH = "encryption.salt.length";
     public static final String USER_DEFAULT_PASSWORD = "user.default.password";
 
+    public static final String MAIL_SMTP_HOST = "mail.smtp.host";
+    public static final String MAIL_SMTP_PORT = "mail.smtp.port";
+    public static final String MAIL_SMTP_SENDER = "mail.smtp.sender";
+    public static final String MAIL_SMTP_USERNAME = "mail.smtp.username";
+    public static final String MAIL_SMTP_PASSWORD = "mail.smtp.password";
+    public static final String MAIL_SMTP_AUTH_REQUIRED = "mail.smtp.auth.required";
+    public static final String MAIL_SMTP_STARTTLS = "mail.smtp.starttls.enable";
+    public static final String MAIL_SMTP_SOCKET_PORT = "mail.smtp.socketFactory.port";
+    public static final String MAIL_SMTP_SOCKET_CLASS = "mail.smtp.socketFactory.class";
+
 }

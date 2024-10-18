@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>TSI - Monitoring and Maintentance Dashboard</title>
+    <title>TSI - OTP verification</title>
 
     <meta name="description" content="ProUI is a Responsive Bootstrap Admin Template created by pixelcave and published on Themeforest.">
     <meta name="author" content="pixelcave">
@@ -50,7 +50,7 @@
     <!-- Login Title -->
     <div class="login-title text-center" style="display: flex; align-items: left; justify-content: left;">
         <img src="asset/img/logo.png" alt="Company Logo" style="width: 150px; height: auto; object-fit: contain; margin-right: 20px;">
-        <h1 style="text-align: left;"><small><strong>Monitoring and Maintenance Dashboard</strong></small></h1>
+        <h1 style="text-align: left;"><small><strong>OTP verification</strong></small></h1>
     </div>
     <!-- END Login Title -->
 
@@ -62,16 +62,20 @@
             <div class="form-group">
                 <div class="col-xs-12">
                     <div class="input-group">
-                        <span class="input-group-addon"><i class="gi gi-envelope"></i></span>
-                        <input type="text" id="login-email" name="login-email" class="form-control input-lg" placeholder="Email">
+                        <p> An OTP code has been sent to your email address: <strong  id="email-display"></strong>.</p>
+                        <p>Please check your inbox and use the code to complete the verification process. If you don't receive the email within a few minutes, check your spam folder or request a new code.</p>
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-xs-12">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="gi gi-asterisk"></i></span>
-                        <input type="password" id="login-password" name="login-password" class="form-control input-lg" placeholder="Password">
+                    <div class="input-group otp-input-group">
+                        <input type="tel" id="otp1" maxlength="1" class="form-control input-lg otp-box" oninput="moveToNext(this, 'otp2', null)">
+                        <input type="tel" id="otp2" maxlength="1" class="form-control input-lg otp-box" oninput="moveToNext(this, 'otp3', 'otp1')">
+                        <input type="tel" id="otp3" maxlength="1" class="form-control input-lg otp-box" oninput="moveToNext(this, 'otp4', 'otp2')">
+                        <input type="tel" id="otp4" maxlength="1" class="form-control input-lg otp-box" oninput="moveToNext(this, 'otp5', 'otp3')">
+                        <input type="tel" id="otp5" maxlength="1" class="form-control input-lg otp-box" oninput="moveToNext(this, 'otp6', 'otp4')">
+                        <input type="tel" id="otp6" maxlength="1" class="form-control input-lg otp-box" oninput="moveToNext(this, null, 'otp5')">
                     </div>
                 </div>
             </div>
@@ -79,41 +83,17 @@
                 <div class="col-xs-4">
                 </div>
                 <div class="col-xs-8 text-right">
-                    <button id="login-btn" type="submit" class="btn btn-sm btn-primary"></i> Login to Dashboard</button>
+                    <button id="otp-verify-btn" type="submit" class="btn btn-sm btn-primary"></i>Verify</button>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-xs-12 text-center">
-                    <a href="javascript:void(0)" id="link-reminder-login"><small>Forgot password?</small></a>
+                    <a href="" id="resend-otp"><small>Resend OTP</small></a>
                 </div>
             </div>
         </form>
         <!-- END Login Form -->
 
-        <!-- Reminder Form -->
-        <form action="login_full.html#reminder" method="post" id="form-reminder" class="form-horizontal form-bordered form-control-borderless display-none">
-            <div class="form-group">
-                <div class="col-xs-12">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="gi gi-envelope"></i></span>
-                        <input type="text" id="reminder-email" name="reminder-email" class="form-control input-lg" placeholder="Email">
-                    </div>
-                </div>
-            </div>
-            <div class="form-group form-actions">
-                <div class="col-xs-12 text-right">
-                    <button id="reset-password-btn" type="submit" class="btn btn-sm btn-primary"></i> Reset Password</button>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-xs-12 text-center">
-                    <small>Did you remember your password?</small> <a href="javascript:void(0)" id="link-reminder"><small>Login</small></a>
-                </div>
-            </div>
-        </form>
-        <!-- END Reminder Form -->
-
-        <!-- END Register Form -->
     </div>
     <!-- END Login Block -->
 </div>
@@ -128,7 +108,7 @@
 <script src="asset/js/main.js"></script>
 
 <!-- Load and execute javascript code used only in this page -->
-<script src="asset/js/login.js"></script>
+<script src="asset/js/reset-password-otp.js"></script>
 <script>$(function(){ Login.init(); });</script>
 </body>
 </html>

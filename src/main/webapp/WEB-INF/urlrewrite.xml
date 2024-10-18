@@ -10,6 +10,11 @@
 	</rule>
 
 	<rule>
+		<from>^/otp-validation</from>
+		<to>/WEB-INF/reset_password_otp.jsp</to>
+	</rule>
+
+	<rule>
 		<from>^/index$</from>
 		<to>/WEB-INF/index.jsp</to>
 	</rule>
