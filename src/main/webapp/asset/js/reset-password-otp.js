@@ -1,166 +1,3 @@
-var Login = function () {
-
-    // Function for switching form views (login, reminder, and register forms)
-    var switchView = function (viewHide, viewShow, viewHash) {
-        viewHide.slideUp(250);
-        viewShow.slideDown(250, function () {
-            $('input').placeholder();
-        });
-
-        if (viewHash) {
-            window.location = '#' + viewHash;
-        } else {
-            window.location = '#';
-        }
-    };
-
-    // Function to handle the login API call
-    var callLoginAPI = function (email, password) {
-        $.ajax({
-            url: '/monitoring/rest/authentications', // Replace with your API endpoint
-            type: 'POST',
-            contentType: 'application/json', // Set the content type to JSON
-            data: JSON.stringify({ // Convert data to JSON string
-                username: email,
-                password: password
-            }),
-            success: function (response) {
-                window.location.href = 'index';
-                sessionStorage.setItem("authenticated", true); // Save to sessionStorage
-            },
-            error: function (xhr, status, error) {
-                // Handle error
-                Notification.notifyError('Unauthorized', "Invalid email and/or password");
-                $('#login-btn').prop('disabled', false).find('i.fa-spinner').remove();
-            }
-        });
-    };
-
-    // Function to handle the login API call
-    var callValidateEmailAPI = function (email) {
-        $.ajax({
-            url: '/monitoring/rest/users/validate/email', // Replace with your API endpoint
-            type: 'POST',
-            contentType: 'application/json', // Set the content type to JSON
-            data: JSON.stringify({ // Convert data to JSON string
-                email: email
-            }),
-            success: function (response) {
-                console.log(response.description)
-                Notification.notifySuccess('Success', "Successfully delete user " + response);
-                $('#reset-password-btn').prop('disabled', false).find('i.fa-spinner').remove();
-            },
-            error: function (xhr, status, error) {
-                // Check if the response contains a JSON object
-                if (xhr.responseJSON && xhr.responseJSON.description) {
-                    Notification.notifyError('Error', xhr.responseJSON.description);
-                } else {
-                    // Fallback if there's no responseJSON
-                    Notification.notifyError('Error', "Server Error");
-                }
-                $('#reset-password-btn').prop('disabled', false).find('i.fa-spinner').remove();
-            }
-        });
-    };
-
-
-    return {
-        init: function () {
-            /* Switch Login, Reminder and Register form views */
-            var formLogin = $('#form-login'),
-                formReminder = $('#form-reminder');
-
-            $('#link-reminder-login').click(function () {
-                switchView(formLogin, formReminder, 'reminder');
-            });
-
-            $('#link-reminder').click(function () {
-                switchView(formReminder, formLogin, '');
-            });
-
-            // If the link includes the hashtag 'reminder', show the reminder form instead of login
-            if (window.location.hash === '#reminder') {
-                formLogin.hide();
-                formReminder.show();
-            }
-
-            // Initialize Validation and handle form submission
-            $('#form-login').validate({
-                errorClass: 'help-block animation-slideDown',
-                errorElement: 'div',
-                errorPlacement: function (error, e) {
-                    e.parents('.form-group > div').append(error);
-                },
-                highlight: function (e) {
-                    $(e).closest('.form-group').removeClass('has-success has-error').addClass('has-error');
-                    $(e).closest('.help-block').remove();
-                },
-                success: function (e) {
-                    e.closest('.form-group').removeClass('has-success has-error');
-                    e.closest('.help-block').remove();
-                },
-                rules: {
-                    'login-email': {
-                        required: true,
-                        email: true
-                    },
-                    'login-password': {
-                        required: true,
-                        minlength: 5
-                    }
-                },
-                messages: {
-                    'login-email': 'Please enter your account\'s email',
-                    'login-password': {
-                        required: 'Please provide your password',
-                        minlength: 'Your password must be at least 5 characters long'
-                    }
-                },
-                submitHandler: function (form) {
-                    // This is called when the form is valid
-                    var email = $('#login-email').val();
-                    var password = $('#login-password').val();
-                    $('#login-btn').prop('disabled', true).prepend('<i class="fa fa-spinner fa-spin"></i> ');
-
-                    callLoginAPI(email, password); // Call the login API
-                }
-            });
-
-            /* Reminder form - Initialize Validation */
-            $('#form-reminder').validate({
-                errorClass: 'help-block animation-slideDown',
-                errorElement: 'div',
-                errorPlacement: function (error, e) {
-                    e.parents('.form-group > div').append(error);
-                },
-                highlight: function (e) {
-                    $(e).closest('.form-group').removeClass('has-success has-error').addClass('has-error');
-                    $(e).closest('.help-block').remove();
-                },
-                success: function (e) {
-                    e.closest('.form-group').removeClass('has-success has-error');
-                    e.closest('.help-block').remove();
-                },
-                rules: {
-                    'reminder-email': {
-                        required: true,
-                        email: true
-                    }
-                },
-                messages: {
-                    'reminder-email': 'Please enter your account\'s email'
-                },
-                submitHandler: function (form) {
-                    // This is called when the form is valid
-                    var email = $('#reminder-email').val();
-                    $('#reset-password-btn').prop('disabled', true).prepend('<i class="fa fa-spinner fa-spin"></i> ');
-
-                    callValidateEmailAPI(email); // Call the login API
-                }
-            });
-        }
-    };
-}();
 
 // Function to focus on the first box if all are empty, or the last filled box
 function handleFocusOnClick() {
@@ -204,6 +41,8 @@ function moveToNext(current, nextFieldId, prevFieldId) {
 
 document.getElementById('resend-otp').addEventListener('click', function (event) {
     event.preventDefault(); // Prevent the default anchor action
+    const errorMessage = document.getElementById('otp-error');
+    errorMessage.style.display = 'none'; // Hide error message
 
     // Disable the OTP verify button
     $('#otp-verify-btn').prop('disabled', true);
@@ -242,10 +81,40 @@ document.getElementById('resend-otp').addEventListener('click', function (event)
     });
 });
 
+document.getElementById('otp-verify-btn').addEventListener('click', function () {
+    event.preventDefault(); // Prevent the default anchor action
+
+    $('#otp-verify-btn').prop('disabled', true).prepend('<i class="fa fa-spinner fa-spin"></i> ');
+
+    const otpInputs = document.querySelectorAll('.otp-input-group input');
+    const errorMessage = document.getElementById('otp-error');
+    let allFilled = true;
+
+    // Check if all OTP fields are filled
+    otpInputs.forEach(input => {
+        if (!input.value) {
+            allFilled = false;
+        }
+    });
+
+    // Display or hide error message
+    if (!allFilled) {
+        errorMessage.style.display = 'block'; // Show error message
+        $('#otp-verify-btn').prop('disabled', false).find('i.fa-spinner').remove();
+    } else {
+        errorMessage.style.display = 'none'; // Hide error message
+        // Here you can proceed with further actions, like submitting the OTP
+        // For example, you might want to gather the OTP values and send them to your server.
+        const otpValues = Array.from(otpInputs).map(input => input.value).join('');
+    }
+    setTimeout(() => {
+        $('#otp-verify-btn').prop('disabled', false).find('i.fa-spinner').remove();
+    }, 3000); // Re-enable after 30 seconds
+});
+
 
 // Initialize the Login module
 $(document).ready(function () {
-    Login.init();
     const sessionEmail = sessionStorage.getItem('reset-password-email');
     document.getElementById('email-display').textContent = sessionEmail; // Display email
     document.getElementById('otp1').focus();

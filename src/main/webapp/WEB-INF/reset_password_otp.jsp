@@ -64,6 +64,9 @@
                     <div class="input-group">
                         <p> An OTP code has been sent to your email address: <strong  id="email-display"></strong>.</p>
                         <p>Please check your inbox and use the code to complete the verification process. If you don't receive the email within a few minutes, check your spam folder or request a new code.</p>
+
+                        <p id="otp-error" style="color: red; display: none;">Please fill in all OTP fields.</p> <!-- Error message -->
+
                     </div>
                 </div>
             </div>
@@ -109,6 +112,5 @@
 
 <!-- Load and execute javascript code used only in this page -->
 <script src="asset/js/reset-password-otp.js"></script>
-<script>$(function(){ Login.init(); });</script>
 </body>
 </html>

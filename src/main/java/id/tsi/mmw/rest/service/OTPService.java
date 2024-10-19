@@ -5,7 +5,6 @@ import id.tsi.mmw.filter.ApplicationFilter;
 import id.tsi.mmw.model.Principal;
 import id.tsi.mmw.model.User;
 import id.tsi.mmw.property.Constants;
-import id.tsi.mmw.rest.model.request.EmailValidateRequest;
 import id.tsi.mmw.rest.model.request.OTPRequest;
 import id.tsi.mmw.rest.validator.OTPValidator;
 import id.tsi.mmw.util.helper.EmailHelper;
