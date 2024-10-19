@@ -115,7 +115,6 @@ document.getElementById('otp-verify-btn').addEventListener('click', function () 
 
 // Initialize the Login module
 $(document).ready(function () {
-    const sessionEmail = sessionStorage.getItem('reset-password-email');
-    document.getElementById('email-display').textContent = sessionEmail; // Display email
+    document.getElementById('email-display').textContent = sessionStorage.getItem('reset-password-email'); // Display email
     document.getElementById('otp1').focus();
 });
