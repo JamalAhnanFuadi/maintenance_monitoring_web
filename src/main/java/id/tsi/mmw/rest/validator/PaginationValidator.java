@@ -1,5 +1,6 @@
 package id.tsi.mmw.rest.validator;
 
+import id.tsi.mmw.rest.model.request.EmailValidateRequest;
 import id.tsi.mmw.rest.model.request.PaginationRequest;
 
 public class PaginationValidator extends BaseValidator {

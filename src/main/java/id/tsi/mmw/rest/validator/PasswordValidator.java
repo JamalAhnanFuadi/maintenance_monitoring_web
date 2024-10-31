@@ -1,5 +1,6 @@
 package id.tsi.mmw.rest.validator;
 
+import id.tsi.mmw.rest.model.request.EmailValidateRequest;
 import id.tsi.mmw.rest.model.request.PasswordRequest;
 
 public class PasswordValidator extends BaseValidator{
@@ -12,5 +13,11 @@ public class PasswordValidator extends BaseValidator{
         return notNull(request)
                 && validate(request.getEmail())
                 && validate(request.getPassword());
+    }
+
+
+    public boolean validate(EmailValidateRequest request) {
+        return notNull(request)
+                && validate(request.getEmail());
     }
 }

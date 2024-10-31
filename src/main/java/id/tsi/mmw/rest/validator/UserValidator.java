@@ -1,5 +1,6 @@
 package id.tsi.mmw.rest.validator;
 
+import id.tsi.mmw.rest.model.request.EmailValidateRequest;
 import id.tsi.mmw.rest.model.request.UserRequest;
 import id.tsi.mmw.rest.model.request.UserStatusRequest;
 
@@ -34,5 +35,8 @@ public class UserValidator extends PaginationValidator {
     public boolean updateStatus(UserStatusRequest request) {
         return notNull(request)
                 && validate(request.getUid());
+    }
+    public boolean validate(EmailValidateRequest request) {
+        return notNull(request) && validate(request.getEmail());
     }
 }

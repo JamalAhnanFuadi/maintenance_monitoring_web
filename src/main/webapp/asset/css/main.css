@@ -3546,6 +3546,36 @@ p, .table, .alert, .carousel {
     border-radius: 0;
 }
 
+.otp-input-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Spacing between input boxes */
+}
+
+.otp-box {
+    width: 50px; /* Set the width of each box */
+    height: 50px; /* Set the height of each box */
+    text-align: center; /* Center the text inside */
+    font-size: 24px; /* Make the font larger */
+    border: 2px solid #ccc; /* Add a border to create a box appearance */
+    border-radius: 5px; /* Slightly rounded corners */
+    padding: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for a 3D effect */
+}
+
+/* Highlight the focused input box */
+.otp-box:focus {
+    border-color: #007bff; /* Change border color on focus */
+    outline: none; /* Remove default outline */
+    background-color: #f0f8ff; /* Light background on focus for visibility */
+}
+
+#resend-otp.disabled {
+    color: #888888; /* Gray color for disabled */
+    cursor: not-allowed; /* Change cursor to indicate it’s not clickable */
+    text-decoration: none; /* Remove underline */
+}
+
 /*
 =================================================================
 (#m07hes) HELPERS

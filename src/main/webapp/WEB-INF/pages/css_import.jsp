@@ -2,15 +2,10 @@
 
 <!-- Icons -->
 <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
-<link rel="shortcut icon" href="${pageContext.request.contextPath}/asset/img/favicon.png">
-<link rel="apple-touch-icon" href="${pageContext.request.contextPath}/asset/img/icon57.png" sizes="57x57">
-<link rel="apple-touch-icon" href="${pageContext.request.contextPath}/asset/img/icon72.png" sizes="72x72">
-<link rel="apple-touch-icon" href="${pageContext.request.contextPath}/asset/img/icon76.png" sizes="76x76">
-<link rel="apple-touch-icon" href="${pageContext.request.contextPath}/asset/img/icon114.png" sizes="114x114">
-<link rel="apple-touch-icon" href="${pageContext.request.contextPath}/asset/img/icon120.png" sizes="120x120">
-<link rel="apple-touch-icon" href="${pageContext.request.contextPath}/asset/img/icon144.png" sizes="144x144">
-<link rel="apple-touch-icon" href="${pageContext.request.contextPath}/asset/img/icon152.png" sizes="152x152">
-<link rel="apple-touch-icon" href="${pageContext.request.contextPath}/asset/img/icon180.png" sizes="180x180">
+<link rel="apple-touch-icon" sizes="180x180" href="asset/img/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="asset/img/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="asset/img/favicon-16x16.png">
+<link rel="manifest" href="asset/img/site.webmanifest">
 <!-- END Icons -->
 
 <!-- Stylesheets -->

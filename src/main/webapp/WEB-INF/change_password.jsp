@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>TSI - Monitoring and Maintentance Dashboard</title>
+    <title>TSI - Change password</title>
 
     <meta name="description" content="ProUI is a Responsive Bootstrap Admin Template created by pixelcave and published on Themeforest.">
     <meta name="author" content="pixelcave">
@@ -50,7 +50,7 @@
     <!-- Login Title -->
     <div class="login-title text-center" style="display: flex; align-items: left; justify-content: left;">
         <img src="asset/img/logo.png" alt="Company Logo" style="width: 150px; height: auto; object-fit: contain; margin-right: 20px;">
-        <h1 style="text-align: left;"><small><strong>Monitoring and Maintenance Dashboard</strong></small></h1>
+        <h1 style="text-align: left;"><small><strong>Change your password</strong></small></h1>
     </div>
     <!-- END Login Title -->
 
@@ -62,8 +62,7 @@
             <div class="form-group">
                 <div class="col-xs-12">
                     <div class="input-group">
-                        <span class="input-group-addon"><i class="gi gi-envelope"></i></span>
-                        <input type="text" id="login-email" name="login-email" class="form-control input-lg" placeholder="Email">
+                        <p id="change-password-error" style="color: red; display: none;"></p>
                     </div>
                 </div>
             </div>
@@ -71,7 +70,15 @@
                 <div class="col-xs-12">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="gi gi-asterisk"></i></span>
-                        <input type="password" id="login-password" name="login-password" class="form-control input-lg" placeholder="Password">
+                        <input type="password" id="new-password" name="new-password" class="form-control input-lg" placeholder="New password">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="gi gi-asterisk"></i></span>
+                        <input type="password" id="confirm-password" name="confirm-password" class="form-control input-lg" placeholder="Confirm password">
                     </div>
                 </div>
             </div>
@@ -79,41 +86,12 @@
                 <div class="col-xs-4">
                 </div>
                 <div class="col-xs-8 text-right">
-                    <button id="login-btn" type="submit" class="btn btn-sm btn-primary"></i> Login to Dashboard</button>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-xs-12 text-center">
-                    <a href="javascript:void(0)" id="link-reminder-login"><small>Forgot password?</small></a>
+                    <button id="change-password-btn" type="submit" class="btn btn-sm btn-primary"></i>Change password</button>
                 </div>
             </div>
         </form>
         <!-- END Login Form -->
 
-        <!-- Reminder Form -->
-        <form action="login_full.html#reminder" method="post" id="form-reminder" class="form-horizontal form-bordered form-control-borderless display-none">
-            <div class="form-group">
-                <div class="col-xs-12">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="gi gi-envelope"></i></span>
-                        <input type="text" id="reminder-email" name="reminder-email" class="form-control input-lg" placeholder="Email">
-                    </div>
-                </div>
-            </div>
-            <div class="form-group form-actions">
-                <div class="col-xs-12 text-right">
-                    <button id="reset-password-btn" type="submit" class="btn btn-sm btn-primary"></i> Reset Password</button>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-xs-12 text-center">
-                    <small>Did you remember your password?</small> <a href="javascript:void(0)" id="link-reminder"><small>Login</small></a>
-                </div>
-            </div>
-        </form>
-        <!-- END Reminder Form -->
-
-        <!-- END Register Form -->
     </div>
     <!-- END Login Block -->
 </div>
@@ -128,7 +106,6 @@
 <script src="asset/js/main.js"></script>
 
 <!-- Load and execute javascript code used only in this page -->
-<script src="asset/js/login.js"></script>
-<script>$(function(){ Login.init(); });</script>
+<script src="asset/js/change-password.js"></script>
 </body>
 </html>
