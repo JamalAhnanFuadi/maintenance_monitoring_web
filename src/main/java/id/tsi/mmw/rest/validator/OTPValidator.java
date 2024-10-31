@@ -8,9 +8,14 @@ public class OTPValidator extends BaseValidator{
         // Empty Constructor
     }
 
-    public boolean validateRequestOtp (OTPRequest request) {
+    public boolean validateOtpRequest(OTPRequest request) {
         return notNull(request)
                 && validate(request.getEmail());
+    }
+    public boolean validateOtpValidate (OTPRequest request) {
+        return notNull(request)
+                && validate(request.getEmail())
+                && validate(request.getOtpCode());
     }
 
 }

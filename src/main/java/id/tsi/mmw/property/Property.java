@@ -28,4 +28,11 @@ public class Property {
     public static final String MAIL_SMTP_SOCKET_PORT = "mail.smtp.socketFactory.port";
     public static final String MAIL_SMTP_SOCKET_CLASS = "mail.smtp.socketFactory.class";
 
+    public static final String OTP_TEST_ENABLE = "otp.test.enable";
+    public static final String OTP_TEST_CODE = "otp.test.code";
+    public static final String OTP_EXPIRY = "otp.expiry";
+    public static final String OTP_RETRY_COUNT = "otp.retry.count";
+    public static final String OTP_LINK_FORMAT = "otp.link.format";
+
+    public static final String PASSWORD_RESET_LINK_FORMAT = "password.reset.link.format";
 }

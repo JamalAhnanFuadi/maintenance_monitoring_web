@@ -1,12 +1,16 @@
 package id.tsi.mmw.rest.service;
 
+import id.tsi.mmw.controller.OTPController;
 import id.tsi.mmw.controller.UserController;
 import id.tsi.mmw.filter.ApplicationFilter;
+import id.tsi.mmw.model.OTP;
 import id.tsi.mmw.model.Principal;
 import id.tsi.mmw.model.User;
 import id.tsi.mmw.property.Constants;
+import id.tsi.mmw.property.Property;
 import id.tsi.mmw.rest.model.request.OTPRequest;
 import id.tsi.mmw.rest.validator.OTPValidator;
+import id.tsi.mmw.util.helper.DateHelper;
 import id.tsi.mmw.util.helper.EmailHelper;
 import id.tsi.mmw.util.helper.FileHelper;
 
@@ -18,6 +22,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.time.LocalDateTime;
 
 @Singleton
 @Path("otp")
@@ -27,6 +32,9 @@ public class OTPService extends BaseService {
 
     @Inject
     private UserController userController;
+
+    @Inject
+    private OTPController otpController;
 
     private OTPValidator validator;
 
@@ -44,7 +52,7 @@ public class OTPService extends BaseService {
         Response response;
         log.info(methodName, "Request OTP for (" + request.getEmail() + ")");
 
-        boolean validPayload = validator.validateRequestOtp(request);
+        boolean validPayload = validator.validateOtpRequest(request);
         log.debug(methodName, "Request payload validation : " + validPayload);
 
         String trackingId = generateTrackingID();
@@ -67,9 +75,32 @@ public class OTPService extends BaseService {
                 setSessionAttribute(Constants.SESSION_RESET_PASSWORD_EMAIL, request.getEmail());
                 setTrackingID(trackingId);
 
+                OTP existingOtp = otpController.validateOtp(request.getOtpCode(), request.getEmail());
+                if (existingOtp != null) {
+                    otpController.deleteOtp(user.getEmail());
+                }
+
                 // Generate OTP
-                String otpCode = generateOTPCode();
-                sendResetPasswordEmail(user, otpCode);
+                boolean otpGenerateEnable = getBooleanProperty(Property.OTP_TEST_ENABLE);
+                String otpCode="";
+
+                if (otpGenerateEnable) {
+                    otpCode = getProperty(Property.OTP_TEST_CODE);
+                }else {
+                    otpCode = generateOTPCode();
+                }
+                LocalDateTime ldtNow = LocalDateTime.now();
+                LocalDateTime otpExpiry = ldtNow.plusMinutes(getIntegerProperty(Property.OTP_EXPIRY));
+
+                OTP otp = new OTP();
+                otp.setUser(user.getEmail());
+                otp.setOtpCode(otpCode);
+                otp.setCreateDt(DateHelper.formatDBDateTime(ldtNow));
+                otp.setExpiryDt(DateHelper.formatDBDateTime(otpExpiry));
+                otp.setRetryCount(0);
+
+                otpController.insertOtp(otp);
+                sendResetPasswordEmail(user, otpCode, getProperty(Property.OTP_EXPIRY));
 
                 response = buildSuccessResponse();
             } else {
@@ -94,15 +125,48 @@ public class OTPService extends BaseService {
         return otpCode;
     }
 
-    private void sendResetPasswordEmail(User user, String otpCode) {
+    private void sendResetPasswordEmail(User user, String otpCode,String expiry) {
 
         String subject = "Verify Your Identity: Password Reset OTP";
         String template = FileHelper.readFileFromResources("otp-email-template.txt");
         String body = template
                 .replace("{fullName}", user.getFirstname())
                 .replace("{otpCode}", otpCode)
-                .replace("{expiry}", "5");
+                .replace("{expiry}", expiry);
 
         EmailHelper.sendEmail(subject, body, user.getEmail(), null);
+    }
+
+    @POST
+    @Path("/validate")
+    public Response validateOtp(OTPRequest request) {
+        final String methodName = "validateOtp";
+        start(methodName);
+
+        Response response;
+        log.info(methodName, "Validate OTP for (" + request.getEmail() + ")");
+
+        boolean validPayload = validator.validateOtpValidate(request);
+        log.debug(methodName, "Request payload validation : " + validPayload);
+
+        if (validPayload) {
+
+            OTP otp = otpController.validateOtp(request.getOtpCode(), request.getEmail());
+            if (otp != null) {
+                if(otp.getOtpStatus().equals(Constants.OTP_VALID)) {
+                    otpController.deleteOtp(request.getEmail());
+                    response = buildSuccessResponse();
+                }else {
+                    response = buildBadRequestResponse("OTP code expired");
+                }
+            } else {
+                response = buildBadRequestResponse("Invalid OTP code");
+            }
+        } else {
+            response = buildBadRequestResponse(Constants.MESSAGE_INVALID_REQUEST);
+        }
+
+        completed(methodName);
+        return response;
     }
 }

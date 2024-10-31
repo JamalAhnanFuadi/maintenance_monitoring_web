@@ -74,19 +74,16 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Verification Code</h1>
+            <h1>Account Created</h1>
         </div>
         <div class="content">
             <p class="message">Hello {fullName},</p>
-            <p class="message">Please use the following One-Time Password (OTP) to complete your action:</p>
-
-            <div class="otp-code">{otpCode}</div>
-
-            <p class="message">This code is valid for the next {expiry} minutes. Please do not share this code with anyone.</p>
+            <p class="message">Your account has been created successfully with the email: <strong>{userEmail}</strong>.</p>
+            <p class="message">To set up your password, please <a href="{resetLink}">reset your password</a>.</p>
         </div>
         <div class="footer">
-            <p>If you did not request this code, you can safely ignore this email.</p>
-            <p>Best regards, <br> Support team</p>
+            <p>If you did not request this account creation, you can safely ignore this email.</p>
+            <p>Best regards,<br>Support Team</p>
         </div>
     </div>
 </body>

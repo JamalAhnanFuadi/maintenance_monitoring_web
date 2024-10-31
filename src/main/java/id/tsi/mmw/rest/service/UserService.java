@@ -6,6 +6,7 @@ import id.tsi.mmw.filter.ApplicationFilter;
 import id.tsi.mmw.model.Principal;
 import id.tsi.mmw.model.User;
 import id.tsi.mmw.property.Constants;
+import id.tsi.mmw.property.Property;
 import id.tsi.mmw.rest.model.request.EmailValidateRequest;
 import id.tsi.mmw.rest.model.request.UserRequest;
 import id.tsi.mmw.rest.model.request.UserStatusRequest;
@@ -13,6 +14,8 @@ import id.tsi.mmw.rest.model.response.UserPaginationResponse;
 import id.tsi.mmw.rest.model.response.UserResponse;
 import id.tsi.mmw.rest.validator.UserValidator;
 import id.tsi.mmw.util.helper.DateHelper;
+import id.tsi.mmw.util.helper.EmailHelper;
+import id.tsi.mmw.util.helper.FileHelper;
 import id.tsi.mmw.util.json.JsonHelper;
 
 import javax.annotation.security.PermitAll;
@@ -254,6 +257,8 @@ public class UserService extends BaseService {
                 if (created) {
                     boolean addToAccessGroup = userAccessGroupController.addUserToAccessGroup(user.getUid(), request.getAccessGroupUid());
                     // TO DO send email to user after user created to activate login and change the password
+                    sendCreateUserEmail(user);
+
                     response = buildSuccessResponse();
                 } else {
                     response = buildBadRequestResponse("User creation failed");
@@ -266,6 +271,20 @@ public class UserService extends BaseService {
         }
         completed(methodName);
         return response;
+    }
+
+    private void sendCreateUserEmail(User user) {
+
+        String subject = "Welcome, {fullName}! Set Up Your New Account Password";
+        subject = subject.replace("{fullName}", user.getFirstname());
+        String template = FileHelper.readFileFromResources("create-account-template.txt");
+        String resetPasswordLink = getProperty(Property.PASSWORD_RESET_LINK_FORMAT);
+        String body = template
+                .replace("{fullName}", user.getFirstname())
+                .replace("{resetLink}", resetPasswordLink)
+                .replace("{userEmail}", user.getEmail());
+
+        EmailHelper.sendEmail(subject, body, user.getEmail(), null);
     }
 
     @PUT

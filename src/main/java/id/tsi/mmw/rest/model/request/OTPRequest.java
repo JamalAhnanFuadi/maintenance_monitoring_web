@@ -6,6 +6,8 @@ public class OTPRequest {
 
     @JsonProperty("email")
     private String email;
+    @JsonProperty("otpCode")
+    private String otpCode;
 
     public OTPRequest() {
         // default constructor
@@ -17,5 +19,13 @@ public class OTPRequest {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getOtpCode() {
+        return otpCode;
+    }
+
+    public void setOtpCode(String otpCode) {
+        this.otpCode = otpCode;
     }
 }

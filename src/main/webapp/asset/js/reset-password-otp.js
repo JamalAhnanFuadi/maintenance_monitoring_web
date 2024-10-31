@@ -5,7 +5,7 @@ function handleFocusOnClick() {
     let firstEmptyBox = null;
 
     // Loop through all OTP input fields
-    otpFields.forEach(function(input, index) {
+    otpFields.forEach(function (input, index) {
         if (input.value === '' && firstEmptyBox === null) {
             firstEmptyBox = input; // Find the first empty box
         }
@@ -20,7 +20,7 @@ function handleFocusOnClick() {
 }
 
 // Add event listeners to all OTP fields
-document.querySelectorAll('.otp-box').forEach(function(input) {
+document.querySelectorAll('.otp-box').forEach(function (input) {
     input.addEventListener('click', handleFocusOnClick);
 });
 
@@ -32,7 +32,7 @@ function moveToNext(current, nextFieldId, prevFieldId) {
     }
 
     // Move to the previous field on Backspace if the field is empty
-    current.addEventListener('keydown', function(event) {
+    current.addEventListener('keydown', function (event) {
         if (event.key === 'Backspace' && current.value === '' && prevFieldId) {
             document.getElementById(prevFieldId).focus();
         }
@@ -100,16 +100,53 @@ document.getElementById('otp-verify-btn').addEventListener('click', function () 
     // Display or hide error message
     if (!allFilled) {
         errorMessage.style.display = 'block'; // Show error message
+        errorMessage.textContent = "Please fill in all OTP fields.";
         $('#otp-verify-btn').prop('disabled', false).find('i.fa-spinner').remove();
     } else {
         errorMessage.style.display = 'none'; // Hide error message
         // Here you can proceed with further actions, like submitting the OTP
         // For example, you might want to gather the OTP values and send them to your server.
         const otpValues = Array.from(otpInputs).map(input => input.value).join('');
+        const sessionEmail = sessionStorage.getItem('reset-password-email');
+        // Make AJAX request to resend OTP
+        $.ajax({
+            url: '/monitoring/rest/otp/validate', // Replace with your API endpoint
+            type: 'POST',
+            contentType: 'application/json', // Set the content type to JSON
+            data: JSON.stringify({ // Convert data to JSON string
+                email: sessionEmail,
+                otpCode: otpValues
+            }),
+            success: function (response) {
+                window.location.href = 'change-password';
+            },
+            error: function (xhr, status, error) {
+                if (xhr.responseJSON && xhr.responseJSON.description) {
+                    const errorResponse = xhr.responseJSON.description;
+                    if (errorResponse === 'Invalid OTP code') {
+                        errorMessage.style.display = 'block';
+                        errorMessage.textContent = "Invalid OTP Code";
+                    }
+                    else if (errorResponse === 'OTP code expired') {
+                        errorMessage.style.display = 'block';
+                        errorMessage.textContent = "OTP code has expired";
+                    }
+                    else {
+                        Notification.notifyError('Error',errorResponse);
+                    }
+
+                } else {
+                    // Fallback if there's no responseJSON
+                    Notification.notifyError('Error', "Server Error");
+                }
+            },
+            complete: function () {
+                // Re-enable the buttons and remove the spinner
+                $('#otp-verify-btn').prop('disabled', false).find('i.fa-spinner').remove();
+                $('#resend-otp').removeClass('disabled').html('<small>Resend OTP</small>'); // Reset the link text
+            }
+        });
     }
-    setTimeout(() => {
-        $('#otp-verify-btn').prop('disabled', false).find('i.fa-spinner').remove();
-    }, 3000); // Re-enable after 30 seconds
 });
 
 

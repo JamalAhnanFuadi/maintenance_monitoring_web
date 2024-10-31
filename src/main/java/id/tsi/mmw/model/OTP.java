@@ -7,6 +7,7 @@ public class OTP {
     private int retryCount;
     private String expiryDt;
     private String createDt;
+    private String otpStatus;
 
     public OTP() {
     }
@@ -49,5 +50,13 @@ public class OTP {
 
     public void setCreateDt(String createDt) {
         this.createDt = createDt;
+    }
+
+    public String getOtpStatus() {
+        return otpStatus;
+    }
+
+    public void setOtpStatus(String otpStatus) {
+        this.otpStatus = otpStatus;
     }
 }

@@ -19,4 +19,6 @@ public class Constants {
     public static final String MESSAGE_SUCCESS = "Success";
 
     public static final String SUCCESS = "SUCCESS";
+    public static final String OTP_VALID = "Valid";
+    public static final String OTP_EXPIRED = "Expired";
 }
