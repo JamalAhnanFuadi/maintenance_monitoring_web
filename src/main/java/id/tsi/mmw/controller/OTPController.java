@@ -34,7 +34,7 @@ public class OTPController extends BaseController{
     }
 
     public OTP validateOtp(String otpCode, String email) {
-        final String methodName = "validateUserUid";
+        final String methodName = "validateOtp";
         start(methodName);
         OTP otp = null;
         String sql = "SELECT `user`, otp_code, expiry_dt, " +
@@ -49,10 +49,32 @@ public class OTPController extends BaseController{
             otp = q.mapToBean(OTP.class).first();
 
         } catch (Exception e) {
-            log.error(methodName, e);
+            if (e.getMessage().contains("Expected at least one element")) {
+                log.debug(methodName, e.getMessage());
+            } else {
+                log.error(methodName, e);
+            }
+
         }
         completed(methodName);
         return otp;
+    }
+    public boolean validateOtp(String email) {
+        final String methodName = "validateOtp";
+        start(methodName);
+        boolean result = false;
+        String sql = "SELECT if(COUNT(*)>0,'true','false') " +
+                " FROM otp " +
+                " WHERE  user = :email;";
+        try (Handle handle = getHandle(); Query q = handle.createQuery(sql)) {
+            q.bind("email", email);
+            result = q.mapTo(Boolean.class).one();
+
+        } catch (Exception e) {
+            log.error(methodName, e);
+        }
+        completed(methodName);
+        return result;
     }
 
     public boolean deleteOtp(String user) {

@@ -24,7 +24,8 @@ public class Property {
     public static final String MAIL_SMTP_USERNAME = "mail.smtp.username";
     public static final String MAIL_SMTP_PASSWORD = "mail.smtp.password";
     public static final String MAIL_SMTP_AUTH_REQUIRED = "mail.smtp.auth.required";
-    public static final String MAIL_SMTP_STARTTLS = "mail.smtp.starttls.enable";
+    public static final String MAIL_SMTP_STARTTLS_ENABLE = "mail.smtp.starttls.enable";
+    public static final String MAIL_SMTP_SSL_ENABLE = "mail.smtp.ssl.enable";
     public static final String MAIL_SMTP_SOCKET_PORT = "mail.smtp.socketFactory.port";
     public static final String MAIL_SMTP_SOCKET_CLASS = "mail.smtp.socketFactory.class";
 

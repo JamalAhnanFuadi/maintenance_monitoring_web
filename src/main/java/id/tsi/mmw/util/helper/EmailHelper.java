@@ -29,10 +29,11 @@ public class EmailHelper {
         // Create a new Properties object.
         Properties props = new Properties();
         props.put("mail.smtp.auth", PropertyManager.getInstance().getBoolProperty(Property.MAIL_SMTP_AUTH_REQUIRED)); // Set the authentication requirement property.
-        props.put("mail.smtp.starttls.enable", PropertyManager.getInstance().getBoolProperty(Property.MAIL_SMTP_STARTTLS)); // Set the TLS requirement property.
+        props.put("mail.smtp.starttls.enable", PropertyManager.getInstance().getBoolProperty(Property.MAIL_SMTP_STARTTLS_ENABLE)); // Set the TLS requirement property.
         props.put("mail.smtp.host",  PropertyManager.getInstance().getProperty(Property.MAIL_SMTP_HOST)); // Set the host property.
         props.put("mail.smtp.port",  PropertyManager.getInstance().getIntProperty(Property.MAIL_SMTP_PORT));// Set the port property.
         props.put("mail.smtp.socketFactory.port", PropertyManager.getInstance().getIntProperty(Property.MAIL_SMTP_SOCKET_PORT));
+        props.put("mail.smtp.ssl.enable", PropertyManager.getInstance().getBoolProperty(Property.MAIL_SMTP_SSL_ENABLE)); // Set the TLS requirement property.
         props.put("mail.smtp.socketFactory.class", PropertyManager.getInstance().getProperty(Property.MAIL_SMTP_SOCKET_CLASS));
 
         return props;

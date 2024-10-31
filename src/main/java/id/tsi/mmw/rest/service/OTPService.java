@@ -75,8 +75,8 @@ public class OTPService extends BaseService {
                 setSessionAttribute(Constants.SESSION_RESET_PASSWORD_EMAIL, request.getEmail());
                 setTrackingID(trackingId);
 
-                OTP existingOtp = otpController.validateOtp(request.getOtpCode(), request.getEmail());
-                if (existingOtp != null) {
+                boolean hasOtp= otpController.validateOtp(request.getEmail());
+                if (hasOtp) {
                     otpController.deleteOtp(user.getEmail());
                 }
 
