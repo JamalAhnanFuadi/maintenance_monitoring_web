@@ -5,6 +5,10 @@
         "http://www.tuckey.org/res/dtds/urlrewrite3.0.dtd">
 <urlrewrite>
 	<rule>
+		<from>^/$</from>
+		<to>/WEB-INF/index.jsp</to>
+	</rule>
+	<rule>
 		<from>^/login$</from>
 		<to>/login.jsp</to>
 	</rule>

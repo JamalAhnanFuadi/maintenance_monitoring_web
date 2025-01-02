@@ -5,12 +5,18 @@ import id.tsi.mmw.manager.PropertyManager;
 import id.tsi.mmw.property.Constants;
 import id.tsi.mmw.property.Property;
 import id.tsi.mmw.util.log.AppLogger;
+import jakarta.mail.Authenticator;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.Multipart;
+import jakarta.mail.PasswordAuthentication;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
 
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -28,13 +34,36 @@ public class EmailHelper {
     private static Properties initializeProperties() {
         // Create a new Properties object.
         Properties props = new Properties();
-        props.put("mail.smtp.auth", PropertyManager.getInstance().getBoolProperty(Property.MAIL_SMTP_AUTH_REQUIRED)); // Set the authentication requirement property.
-        props.put("mail.smtp.starttls.enable", PropertyManager.getInstance().getBoolProperty(Property.MAIL_SMTP_STARTTLS_ENABLE)); // Set the TLS requirement property.
+
         props.put("mail.smtp.host",  PropertyManager.getInstance().getProperty(Property.MAIL_SMTP_HOST)); // Set the host property.
-        props.put("mail.smtp.port",  PropertyManager.getInstance().getIntProperty(Property.MAIL_SMTP_PORT));// Set the port property.
-        props.put("mail.smtp.socketFactory.port", PropertyManager.getInstance().getIntProperty(Property.MAIL_SMTP_SOCKET_PORT));
-        props.put("mail.smtp.ssl.enable", PropertyManager.getInstance().getBoolProperty(Property.MAIL_SMTP_SSL_ENABLE)); // Set the TLS requirement property.
-        props.put("mail.smtp.socketFactory.class", PropertyManager.getInstance().getProperty(Property.MAIL_SMTP_SOCKET_CLASS));
+        props.put("mail.smtp.port",  PropertyManager.getInstance().getProperty(Property.MAIL_SMTP_PORT));// Set the port property.
+
+        boolean authRequired = PropertyManager.getInstance().getBoolProperty(Property.MAIL_SMTP_AUTH_REQUIRED);
+        if(authRequired) {
+            props.put("mail.smtp.auth", "true");
+        }else {
+            props.put("mail.smtp.auth", "false");
+        }
+        boolean starttlsEnable = PropertyManager.getInstance().getBoolProperty(Property.MAIL_SMTP_STARTTLS_ENABLE);
+        if (starttlsEnable) {
+            props.put("mail.smtp.starttls.enable", "true");
+        }else {
+            props.put("mail.smtp.starttls.enable", "false");
+        }
+
+        boolean sslEnable = PropertyManager.getInstance().getBoolProperty(Property.MAIL_SMTP_SSL_ENABLE);
+        if (sslEnable) {
+            props.put("mail.smtp.ssl.enable", "true");
+            props.put("mail.smtp.socketFactory.port", PropertyManager.getInstance().getProperty(Property.MAIL_SMTP_SOCKET_PORT));
+            props.put("mail.smtp.socketFactory.class", PropertyManager.getInstance().getProperty(Property.MAIL_SMTP_SOCKET_CLASS));
+        }
+
+        for( String key : props.stringPropertyNames() ) {
+            log.debug("initializeProperties", key + " : " + props.getProperty(key));
+
+        }
+        System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
+
 
         return props;
     }
@@ -52,12 +81,13 @@ public class EmailHelper {
 
         boolean authRequired = PropertyManager.getInstance().getBoolProperty(Property.MAIL_SMTP_AUTH_REQUIRED);
         String username = PropertyManager.getInstance().getProperty(Property.MAIL_SMTP_USERNAME);
-        String password = EncryptionManager.getInstance().decrypt(PropertyManager.getInstance().getProperty(Property.MAIL_SMTP_PASSWORD));
+        //String decryptedPassword = EncryptionManager.getInstance().decrypt(PropertyManager.getInstance().getProperty(Property.MAIL_SMTP_PASSWORD));
+        String password = PropertyManager.getInstance().getProperty(Property.MAIL_SMTP_PASSWORD);
 
         if (authRequired && username != null && !username.isEmpty() && password != null && !password.isEmpty()) {
             // If authentication is required and credentials are provided, create a session with an authenticator that
             // provides the username and password
-            return Session.getInstance(properties, new javax.mail.Authenticator() {
+            return Session.getInstance(properties, new Authenticator() {
                 /**
                  * This method is called by the JavaMail framework to obtain the username and password for
                  * authentication. It returns a PasswordAuthentication object containing the username and password.

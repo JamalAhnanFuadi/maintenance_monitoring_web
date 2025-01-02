@@ -2,6 +2,7 @@ package id.tsi.mmw.rest.service;
 
 import id.tsi.mmw.controller.OTPController;
 import id.tsi.mmw.controller.UserController;
+import id.tsi.mmw.controller.microservice.EmailController;
 import id.tsi.mmw.filter.ApplicationFilter;
 import id.tsi.mmw.model.OTP;
 import id.tsi.mmw.model.Principal;
@@ -35,6 +36,9 @@ public class OTPService extends BaseService {
 
     @Inject
     private OTPController otpController;
+
+    @Inject
+    private EmailController emailController;
 
     private OTPValidator validator;
 
@@ -134,7 +138,8 @@ public class OTPService extends BaseService {
                 .replace("{otpCode}", otpCode)
                 .replace("{expiry}", expiry);
 
-        EmailHelper.sendEmail(subject, body, user.getEmail(), null);
+        emailController.send(user.getEmail(), subject, body);
+        //EmailHelper.sendEmail(subject, body, user.getEmail(), null);
     }
 
     @POST

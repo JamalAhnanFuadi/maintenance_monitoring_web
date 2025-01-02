@@ -12,5 +12,6 @@ public class PasswordHash {
         System.out.println(EncryptionManager.getInstance().hash(plainPassword, salt));*/
 
         System.out.println(EncryptionManager.getInstance().encrypt("bbjn qmob nwhk twzj"));
+        System.out.println(EncryptionManager.getInstance().decrypt("9L2AewPCUthgua2hQNOOhJ108O10N0d5MrXa7EmJidk="));
     }
 }

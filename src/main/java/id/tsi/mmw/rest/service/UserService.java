@@ -2,6 +2,7 @@ package id.tsi.mmw.rest.service;
 
 import id.tsi.mmw.controller.UserAccessGroupController;
 import id.tsi.mmw.controller.UserController;
+import id.tsi.mmw.controller.microservice.EmailController;
 import id.tsi.mmw.filter.ApplicationFilter;
 import id.tsi.mmw.model.Principal;
 import id.tsi.mmw.model.User;
@@ -39,6 +40,9 @@ public class UserService extends BaseService {
 
     @Inject
     private UserAccessGroupController userAccessGroupController;
+
+    @Inject
+    private EmailController emailController;
 
     private UserValidator validator;
 
@@ -284,7 +288,8 @@ public class UserService extends BaseService {
                 .replace("{resetLink}", resetPasswordLink)
                 .replace("{userEmail}", user.getEmail());
 
-        EmailHelper.sendEmail(subject, body, user.getEmail(), null);
+        emailController.send(user.getEmail(), subject, body);
+        //EmailHelper.sendEmail(subject, body, user.getEmail(), null);
     }
 
     @PUT
