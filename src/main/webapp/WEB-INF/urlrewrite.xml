@@ -30,6 +30,14 @@
 		<from>^/user-management$</from>
 		<to>/WEB-INF/user_management.jsp</to>
 	</rule>
+	<rule>
+		<from>^/end-user-management$</from>
+		<to>/WEB-INF/end_users.jsp</to>
+	</rule>
+	<rule>
+		<from>^/principal-user-management$</from>
+		<to>/WEB-INF/principal_users.jsp</to>
+	</rule>
 
 	<rule>
 		<from>^/user-access-group$</from>

@@ -182,6 +182,9 @@ var App = function() {
                     setTimeout(resizePageContent, ((upSpeed > downSpeed) ? upSpeed : downSpeed));
                 }
             }
+            else if (link.parent().hasClass('active')) {
+                link.parent('li').addClass('open');
+            }
 
             link.blur();
 
@@ -210,6 +213,9 @@ var App = function() {
                     // Resize #page-content to fill empty space if exists
                     setTimeout(resizePageContent, ((upSpeed > downSpeed) ? upSpeed : downSpeed));
                 }
+            }
+            else if (link.parent().hasClass('active')) {
+                link.parent('li').addClass('open');
             }
 
             link.blur();

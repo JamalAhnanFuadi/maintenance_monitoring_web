@@ -609,6 +609,11 @@ $(document).on('change', '.status-toggle', function() {
 
 
 $(document).ready(function () {
+
+    $('#user-management-link').addClass('active');
+    $('#user-management-sub-link').addClass('active');
+    $('#user-management-link').trigger('click');
+
     $(".select-chosen").chosen(); // Initialize Chosen
 
     TablesDatatables.init(); // Initialize the datatable when the document is ready

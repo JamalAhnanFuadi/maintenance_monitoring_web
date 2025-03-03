@@ -30,19 +30,35 @@
                     <span class="sidebar-header-title">Master Data</span>
                 </li>
                 <li>
-                    <a href="#" class="sidebar-nav-menu"><i
+                    <a href="#" id="user-management-link" class="sidebar-nav-menu"><i
                             class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i
                             class="gi gi-user sidebar-nav-icon"></i><span
                             class="sidebar-nav-mini-hide">User</span></a>
                     <ul>
                         <li>
-                            <a href="user-management">User Management</a>
+                            <a id="user-management-sub-link" href="user-management">User Management</a>
                         </li>
                         <li>
-                            <a href="#">User Access Matrix</a>
+                            <a id="user-access-matrix-sub-link" href="#">User Access Matrix</a>
                         </li>
                     </ul>
                 </li>
+
+                <li>
+                    <a href="#" id="customer-management-link" class="sidebar-nav-menu"><i
+                            class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i
+                            class="gi gi-user sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">Customer</span></a>
+                    <ul>
+                        <li>
+                            <a id="end-user-management-sub-link" href="end-user-management">End Users</a>
+                        </li>
+                        <li>
+                            <a id="principal-user-management-sub-link" href="principal-user-management">Principal Users</a>
+                        </li>
+                    </ul>
+                </li>
+
                 <li>
                     <a href="#"><i class="gi gi-group sidebar-nav-icon"></i><span
                             class="sidebar-nav-mini-hide">Group Management</span></a>
