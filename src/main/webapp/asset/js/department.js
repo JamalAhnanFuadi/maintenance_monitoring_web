@@ -84,6 +84,42 @@ var DepartmentDatatables = (function () {
     };
 })();
 
+$(document).on('click', '#export-department-button', function () {
+    console.log('Export button clicked');
+
+    $.ajax({
+        url: '/monitoring/rest/departments/export',
+        method: 'GET',
+        contentType: 'application/json', // Set content type for the request
+        dataType: 'text', // Expecting text response (CSV)
+        success: function (response, status, xhr) {
+            if (xhr.status === 200) {
+                // Assuming response is a CSV formatted string
+                const csvData = response.split('\n').map(row => row.split(','));
+                exportToCSV("department.csv", csvData);
+            } else {
+                console.log('Error: ' + response.description);
+            }
+        },
+        error: function () {
+            console.log('Error fetching department data');
+        }
+    });
+});
+
+function exportToCSV(filename, csvData) {
+    const csvContent = "data:text/csv;charset=utf-8,"
+        + csvData.map(e => e.join(",")).join("\n");
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", filename);
+    document.body.appendChild(link); // Required for Firefox
+
+    link.click(); // This will download the file
+}
+
 $(document).on('click', '#add-department-button', function () {
     // Reset the form fields
     $('#add-form')[0].reset();

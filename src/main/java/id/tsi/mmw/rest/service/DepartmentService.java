@@ -9,8 +9,11 @@ import id.tsi.mmw.rest.model.request.DepartmentRequest;
 import id.tsi.mmw.rest.model.request.UserRequest;
 import id.tsi.mmw.rest.validator.DepartmentValidator;
 import id.tsi.mmw.rest.validator.UserValidator;
+import id.tsi.mmw.util.csv.CSVRecord;
+import id.tsi.mmw.util.csv.CSVWriter;
 import id.tsi.mmw.util.helper.DateHelper;
 import id.tsi.mmw.util.json.JsonHelper;
+import org.apache.commons.codec.Charsets;
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.statement.Query;
 
@@ -20,15 +23,22 @@ import javax.inject.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
 @Singleton
 @Path("departments")
 @Produces(MediaType.APPLICATION_JSON)
-public class DepartmentService extends BaseService{
+public class DepartmentService extends BaseService {
 
     @Inject
     private DepartmentController departmentController;
@@ -100,9 +110,9 @@ public class DepartmentService extends BaseService{
             department.setDescription(request.getDescription());
 
             boolean inserted = departmentController.addDepartment(department);
-            if(inserted) {
+            if (inserted) {
                 response = buildSuccessResponse();
-            }else {
+            } else {
                 response = buildBadRequestResponse("Department creation failed");
             }
         } else {
@@ -175,5 +185,55 @@ public class DepartmentService extends BaseService{
         }
         completed(methodName);
         return response;
+    }
+
+    @GET
+    @Path("/export")
+    public Response exportDepartment() {
+        final String methodName = "exportDepartment";
+        start(methodName);
+        log.info(methodName, "Export department");
+
+        List<Department> departmentList = departmentController.getDepartmentList();
+
+        String filename = "department.csv";
+
+        List<String> headerColumns = Arrays.asList("uid", "Department Name", "Description");
+
+        List<CSVRecord> recordList = buildDepartmentCSV(headerColumns, departmentList);
+
+        StreamingOutput stream = new StreamingOutput() {
+            @Override
+            public void write(OutputStream output) throws IOException {
+                try (PrintWriter pw = new PrintWriter(new OutputStreamWriter(output, Charsets.UTF_8))) {
+                    // Write the report to the output stream
+                    CSVWriter.getInstance().write(pw, headerColumns, recordList);
+                }
+            }
+        };
+
+        completed(methodName);
+        return Response.ok(stream, "text/csv").header("content-disposition", "attachment;filename=" + filename).build();
+    }
+
+    protected List<CSVRecord> buildDepartmentCSV(List<String> headerList, List<Department> departmentList) {
+        List<CSVRecord> recordList = new ArrayList<>();
+
+        try {
+            for (Department department : departmentList) {
+                CSVRecord record = new CSVRecord();
+                record.put(headerList.get(0), department.getUid());
+                record.put(headerList.get(1), department.getDisplayName());
+                record.put(headerList.get(2), department.getDescription());
+
+                // Add the new CSV record to the list of records
+                recordList.add(record);
+            }
+        } catch (Exception ex) {
+            log.error("buildDepartmentCSV", ex);
+        }
+
+        // Return the list of CSV records
+        return recordList;
     }
 }

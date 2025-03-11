@@ -62,6 +62,8 @@
                     <div class="text-right">
                         <a id="add-department-button" href="#add-modal" class="btn btn-sm btn-primary"
                            data-toggle="modal"><i class="fa fa-plus"></i> Add Department</a>
+                        <a id="export-department-button"  class="btn btn-sm btn-primary"
+                        ><i class="fa fa-plus"></i> Export</a>
                     </div>
                     <br/>
                     <!-- Datatables Content -->
