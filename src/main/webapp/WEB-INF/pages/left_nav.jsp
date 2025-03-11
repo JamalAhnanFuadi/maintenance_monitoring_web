@@ -33,13 +33,13 @@
                     <a href="#" id="user-management-link" class="sidebar-nav-menu"><i
                             class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i
                             class="gi gi-user sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">User</span></a>
+                            class="sidebar-nav-mini-hide">Staff Management</span></a>
                     <ul>
                         <li>
-                            <a id="user-management-sub-link" href="user-management">User Management</a>
+                            <a id="user-management-sub-link" href="user-management">Staff</a>
                         </li>
                         <li>
-                            <a id="user-access-matrix-sub-link" href="#">User Access Matrix</a>
+                            <a id="user-access-matrix-sub-link" href="#">Staff Access</a>
                         </li>
                     </ul>
                 </li>
@@ -47,8 +47,8 @@
                 <li>
                     <a href="#" id="customer-management-link" class="sidebar-nav-menu"><i
                             class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i
-                            class="gi gi-user sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Customer</span></a>
+                            class="gi gi-group sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">Stakeholders</span></a>
                     <ul>
                         <li>
                             <a id="end-user-management-sub-link" href="end-user-management">End Users</a>
@@ -58,32 +58,9 @@
                         </li>
                     </ul>
                 </li>
-
                 <li>
-                    <a href="#"><i class="gi gi-group sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Group Management</span></a>
-                </li>
-                <li>
-                    <a href="#"><i class="gi gi-stats sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Products</span></a>
-                </li>
-                <li>
-                    <a href="#"><i class="gi gi-stats sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Customers</span></a>
-                </li>
-                <li>
-                    <a href="#" class="sidebar-nav-menu"><i
-                            class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i
-                            class="gi gi-settings sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Settings</span></a>
-                    <ul>
-                        <li>
-                            <a href="#">Notification settings</a>
-                        </li>
-                        <li>
-                            <a href="#">Escalation settings</a>
-                        </li>
-                    </ul>
+                    <a href="stakeholders" id="stakeholder-link"><i class="gi gi-group sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">Stakeholders</span></a>
                 </li>
                 <li class="sidebar-header">
                     <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip" title="Quick menu"><i class="gi gi-package"></i></a></span>
