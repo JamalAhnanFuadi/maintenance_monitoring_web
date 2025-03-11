@@ -2,19 +2,21 @@ package id.tsi.mmw.model;
 
 public class Department {
 
-    private int uid;
+    private String uid;
     private String displayName;
+    private String description;
     private String createDt;
     private String modifyDt;
+    private boolean locked;
 
     public Department() {
     }
 
-    public int getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 
@@ -24,6 +26,14 @@ public class Department {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getCreateDt() {
@@ -40,5 +50,13 @@ public class Department {
 
     public void setModifyDt(String modifyDt) {
         this.modifyDt = modifyDt;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 }

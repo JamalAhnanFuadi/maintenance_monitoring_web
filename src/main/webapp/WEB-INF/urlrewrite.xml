@@ -12,6 +12,12 @@
 		<from>^/login$</from>
 		<to>/login.jsp</to>
 	</rule>
+	<rule>
+		<from>^/departments$</from>
+		<to>/WEB-INF/masterdata/department.jsp</to>
+	</rule>
+
+
 
 	<rule>
 		<from>^/otp-validation</from>

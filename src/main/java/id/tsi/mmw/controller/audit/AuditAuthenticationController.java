@@ -20,7 +20,7 @@ public class AuditAuthenticationController extends BaseController {
     }
 
     public void insertAuditAuthentication(AuditAuthentication audit) {
-        final String methodName = "updateLoginTimestamp";
+        final String methodName = "insertAuditAuthentication";
         start(methodName);
 
         boolean auditEnabled = getBoolProperty(Property.AUDIT_ENABLE);
