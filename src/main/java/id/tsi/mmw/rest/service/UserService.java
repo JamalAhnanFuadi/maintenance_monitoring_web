@@ -1,7 +1,7 @@
 package id.tsi.mmw.rest.service;
 
 import id.tsi.mmw.controller.UserAccessGroupController;
-import id.tsi.mmw.controller.UserController;
+import id.tsi.mmw.controller.StaffController;
 import id.tsi.mmw.controller.microservice.EmailController;
 import id.tsi.mmw.filter.ApplicationFilter;
 import id.tsi.mmw.model.Principal;
@@ -15,7 +15,6 @@ import id.tsi.mmw.rest.model.response.UserPaginationResponse;
 import id.tsi.mmw.rest.model.response.UserResponse;
 import id.tsi.mmw.rest.validator.UserValidator;
 import id.tsi.mmw.util.helper.DateHelper;
-import id.tsi.mmw.util.helper.EmailHelper;
 import id.tsi.mmw.util.helper.FileHelper;
 import id.tsi.mmw.util.json.JsonHelper;
 
@@ -36,7 +35,7 @@ import java.util.UUID;
 public class UserService extends BaseService {
 
     @Inject
-    private UserController userController;
+    private StaffController staffController;
 
     @Inject
     private UserAccessGroupController userAccessGroupController;
@@ -66,12 +65,12 @@ public class UserService extends BaseService {
         if (validPayload) {
             // First we need to check if the user exists in the database. If the user does not exist,
             // we will return a 400 Bad Request with a message indicating that the user was not found.
-            boolean userExist = userController.validateEmail(request.getEmail());
+            boolean userExist = staffController.validateEmail(request.getEmail());
             log.debug(methodName, "User validation : " + userExist);
 
             if (userExist) {
 
-                User user = userController.getUserDetailByEmail(request.getEmail());
+                User user = staffController.getUserDetailByEmail(request.getEmail());
 
                 // If the user exists,
                 Principal principal = new Principal(request.getEmail());
@@ -106,7 +105,7 @@ public class UserService extends BaseService {
         Response response;
 
         // Retrieve the list of users from the database
-        List<User> users = userController.getUserList();
+        List<User> users = staffController.getUserList();
 
         // Create a new UserPaginationResponse object and set the pagination and users properties
         UserPaginationResponse usersResponse = new UserPaginationResponse();
@@ -142,12 +141,12 @@ public class UserService extends BaseService {
         log.info(methodName, "Get User Detail (" + uid + ")");
 
         // Validate the user id by checking if it exists in the database
-        boolean validateUser = userController.validateUserUid(uid);
+        boolean validateUser = staffController.validateUserUid(uid);
         log.debug(methodName, "User validation : " + validateUser);
 
         // If the user id is valid, retrieve the user detail from the database
         if (validateUser) {
-            User user = userController.getUserByUid(uid);
+            User user = staffController.getUserByUid(uid);
             // Create a new UserResponse object and set the user property
             UserResponse userResponse = new UserResponse();
             userResponse.setUser(user);
@@ -206,7 +205,7 @@ public class UserService extends BaseService {
             // userController.validateEmail() method, which will validate if the user email
             // is already exist in the database and return true if the email is already exist,
             // otherwise false.
-            boolean userExist = userController.validateEmail(request.getEmail());
+            boolean userExist = staffController.validateEmail(request.getEmail());
             log.debug(methodName, "Email validation : " + userExist);
 
             // if user not exist, continue user creation process
@@ -222,13 +221,6 @@ public class UserService extends BaseService {
                 user.setUid(uuid);
                 user.setFirstname(request.getFirstname());
                 user.setLastname(request.getLastname());
-
-                // Concat fistname and lastname to fullname if last name is not empty
-                if (request.getLastname() != null || !request.getLastname().isEmpty()) {
-                    user.setFullname(request.getFirstname() + " " + request.getLastname());
-                } else {
-                    user.setFirstname(request.getFirstname());
-                }
 
                 user.setEmail(request.getEmail());
                 user.setMobileNumber(request.getMobileNumber());
@@ -257,7 +249,7 @@ public class UserService extends BaseService {
                 authentication.setCreateDt(processingTime);*/
 
                 // proceed user creation to database
-                boolean created = userController.create(user);
+                boolean created = staffController.create(user);
                 if (created) {
                     boolean addToAccessGroup = userAccessGroupController.addUserToAccessGroup(user.getUid(), request.getAccessGroupUid());
                     // TO DO send email to user after user created to activate login and change the password
@@ -314,7 +306,7 @@ public class UserService extends BaseService {
             // userController.validateEmail() method, which will validate if the user email
             // is already exist in the database and return true if the email is already exist,
             // otherwise false.
-            boolean userExist = userController.validateUserUid(request.getUid());
+            boolean userExist = staffController.validateUserUid(request.getUid());
             log.debug(methodName, "User validation : " + userExist);
 
             // if user not exist, continue user creation process
@@ -329,13 +321,6 @@ public class UserService extends BaseService {
                 user.setFirstname(request.getFirstname());
                 user.setLastname(request.getLastname());
 
-                // Concat fistname and lastname to fullname if last name is not empty
-                if (request.getLastname() != null || !request.getLastname().isEmpty()) {
-                    user.setFullname(request.getFirstname() + " " + request.getLastname());
-                } else {
-                    user.setFirstname(request.getFirstname());
-                }
-
                 user.setEmail(request.getEmail());
                 user.setMobileNumber(request.getMobileNumber());
                 user.setDepartment(request.getDepartment());
@@ -347,7 +332,7 @@ public class UserService extends BaseService {
                 user.setModifyDt(processingTime);
 
                 // proceed user update to database
-                boolean created = userController.update(user);
+                boolean created = staffController.update(user);
                 if (created) {
                     boolean hasAccessGroup = userAccessGroupController.validateHasAccessGroup(request.getUid());
                     if(hasAccessGroup){
@@ -394,7 +379,7 @@ public class UserService extends BaseService {
 
         // First we need to check if the user exists in the database. If the user does not exist,
         // we will return a 400 Bad Request with a message indicating that the user was not found.
-        boolean userExist = userController.validateUserUid(uid);
+        boolean userExist = staffController.validateUserUid(uid);
         log.debug(methodName, "User validation : " + userExist);
 
         if (userExist) {
@@ -402,7 +387,7 @@ public class UserService extends BaseService {
             // If the deletion is successful, we will return a 200 OK response. Otherwise, we
             // will return a 400 Bad Request with a message indicating that the user deletion
             // failed.
-            boolean deleted = userController.delete(uid);
+            boolean deleted = staffController.delete(uid);
             log.debug(methodName, "User deletion : " + deleted);
             if (deleted) {
                 response = buildSuccessResponse();
@@ -434,7 +419,7 @@ public class UserService extends BaseService {
         if (validPayload) {
             // First we need to check if the user exists in the database. If the user does not exist,
             // we will return a 400 Bad Request with a message indicating that the user was not found.
-            boolean userExist = userController.validateUserUid(request.getUid());
+            boolean userExist = staffController.validateUserUid(request.getUid());
             log.debug(methodName, "User validation : " + userExist);
 
             if (userExist) {
@@ -442,7 +427,7 @@ public class UserService extends BaseService {
                 // If the deletion is successful, we will return a 200 OK response. Otherwise, we
                 // will return a 400 Bad Request with a message indicating that the user deletion
                 // failed.
-                boolean update = userController.updateUserStatus(request.getUid(), request.isStatus());
+                boolean update = staffController.updateUserStatus(request.getUid(), request.isStatus());
                 log.debug(methodName, "User status update : " + update);
                 if (update) {
                     response = buildSuccessResponse();

@@ -12,8 +12,8 @@ public class Property {
     public static final String DB_PASSWORD = "db.password";
     public static final String DB_POOL_SIZE = "db.pool-size";
 
-    public static final String JWT_SECRET = "jwt.secret";
-    public static final String JWT_EXPIRATION = "jwt.expiration";
+    public static final String AUDIT_ENABLE = "audit.enable";
+
 
     public static final String ENCRYPTION_SALT_LENGTH = "encryption.salt.length";
     public static final String USER_DEFAULT_PASSWORD = "user.default.password";

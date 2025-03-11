@@ -132,6 +132,10 @@ public class BaseService {
         return buildResponse(Response.Status.CONFLICT, message);
     }
 
+    protected Response buildAccessDeniedResponse(String message) {
+        return buildResponse(Response.Status.FORBIDDEN, message);
+    }
+
     // END of Response Management
 
     /**

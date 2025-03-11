@@ -14,7 +14,15 @@ public class Constants {
     public static final String SESSION_RESET_PASSWORD_EMAIL= "MM_Reset_Password_Email";
 
 
+    // Audit Event
+    public static final String APPLICATION_NAME= "Maintenance Monitoring Application";
+    public static final String EVENT_LOGIN= "Authentication";
+    public static final String EVENT_LOGOUT= "Logout";
+
     // Message Constant
+    public static final String MESSAGE_INVALID_LOGIN = "Invalid username or password";
+    public static final String MESSAGE_LOGIN_NOT_ALLOWED = "Login access is not allowed. Please contact administrator for assistance";
+
     public static final String MESSAGE_INVALID_REQUEST = "Invalid Request Payload";
     public static final String MESSAGE_SUCCESS = "Success";
 

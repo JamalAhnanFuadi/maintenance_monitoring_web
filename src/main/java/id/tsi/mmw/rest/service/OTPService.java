@@ -1,7 +1,7 @@
 package id.tsi.mmw.rest.service;
 
 import id.tsi.mmw.controller.OTPController;
-import id.tsi.mmw.controller.UserController;
+import id.tsi.mmw.controller.StaffController;
 import id.tsi.mmw.controller.microservice.EmailController;
 import id.tsi.mmw.filter.ApplicationFilter;
 import id.tsi.mmw.model.OTP;
@@ -12,7 +12,6 @@ import id.tsi.mmw.property.Property;
 import id.tsi.mmw.rest.model.request.OTPRequest;
 import id.tsi.mmw.rest.validator.OTPValidator;
 import id.tsi.mmw.util.helper.DateHelper;
-import id.tsi.mmw.util.helper.EmailHelper;
 import id.tsi.mmw.util.helper.FileHelper;
 
 import javax.inject.Inject;
@@ -32,7 +31,7 @@ import java.time.LocalDateTime;
 public class OTPService extends BaseService {
 
     @Inject
-    private UserController userController;
+    private StaffController staffController;
 
     @Inject
     private OTPController otpController;
@@ -64,12 +63,12 @@ public class OTPService extends BaseService {
         if (validPayload) {
             // First we need to check if the user exists in the database. If the user does not exist,
             // we will return a 400 Bad Request with a message indicating that the user was not found.
-            boolean userExist = userController.validateEmail(request.getEmail());
+            boolean userExist = staffController.validateEmail(request.getEmail());
             log.debug(methodName, "User validation : " + userExist);
 
             if (userExist) {
 
-                User user = userController.getUserDetailByEmail(request.getEmail());
+                User user = staffController.getUserDetailByEmail(request.getEmail());
 
                 // If the user exists,
                 Principal principal = new Principal(request.getEmail());

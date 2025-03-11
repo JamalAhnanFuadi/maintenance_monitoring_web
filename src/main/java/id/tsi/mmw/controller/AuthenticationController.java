@@ -1,6 +1,7 @@
 package id.tsi.mmw.controller;
 
 import id.tsi.mmw.model.Authentication;
+import id.tsi.mmw.model.User;
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.statement.Query;
 import org.jdbi.v3.core.statement.Update;
@@ -13,6 +14,69 @@ public class AuthenticationController extends BaseController {
     public AuthenticationController() {
         log = getLogger(this.getClass());
     }
+
+
+    public Authentication getAuthenticationUser(String email) {
+        final String methodName = "getAuthenticationUser";
+        start(methodName);
+
+        String sql = "SELECT a.uid, b.salt, b.password, b.login_allowed " +
+                "FROM staff a " +
+                "LEFT JOIN authentication b ON a.uid = b.uid " +
+                "WHERE email = :email;";
+
+        Authentication user = new Authentication();
+
+        try (Handle handle = getHandle(); Query q = handle.createQuery(sql)) {
+            q.bind("email", email);
+            user = q.mapToBean(Authentication.class).one();
+        } catch (SQLException e) {
+            log.error(methodName, e);
+        }
+
+        completed(methodName);
+        return user;
+    }
+
+    /**
+     * Method to update the last login timestamp of a user identified by 'uid'.
+     *
+     * @param uid            The unique identifier of the user
+     * @param processingTime The timestamp of the last login
+     */
+    public void updateLoginTimestamp(String uid, String processingTime) {
+        final String methodName = "updateLoginTimestamp";
+        start(methodName);
+
+        // SQL query to update the 'last_login_dt' field in the 'authentications' table
+        String sql = "UPDATE authentication " +
+                "SET last_login_dt = :processingTime " +
+                "WHERE uid= :uid;";
+
+        // Get a database connection handle
+        try (Handle handle = getHandle(); Update u = handle.createUpdate(sql)) {
+            // Bind the 'processingTime' and 'uid' parameters to the update object
+            u.bind("processingTime", processingTime);
+            u.bind("uid", uid);
+
+            // Execute the update operation
+            executeUpdate(u);
+
+        } catch (SQLException e) {
+            // Log any SQL exception that occurs during the update operation
+            log.error(methodName, e);
+        }
+
+        completed(methodName);
+    }
+
+
+
+
+
+
+
+
 
     /**
      * Retrieves the salt associated with a user from the 'authentications' table based on the provided UID.
@@ -83,37 +147,7 @@ public class AuthenticationController extends BaseController {
         return result;
     }
 
-    /**
-     * Method to update the last login timestamp of a user identified by 'uid'.
-     *
-     * @param uid            The unique identifier of the user
-     * @param processingTime The timestamp of the last login
-     */
-    public void updateLoginTimestamp(String uid, String processingTime) {
-        final String methodName = "updateLoginTimestamp";
-        start(methodName);
 
-        // SQL query to update the 'last_login_dt' field in the 'authentications' table
-        String sql = "UPDATE authentication " +
-                "SET last_login_dt = :processingTime " +
-                "WHERE uid= :uid;";
-
-        // Get a database connection handle
-        try (Handle handle = getHandle(); Update u = handle.createUpdate(sql)) {
-            // Bind the 'processingTime' and 'uid' parameters to the update object
-            u.bind("processingTime", processingTime);
-            u.bind("uid", uid);
-
-            // Execute the update operation
-            executeUpdate(u);
-
-        } catch (SQLException e) {
-            // Log any SQL exception that occurs during the update operation
-            log.error(methodName, e);
-        }
-
-        completed(methodName);
-    }
 
     public boolean hasAuthentication(String uid) {
         final String methodName = "hasAuthentication";

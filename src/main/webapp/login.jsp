@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>TSI - Monitoring and Maintentance Dashboard</title>
+    <title>Maintenance Monitoring Application</title>
 
     <meta name="description" content="ProUI is a Responsive Bootstrap Admin Template created by pixelcave and published on Themeforest.">
     <meta name="author" content="pixelcave">
@@ -50,7 +50,7 @@
     <!-- Login Title -->
     <div class="login-title text-center" style="display: flex; align-items: left; justify-content: left;">
         <img src="asset/img/logo.png" alt="Company Logo" style="width: 150px; height: auto; object-fit: contain; margin-right: 20px;">
-        <h1 style="text-align: left;"><small><strong>Monitoring and Maintenance Dashboard</strong></small></h1>
+        <h1 style="text-align: left;"><small><strong>Maintenance Monitoring Application</strong></small></h1>
     </div>
     <!-- END Login Title -->
 

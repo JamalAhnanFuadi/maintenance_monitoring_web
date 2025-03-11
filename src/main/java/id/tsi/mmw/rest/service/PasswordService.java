@@ -1,7 +1,7 @@
 package id.tsi.mmw.rest.service;
 
 import id.tsi.mmw.controller.AuthenticationController;
-import id.tsi.mmw.controller.UserController;
+import id.tsi.mmw.controller.StaffController;
 import id.tsi.mmw.manager.EncryptionManager;
 import id.tsi.mmw.model.Authentication;
 import id.tsi.mmw.model.User;
@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
 public class PasswordService extends BaseService {
 
     @Inject
-    private UserController userController;
+    private StaffController staffController;
     @Inject
     private AuthenticationController authenticationController;
     private PasswordValidator validator;
@@ -66,11 +66,11 @@ public class PasswordService extends BaseService {
             log.info(methodName, JsonHelper.toJson(cloneRequest));
 
             // Check if the user exists in the database
-            boolean validUser = userController.validateEmail(request.getEmail());
+            boolean validUser = staffController.validateEmail(request.getEmail());
             log.debug(methodName, "Email validation : " + validUser);
             if (validUser) {
                 // Get the user's detail
-                User user = userController.getUserDetailByEmail(request.getEmail());
+                User user = staffController.getUserDetailByEmail(request.getEmail());
 
                 // Check if the user already has an authentication record in the database
                 boolean hasAuthentication = authenticationController.hasAuthentication(user.getUid());
@@ -97,17 +97,16 @@ public class PasswordService extends BaseService {
                 Authentication authentication = new Authentication();
                 authentication.setUid(user.getUid());
                 authentication.setSalt(salt);
-                authentication.setPasswordHash(hashedPassword);
+                authentication.setPassword(hashedPassword);
                 authentication.setLoginAllowed(true);
-                authentication.setLastPasswordSet(processingTime);
-                authentication.setCreateDt(processingTime);
+                authentication.setPasswordLastSet(processingTime);
 
                 // Insert the new authentication record into the database
                 boolean createAuth = authenticationController.createAuthentication(authentication);
                 log.debug(methodName, "Create authentication : " + createAuth);
                 if (createAuth) {
                     // Update the user's status to enabled
-                    userController.updateUserStatus(user.getUid(), true);
+                    staffController.updateUserStatus(user.getUid(), true);
                     response = buildSuccessResponse();
                 } else {
                     response = buildBadRequestResponse("Failed to create authentication");

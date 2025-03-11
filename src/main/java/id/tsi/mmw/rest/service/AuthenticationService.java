@@ -1,11 +1,15 @@
 package id.tsi.mmw.rest.service;
 
+import com.sun.net.httpserver.Authenticator;
 import id.tsi.mmw.controller.AuthenticationController;
-import id.tsi.mmw.controller.UserController;
+import id.tsi.mmw.controller.StaffController;
+import id.tsi.mmw.controller.audit.AuditAuthenticationController;
 import id.tsi.mmw.filter.ApplicationFilter;
 import id.tsi.mmw.manager.EncryptionManager;
+import id.tsi.mmw.model.Authentication;
 import id.tsi.mmw.model.Principal;
 import id.tsi.mmw.model.User;
+import id.tsi.mmw.model.audit.AuditAuthentication;
 import id.tsi.mmw.property.Constants;
 import id.tsi.mmw.rest.model.request.AuthenticationRequest;
 import id.tsi.mmw.rest.validator.AuthenticationValidator;
@@ -20,6 +24,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.util.UUID;
+import java.util.concurrent.ExecutorService;
 
 @Singleton
 @Path("authentications")
@@ -32,7 +38,13 @@ public class AuthenticationService extends BaseService {
     private AuthenticationController authenticationController;
 
     @Inject
-    private UserController userController;
+    private StaffController staffController;
+
+    @Inject
+    protected ExecutorService executor;
+
+    @Inject
+    private AuditAuthenticationController auditAuthenticationController;
 
     public AuthenticationService() {
         log = getLogger(this.getClass());
@@ -53,13 +65,23 @@ public class AuthenticationService extends BaseService {
 
         // Initialize the response with unauthorized status
         Response response = buildUnauthorizedResponse();
+        String trackingId = generateTrackingID();
+        boolean authenticate = false;
+        String startProcessingDT = DateHelper.formatDateTime(LocalDateTime.now());
+
+        AuditAuthentication auditAuthentication = new AuditAuthentication();
+        auditAuthentication.setUid(UUID.randomUUID().toString());
+        auditAuthentication.setTrackingId(trackingId);
+        auditAuthentication.setUser(authRequest.getUsername());
+        auditAuthentication.setEvent(Constants.EVENT_LOGIN);
+        auditAuthentication.setApplication(Constants.APPLICATION_NAME);
+        auditAuthentication.setCreatedDt(startProcessingDT);
 
         // Validate the incoming authentication request
         boolean validRequest = validator.validate(authRequest);
         log.debug(methodName, "Request payload validation : " + validRequest);
 
         // Get the current date and time for tracking processing start
-        String startProcessingDT = DateHelper.formatDateTime(LocalDateTime.now());
 
         if (validRequest) {
             // Clone the authentication request for security purposes
@@ -70,57 +92,58 @@ public class AuthenticationService extends BaseService {
             // Log the cloned request for debugging
             log.info(methodName, JsonHelper.toJson(cloneRequest));
 
-            // Initialize variables for user authentication
-            boolean authenticate = false;
-            String userId = null;
-            User user = null;
-            String trackingId = generateTrackingID();
-
             // Validate if the username is a valid user
-            boolean validUser = userController.validateEmail(authRequest.getUsername());
+            boolean validUser = staffController.validateEmail(authRequest.getUsername());
             log.info(methodName, "Validate user : " + validUser);
 
             if (validUser) {
                 // Retrieve user details if the user is valid
-                user = userController.getUserDetailByEmail(authRequest.getUsername());
+                Authentication authentication = authenticationController.getAuthenticationUser(authRequest.getUsername());
 
-                if (user != null) {
-                    userId = user.getUid();
-                    // Retrieve user salt and hash the password for comparison
-                    String userSalt = authenticationController.getUserSalt(userId);
-                    String hashPassword = EncryptionManager.getInstance().hash(authRequest.getPassword(), userSalt);
+                if (authentication.getUid() != null) {
 
-                    // Authenticate the user based on username and hashed password
-                    authenticate = authenticationController.authenticateUser(userId, hashPassword);
-                    log.info("Authenticate username and password : " + authenticate);
+                    if (authentication.isLoginAllowed()) {
+                        String hashPassword = EncryptionManager.getInstance().hash(authRequest.getPassword(), authentication.getSalt());
 
-                    if (authenticate) {
-                        // Update user login timestamp upon successful authentication
-                        log.info("Update user login timestamp");
-                        authenticationController.updateLoginTimestamp(userId, startProcessingDT);
+                        authenticate = authentication.getPassword().equals(hashPassword);
+                        log.info("Authentication : " + authenticate);
 
-                        // Get User access role
+                        if (authenticate) {
+                            User user = staffController.getUserByUid(authentication.getUid());
+                            // Update user login timestamp upon successful authentication
+                            log.info("Update last login timestamp");
+                            authenticationController.updateLoginTimestamp(user.getUid(), startProcessingDT);
 
+                            // Clear any existing session
+                            clearSession();
 
+                            // Create a new session and set session attributes
+                            Principal principal = new Principal(authRequest.getUsername());
+                            setSessionAttribute(Constants.SESSION_USER, user);
+                            setSessionAttribute(ApplicationFilter.SESSION_KEY, principal);
+                            setSessionAttribute(Principal.class.getCanonicalName(), principal);
+                            setTrackingID(trackingId);
 
-                        // Clear any existing session
-                        clearSession();
-
-                        // Create a new session and set session attributes
-                        Principal principal = new Principal(authRequest.getUsername());
-                        setSessionAttribute(Constants.SESSION_USER, user);
-                        setSessionAttribute(ApplicationFilter.SESSION_KEY, principal);
-                        setSessionAttribute(Principal.class.getCanonicalName(), principal);
-                        setTrackingID(trackingId);
-
-                        // Build success response upon successful authentication
-                        response = buildSuccessResponse();
+                            // Build success response upon successful authentication
+                            response = buildSuccessResponse();
+                            auditAuthentication.setMessage("");
+                        }
+                        else {
+                            auditAuthentication.setMessage(Constants.MESSAGE_INVALID_LOGIN);
+                        }
+                    } else {
+                        response = buildAccessDeniedResponse(Constants.MESSAGE_LOGIN_NOT_ALLOWED);
+                        auditAuthentication.setMessage(Constants.MESSAGE_LOGIN_NOT_ALLOWED);
                     }
                 }
             }
+        }else {
+            auditAuthentication.setMessage(Constants.MESSAGE_INVALID_REQUEST);
         }
 
-        // TODO: Implement audit authentication log
+        // Insert audit event
+        auditAuthentication.setResult(authenticate);
+        insertAuditAuthentication(auditAuthentication);
 
         // Log the response entity and method completion
         log.debug(methodName, response.getEntity());
@@ -140,6 +163,23 @@ public class AuthenticationService extends BaseService {
     public Response logout() {
         final String methodName = "logout";
         start(methodName);
+
+        String trackingId = getSessionAttribute(Constants.SESSION_TRACKING_ID, String.class);
+        User user = getSessionAttribute(Constants.SESSION_USER, User.class);
+        String startProcessingDT = DateHelper.formatDateTime(LocalDateTime.now());
+
+        AuditAuthentication auditAuthentication = new AuditAuthentication();
+        auditAuthentication.setUid(UUID.randomUUID().toString());
+        auditAuthentication.setTrackingId(trackingId);
+        auditAuthentication.setUser(user.getEmail());
+        auditAuthentication.setEvent(Constants.EVENT_LOGOUT);
+        auditAuthentication.setApplication(Constants.APPLICATION_NAME);
+        auditAuthentication.setCreatedDt(startProcessingDT);
+        auditAuthentication.setResult(true);
+        auditAuthentication.setMessage("");
+
+        // Insert audit event
+        insertAuditAuthentication(auditAuthentication);
 
         // clearing the login session
         clearSession();
@@ -170,6 +210,12 @@ public class AuthenticationService extends BaseService {
         User user = getSessionAttribute(Constants.SESSION_USER, User.class);
         completed(methodName);
         return buildSuccessResponse(user);
+    }
+
+    private void insertAuditAuthentication(AuditAuthentication audit) {
+        executor.execute(() -> {
+            auditAuthenticationController.insertAuditAuthentication(audit);
+        });
     }
 
 }

@@ -17,9 +17,6 @@ public class User {
     @JsonProperty("lastname")
     private String lastname;
 
-    @JsonProperty("fullname")
-    private String fullname;
-
     @JsonProperty("email")
     private String email;
 
@@ -40,15 +37,6 @@ public class User {
 
     @JsonProperty("modifyDt")
     private String modifyDt;
-
-    @JsonProperty("accessGroupUid")
-    private String accessGroupUid;
-
-    @JsonProperty("accessGroupName")
-    private String accessGroupName;
-
-    @JsonProperty("userAccessMatrix")
-    List<UserAccessMatrix> userAccessMatrix;
 
     public User() {
         // default constructor
@@ -78,14 +66,6 @@ public class User {
         this.lastname = lastname;
     }
 
-    public String getFullname() {
-        return fullname;
-    }
-
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -110,6 +90,14 @@ public class User {
         this.dob = dob;
     }
 
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
     public boolean isStatus() {
         return status;
     }
@@ -132,37 +120,5 @@ public class User {
 
     public void setModifyDt(String modifyDt) {
         this.modifyDt = modifyDt;
-    }
-
-    public String getAccessGroupUid() {
-        return accessGroupUid;
-    }
-
-    public void setAccessGroupUid(String accessGroupUid) {
-        this.accessGroupUid = accessGroupUid;
-    }
-
-    public String getAccessGroupName() {
-        return accessGroupName;
-    }
-
-    public void setAccessGroupName(String accessGroupName) {
-        this.accessGroupName = accessGroupName;
-    }
-
-    public List<UserAccessMatrix> getUserAccessMatrix() {
-        return userAccessMatrix;
-    }
-
-    public void setUserAccessMatrix(List<UserAccessMatrix> userAccessMatrix) {
-        this.userAccessMatrix = userAccessMatrix;
-    }
-
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
     }
 }

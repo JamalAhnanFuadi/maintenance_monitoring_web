@@ -4,10 +4,9 @@ public class Authentication {
 
     private String uid;
     private String salt;
-    private String passwordHash;
+    private String password;
     private boolean loginAllowed;
-    private String createDt;
-    private String lastPasswordSet;
+    private String passwordLastSet;
     private String lastLoginDt;
 
     public Authentication() {
@@ -29,12 +28,12 @@ public class Authentication {
         this.salt = salt;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public boolean isLoginAllowed() {
@@ -45,20 +44,12 @@ public class Authentication {
         this.loginAllowed = loginAllowed;
     }
 
-    public String getCreateDt() {
-        return createDt;
+    public String getPasswordLastSet() {
+        return passwordLastSet;
     }
 
-    public void setCreateDt(String createDt) {
-        this.createDt = createDt;
-    }
-
-    public String getLastPasswordSet() {
-        return lastPasswordSet;
-    }
-
-    public void setLastPasswordSet(String lastPasswordSet) {
-        this.lastPasswordSet = lastPasswordSet;
+    public void setPasswordLastSet(String passwordLastSet) {
+        this.passwordLastSet = passwordLastSet;
     }
 
     public String getLastLoginDt() {

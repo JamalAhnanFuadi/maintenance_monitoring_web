@@ -1,7 +1,5 @@
 package id.tsi.mmw.controller;
 
-import id.tsi.mmw.model.Authentication;
-import id.tsi.mmw.model.Pagination;
 import id.tsi.mmw.model.User;
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.statement.PreparedBatch;
@@ -11,12 +9,11 @@ import org.jdbi.v3.core.statement.Update;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
-public class UserController extends BaseController {
+public class StaffController extends BaseController {
 
-    public UserController() {
+    public StaffController() {
         log = getLogger(this.getClass());
     }
 
@@ -33,7 +30,7 @@ public class UserController extends BaseController {
 
         // Define the SQL query to check if the email exists in the 'users' table
         String sql = "SELECT if(COUNT(*)>0,'true','false') " +
-                " FROM user " +
+                " FROM staff " +
                 " WHERE  email = :email;";
         try (Handle handle = getHandle(); Query q = handle.createQuery(sql)) {
             q.bind("email", email);
@@ -45,6 +42,37 @@ public class UserController extends BaseController {
         completed(methodName);
         return result;
     }
+
+    public User getUserByUid(String userUid) {
+        final String methodName = "getUserByUid";
+        start(methodName);
+
+        User user = new User();
+        String sql = "SELECT a.uid, a.firstname, a.lastname, a.mobile_number, a.email, b.display_name AS department, a.status, a.dob, a.create_dt, a.modify_dt " +
+                " FROM staff a " +
+                " LEFT JOIN department b ON a.department_uid = b.uid " +
+                " WHERE a.uid = :userUid;";
+
+        try (Handle h = getHandle(); Query q = h.createQuery(sql)) {
+            q.bind("userUid", userUid);
+            user = q.mapToBean(User.class).one();
+        } catch (Exception ex) {
+            log.error(methodName, ex);
+        }
+        completed(methodName);
+        return user;
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * Validates the user UID by checking if it exists in the database table.
@@ -81,8 +109,8 @@ public class UserController extends BaseController {
         start(methodName);
 
         // Define the SQL query to fetch user details based on the provided email
-        String sql = "SELECT uid, firstname, lastname, fullname, email, mobile_number, dob, status, create_dt, modify_dt " +
-                "FROM user WHERE email = :email;";
+        String sql = "SELECT uid, firstname, lastname, email, mobile_number, dob, status, create_dt, modify_dt " +
+                "FROM staff WHERE email = :email;";
 
         User user = null;
 
@@ -223,27 +251,6 @@ public class UserController extends BaseController {
         return result;
     }
 
-    public User getUserByUid(String userUid) {
-        final String methodName = "getUserByUid";
-        start(methodName);
 
-        User user = new User();
-        String sql = "SELECT u.uid, u.firstname, u.lastname, u.mobile_number, u.email, u.department, u.status, u.dob, u.create_dt, u.modify_dt, " +
-                " ag.uid AS access_group_uid, ag.display_name AS access_group_name " +
-                " FROM user u " +
-                " LEFT JOIN user_access_group uag ON uag.user_uid = u.uid " +
-                " LEFT JOIN access_group ag ON ag.uid = uag.access_group_uid " +
-                " WHERE u.uid = :userUid " +
-                " ORDER BY u.fullname ASC;";
-
-        try (Handle h = getHandle(); Query q = h.createQuery(sql)) {
-            q.bind("userUid", userUid);
-            user = q.mapToBean(User.class).one();
-        } catch (Exception ex) {
-            log.error(methodName, ex);
-        }
-        completed(methodName);
-        return user;
-    }
 
 }
