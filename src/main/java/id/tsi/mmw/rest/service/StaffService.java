@@ -1,18 +1,16 @@
 package id.tsi.mmw.rest.service;
 
-import id.tsi.mmw.controller.UserAccessGroupController;
 import id.tsi.mmw.controller.StaffController;
 import id.tsi.mmw.controller.microservice.EmailController;
 import id.tsi.mmw.filter.ApplicationFilter;
 import id.tsi.mmw.model.Principal;
-import id.tsi.mmw.model.User;
+import id.tsi.mmw.model.Staff;
 import id.tsi.mmw.property.Constants;
 import id.tsi.mmw.property.Property;
 import id.tsi.mmw.rest.model.request.EmailValidateRequest;
 import id.tsi.mmw.rest.model.request.UserRequest;
 import id.tsi.mmw.rest.model.request.UserStatusRequest;
-import id.tsi.mmw.rest.model.response.UserPaginationResponse;
-import id.tsi.mmw.rest.model.response.UserResponse;
+import id.tsi.mmw.rest.model.response.StaffResponse;
 import id.tsi.mmw.rest.validator.UserValidator;
 import id.tsi.mmw.util.helper.DateHelper;
 import id.tsi.mmw.util.helper.FileHelper;
@@ -30,22 +28,19 @@ import java.util.List;
 import java.util.UUID;
 
 @Singleton
-@Path("users")
+@Path("staff")
 @Produces(MediaType.APPLICATION_JSON)
-public class UserService extends BaseService {
+public class StaffService extends BaseService {
 
     @Inject
     private StaffController staffController;
-
-    @Inject
-    private UserAccessGroupController userAccessGroupController;
 
     @Inject
     private EmailController emailController;
 
     private UserValidator validator;
 
-    public UserService() {
+    public StaffService() {
         log = getLogger(this.getClass());
         validator = new UserValidator();
     }
@@ -63,24 +58,19 @@ public class UserService extends BaseService {
         log.debug(methodName, "Request payload validation : " + validPayload);
 
         if (validPayload) {
-            // First we need to check if the user exists in the database. If the user does not exist,
-            // we will return a 400 Bad Request with a message indicating that the user was not found.
             boolean userExist = staffController.validateEmail(request.getEmail());
             log.debug(methodName, "User validation : " + userExist);
 
             if (userExist) {
 
-                User user = staffController.getUserDetailByEmail(request.getEmail());
+                Staff staff = staffController.getUserDetailByEmail(request.getEmail());
 
-                // If the user exists,
                 Principal principal = new Principal(request.getEmail());
                 setSessionAttribute(ApplicationFilter.SESSION_KEY, principal);
-                setSessionAttribute(Constants.SESSION_USER, user);
+                setSessionAttribute(Constants.SESSION_USER, staff);
 
                 response = buildSuccessResponse();
             } else {
-                // If the user does not exist, we will return a 400 Bad Request with a message
-                // indicating that the user was not found.
                 response = buildBadRequestResponse("User not found");
             }
         } else {
@@ -91,74 +81,70 @@ public class UserService extends BaseService {
         return response;
     }
 
-    /**
-     * Get the list of all users in the system.
-     *
-     * @return A JSON response containing the list of users and pagination properties.
-     */
     @GET
     @PermitAll
-    public Response getUserList() {
-        final String methodName = "getUserList";
+    public Response getStaffList() {
+        final String methodName = "getStaffList";
         start(methodName);
-        log.info(methodName, "Get User List");
+        log.info(methodName, "Get staff List");
         Response response;
 
-        // Retrieve the list of users from the database
-        List<User> users = staffController.getUserList();
+        List<Staff> staff = staffController.getStaffList();
 
-        // Create a new UserPaginationResponse object and set the pagination and users properties
-        UserPaginationResponse usersResponse = new UserPaginationResponse();
-        usersResponse.setUsers(users);
-
-        // Build a success response containing the user list and pagination properties
-        response = buildSuccessResponse(usersResponse);
+        response = buildSuccessResponse(staff);
         completed(methodName);
         return response;
     }
 
-    /**
-     * Retrieve user detail by UID.
-     * <p>
-     * This REST endpoint will retrieve user detail by its UID.
-     * <p>
-     * The REST endpoint will return HTTP 400 Bad Request if the user id is invalid.
-     * <p>
-     * The REST endpoint will return HTTP 200 OK if the user id is valid.
-     *
-     * @param uid The unique identifier of the user
-     * @return The user detail response
-     */
     @GET
     @PermitAll
     @Path("{uid}")
-    public Response getUserDetail(@PathParam("uid") String uid) {
-        final String methodName = "getUserDetail";
+    public Response getStaff(@PathParam("uid") String uid) {
+        final String methodName = "getStaff";
         start(methodName);
         Response response;
 
-        // Log the user id that is being requested
-        log.info(methodName, "Get User Detail (" + uid + ")");
+        log.info(methodName, "Get staff by id (" + uid + ")");
 
-        // Validate the user id by checking if it exists in the database
-        boolean validateUser = staffController.validateUserUid(uid);
+        boolean validateUser = staffController.validateUser(uid);
         log.debug(methodName, "User validation : " + validateUser);
 
-        // If the user id is valid, retrieve the user detail from the database
         if (validateUser) {
-            User user = staffController.getUserByUid(uid);
-            // Create a new UserResponse object and set the user property
-            UserResponse userResponse = new UserResponse();
-            userResponse.setUser(user);
-
-            // Build a success response containing the user detail
-            response = buildSuccessResponse(userResponse);
+            Staff staff = staffController.getStaff(uid);
+            response = buildSuccessResponse(staff);
         } else {
             // Build a bad request response if the user id is invalid
             response = buildBadRequestResponse("Invalid User id");
         }
+        completed(methodName);
+        return response;
+    }
 
-        // Log that the REST endpoint has completed
+
+    @DELETE
+    @Path("{uid}")
+    @PermitAll
+    public Response deleteStaff(@PathParam("uid") String uid) {
+        final String methodName = "deleteStaff";
+        start(methodName);
+
+        Response response;
+        log.info(methodName, "Delete staff (" + uid + ")");
+
+        boolean userExist = staffController.validateUser(uid);
+        log.debug(methodName, "Staff validation : " + userExist);
+
+        if (userExist) {
+            boolean deleted = staffController.delete(uid);
+            log.debug(methodName, "User deletion : " + deleted);
+            if (deleted) {
+                response = buildSuccessResponse();
+            } else {
+                response = buildBadRequestResponse("User deletion failed");
+            }
+        } else {
+            response = buildBadRequestResponse("User not found");
+        }
         completed(methodName);
         return response;
     }
@@ -183,7 +169,7 @@ public class UserService extends BaseService {
      * @param request The request payload containing the user information.
      * @return A response containing the result of the user creation.
      */
-    @POST
+    /*@POST
     @PermitAll
     public Response create(UserRequest request) {
         final String methodName = "create";
@@ -217,23 +203,23 @@ public class UserService extends BaseService {
                 // Generate user information to be create to database.
                 // This is done by creating a new User object and set the properties:
                 // uid, firstname, lastname, fullname, email, mobile number, date of birth
-                User user = new User();
-                user.setUid(uuid);
-                user.setFirstname(request.getFirstname());
-                user.setLastname(request.getLastname());
+                Staff staff = new Staff();
+                staff.setUid(uuid);
+                staff.setFirstname(request.getFirstname());
+                staff.setLastname(request.getLastname());
 
-                user.setEmail(request.getEmail());
-                user.setMobileNumber(request.getMobileNumber());
-                user.setDepartment(request.getDepartment());
+                staff.setEmail(request.getEmail());
+                staff.setMobileNumber(request.getMobileNumber());
+                staff.setDepartment(request.getDepartment());
                 LocalDate dobLD = DateHelper.parseFEDate(request.getDob());
                 LocalDateTime dobLDT = dobLD.atStartOfDay();
-                user.setDob(DateHelper.formatDBDateTime(dobLDT));
+                staff.setDob(DateHelper.formatDBDateTime(dobLDT));
 
                 String processingTime = DateHelper.formatDateTime(LocalDateTime.now());
-                user.setCreateDt(processingTime);
-                user.setModifyDt(processingTime);
+                staff.setCreateDt(processingTime);
+                staff.setModifyDt(processingTime);
 
-/*                // generate user authentication information. This is done by generating
+*//*                // generate user authentication information. This is done by generating
                 // a salt string, hashing the default password with the salt, and creating
                 // a new Authentication object and set the properties: uid, salt, passwordHash,
                 // loginAllowed, and createDt.
@@ -246,14 +232,14 @@ public class UserService extends BaseService {
                 authentication.setSalt(salt);
                 authentication.setPasswordHash(hashedPassword);
                 authentication.setLoginAllowed(false);
-                authentication.setCreateDt(processingTime);*/
+                authentication.setCreateDt(processingTime);*//*
 
                 // proceed user creation to database
-                boolean created = staffController.create(user);
+                boolean created = staffController.create(staff);
                 if (created) {
-                    boolean addToAccessGroup = userAccessGroupController.addUserToAccessGroup(user.getUid(), request.getAccessGroupUid());
+                    boolean addToAccessGroup = userAccessGroupController.addUserToAccessGroup(staff.getUid(), request.getAccessGroupUid());
                     // TO DO send email to user after user created to activate login and change the password
-                    sendCreateUserEmail(user);
+                    sendCreateUserEmail(staff);
 
                     response = buildSuccessResponse();
                 } else {
@@ -267,24 +253,24 @@ public class UserService extends BaseService {
         }
         completed(methodName);
         return response;
-    }
+    }*/
 
-    private void sendCreateUserEmail(User user) {
+    private void sendCreateUserEmail(Staff staff) {
 
         String subject = "Welcome, {fullName}! Set Up Your New Account Password";
-        subject = subject.replace("{fullName}", user.getFirstname());
+        subject = subject.replace("{fullName}", staff.getFirstname());
         String template = FileHelper.readFileFromResources("create-account-template.txt");
         String resetPasswordLink = getProperty(Property.PASSWORD_RESET_LINK_FORMAT);
         String body = template
-                .replace("{fullName}", user.getFirstname())
+                .replace("{fullName}", staff.getFirstname())
                 .replace("{resetLink}", resetPasswordLink)
-                .replace("{userEmail}", user.getEmail());
+                .replace("{userEmail}", staff.getEmail());
 
-        emailController.send(user.getEmail(), subject, body);
+        emailController.send(staff.getEmail(), subject, body);
         //EmailHelper.sendEmail(subject, body, user.getEmail(), null);
     }
 
-    @PUT
+/*    @PUT
     @PermitAll
     public Response update(UserRequest request) {
         final String methodName = "update";
@@ -316,29 +302,29 @@ public class UserService extends BaseService {
                 // Generate user information to be create to database.
                 // This is done by creating a new User object and set the properties:
                 // uid, firstname, lastname, fullname, email, mobile number, date of birth
-                User user = new User();
-                user.setUid(request.getUid());
-                user.setFirstname(request.getFirstname());
-                user.setLastname(request.getLastname());
+                Staff staff = new Staff();
+                staff.setUid(request.getUid());
+                staff.setFirstname(request.getFirstname());
+                staff.setLastname(request.getLastname());
 
-                user.setEmail(request.getEmail());
-                user.setMobileNumber(request.getMobileNumber());
-                user.setDepartment(request.getDepartment());
+                staff.setEmail(request.getEmail());
+                staff.setMobileNumber(request.getMobileNumber());
+                staff.setDepartment(request.getDepartment());
                 LocalDate dobLD = DateHelper.parseFEDate(request.getDob());
                 LocalDateTime dobLDT = dobLD.atStartOfDay();
-                user.setDob(DateHelper.formatDBDateTime(dobLDT));
+                staff.setDob(DateHelper.formatDBDateTime(dobLDT));
 
                 String processingTime = DateHelper.formatDateTime(LocalDateTime.now());
-                user.setModifyDt(processingTime);
+                staff.setModifyDt(processingTime);
 
                 // proceed user update to database
-                boolean created = staffController.update(user);
+                boolean created = staffController.update(staff);
                 if (created) {
                     boolean hasAccessGroup = userAccessGroupController.validateHasAccessGroup(request.getUid());
                     if(hasAccessGroup){
-                        boolean updateToAccessGroup = userAccessGroupController.UpdateUserToAccessGroup(user.getUid(), request.getAccessGroupUid());
+                        boolean updateToAccessGroup = userAccessGroupController.UpdateUserToAccessGroup(staff.getUid(), request.getAccessGroupUid());
                     }else {
-                        boolean addToAccessGroup = userAccessGroupController.addUserToAccessGroup(user.getUid(), request.getAccessGroupUid());
+                        boolean addToAccessGroup = userAccessGroupController.addUserToAccessGroup(staff.getUid(), request.getAccessGroupUid());
                     }
 
                     response = buildSuccessResponse();
@@ -353,7 +339,7 @@ public class UserService extends BaseService {
         }
         completed(methodName);
         return response;
-    }
+    }*/
 
     /**
      * Deletes a user from the database.
@@ -367,41 +353,7 @@ public class UserService extends BaseService {
      * @param uid The user UID to delete.
      * @return A response indicating the deletion status.
      */
-    @DELETE
-    @Path("{uid}")
-    @PermitAll
-    public Response delete(@PathParam("uid") String uid) {
-        final String methodName = "delete";
-        start(methodName);
-
-        Response response;
-        log.info(methodName, "Delete User (" + uid + ")");
-
-        // First we need to check if the user exists in the database. If the user does not exist,
-        // we will return a 400 Bad Request with a message indicating that the user was not found.
-        boolean userExist = staffController.validateUserUid(uid);
-        log.debug(methodName, "User validation : " + userExist);
-
-        if (userExist) {
-            // If the user exists, we will proceed to delete the user from the database.
-            // If the deletion is successful, we will return a 200 OK response. Otherwise, we
-            // will return a 400 Bad Request with a message indicating that the user deletion
-            // failed.
-            boolean deleted = staffController.delete(uid);
-            log.debug(methodName, "User deletion : " + deleted);
-            if (deleted) {
-                response = buildSuccessResponse();
-            } else {
-                response = buildBadRequestResponse("User deletion failed");
-            }
-        } else {
-            // If the user does not exist, we will return a 400 Bad Request with a message
-            // indicating that the user was not found.
-            response = buildBadRequestResponse("User not found");
-        }
-        completed(methodName);
-        return response;
-    }
+/*
 
     @POST
     @Path("status")
@@ -445,7 +397,7 @@ public class UserService extends BaseService {
 
         completed(methodName);
         return response;
-    }
+    }*/
 }
 
 

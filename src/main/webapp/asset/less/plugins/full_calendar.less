@@ -56,7 +56,7 @@ body .fc { /* extra precedence to overcome jqui */
     background: #fcf8e3;
 }
 
-.fc-highlight { /* when user is selecting cells */
+.fc-highlight { /* when staff is selecting cells */
     background: #bce8f1;
     opacity: .3;
 }
@@ -95,11 +95,11 @@ body .fc { /* extra precedence to overcome jqui */
 
     /* don't allow browser text-selection */
     -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+    -webkit-staff-select: none;
+    -khtml-staff-select: none;
+    -moz-staff-select: none;
+    -ms-staff-select: none;
+    staff-select: none;
 }
 
 /*
@@ -570,7 +570,7 @@ temporary rendered events).
     /* 40x40 touch area */
     content: "";
     position: absolute;
-    z-index: 9999; /* user of this util can scope within a lower z-index */
+    z-index: 9999; /* staff of this util can scope within a lower z-index */
     top: 50%;
     left: 50%;
     width: 40px;
@@ -778,11 +778,11 @@ a.fc-more:hover {
 --------------------------------------------------------------------------------------------------*/
 
 .fc-unselectable {
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+    -webkit-staff-select: none;
+    -khtml-staff-select: none;
+    -moz-staff-select: none;
+    -ms-staff-select: none;
+    staff-select: none;
     -webkit-touch-callout: none;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
@@ -883,7 +883,7 @@ a.fc-more:hover {
 .fc-basicWeek-view .fc-content-skeleton,
 .fc-basicDay-view .fc-content-skeleton {
     /* there may be week numbers in these views, so no padding-top */
-    padding-bottom: 1em; /* ensure a space at bottom of cell for user selecting/clicking */
+    padding-bottom: 1em; /* ensure a space at bottom of cell for staff selecting/clicking */
 }
 
 .fc-basic-view .fc-body .fc-row {
@@ -1396,7 +1396,7 @@ be a descendant of the grid when it is being dragged.
     background: #f9fafc;
 }
 
-.fc-highlight { /* when user is selecting cells */
+.fc-highlight { /* when staff is selecting cells */
     background: #999999;
     opacity: .1;
     filter: alpha(opacity=10); /* for IE */

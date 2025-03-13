@@ -3,10 +3,8 @@ package id.tsi.mmw.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.List;
-
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class User {
+public class Staff {
 
     @JsonProperty("uid")
     private String uid;
@@ -17,6 +15,9 @@ public class User {
     @JsonProperty("lastname")
     private String lastname;
 
+    @JsonProperty("department")
+    private String department;
+
     @JsonProperty("email")
     private String email;
 
@@ -26,8 +27,8 @@ public class User {
     @JsonProperty("dob")
     private String dob;
 
-    @JsonProperty("department")
-    private String department;
+    @JsonProperty("photoUrl")
+    private String photoUrl;
 
     @JsonProperty("status")
     private boolean status;
@@ -38,7 +39,7 @@ public class User {
     @JsonProperty("modifyDt")
     private String modifyDt;
 
-    public User() {
+    public Staff() {
         // default constructor
     }
 
@@ -66,6 +67,14 @@ public class User {
         this.lastname = lastname;
     }
 
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -90,12 +99,12 @@ public class User {
         this.dob = dob;
     }
 
-    public String getDepartment() {
-        return department;
+    public String getPhotoUrl() {
+        return photoUrl;
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 
     public boolean isStatus() {

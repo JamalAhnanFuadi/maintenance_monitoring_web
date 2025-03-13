@@ -1,7 +1,6 @@
 package id.tsi.mmw.controller;
 
 import id.tsi.mmw.model.Authentication;
-import id.tsi.mmw.model.User;
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.statement.Query;
 import org.jdbi.v3.core.statement.Update;

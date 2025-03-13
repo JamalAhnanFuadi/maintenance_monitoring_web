@@ -1,6 +1,6 @@
 package id.tsi.mmw.controller;
 
-import id.tsi.mmw.model.User;
+import id.tsi.mmw.model.Staff;
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.statement.PreparedBatch;
 import org.jdbi.v3.core.statement.Query;
@@ -43,11 +43,11 @@ public class StaffController extends BaseController {
         return result;
     }
 
-    public User getUserByUid(String userUid) {
-        final String methodName = "getUserByUid";
+    public Staff getStaff(String userUid) {
+        final String methodName = "getStaff";
         start(methodName);
 
-        User user = new User();
+        Staff staff = new Staff();
         String sql = "SELECT a.uid, a.firstname, a.lastname, a.mobile_number, a.email, b.display_name AS department, a.status, a.dob, a.create_dt, a.modify_dt " +
                 " FROM staff a " +
                 " LEFT JOIN department b ON a.department_uid = b.uid " +
@@ -55,40 +55,44 @@ public class StaffController extends BaseController {
 
         try (Handle h = getHandle(); Query q = h.createQuery(sql)) {
             q.bind("userUid", userUid);
-            user = q.mapToBean(User.class).one();
+            staff = q.mapToBean(Staff.class).one();
         } catch (Exception ex) {
             log.error(methodName, ex);
         }
         completed(methodName);
-        return user;
+        return staff;
     }
 
+    public List<Staff> getStaffList() {
+        final String methodName = "getStaffList";
+        start(methodName);
+        List<Staff> result = new ArrayList<>();
 
+        String sql = "SELECT a.uid, a.firstname, a.lastname, b.display_name AS department, a.email, a.mobile_number, a.dob, a.photo_url, a.status, a.create_dt, a.modify_dt " +
+                "FROM staff a " +
+                "JOIN department b ON b.uid = a.department_uid  " +
+                "WHERE a.email  NOT IN ('root@mail.com') " +
+                "ORDER BY a.firstname ASC;";
 
+        try (Handle handle = getHandle(); Query q = handle.createQuery(sql)) {
+            result = q.mapToBean(Staff.class).list();
+        } catch (Exception e) {
+            log.error(methodName, e);
+        }
 
+        completed(methodName);
+        return result;
 
-
-
-
-
-
-
-
-    /**
-     * Validates the user UID by checking if it exists in the database table.
-     *
-     * @param userUid The user UID to validate
-     * @return true if the user UID exists, false otherwise
-     */
-    public boolean validateUserUid(String userUid) {
-        final String methodName = "validateUserUid";
+    }
+    public boolean validateUser(String uid) {
+        final String methodName = "validateUser";
         start(methodName);
         boolean result = false;
         String sql = "SELECT if(COUNT(*)>0,'true','false') " +
-                " FROM user " +
-                " WHERE  uid = :userUid;";
+                " FROM staff " +
+                " WHERE  uid = :uid;";
         try (Handle handle = getHandle(); Query q = handle.createQuery(sql)) {
-            q.bind("userUid", userUid);
+            q.bind("uid", uid);
             result = q.mapTo(Boolean.class).one();
 
         } catch (Exception e) {
@@ -98,13 +102,37 @@ public class StaffController extends BaseController {
         return result;
     }
 
+    public boolean delete(String uid) {
+        final String methodName = "delete";
+        start(methodName);
+        boolean result = false;
+        final String sql = "DELETE FROM staff WHERE uid = :uid";
+        try (Handle h = getHandle(); Update u = h.createUpdate(sql)) {
+            u.bind("uid", uid);
+            result = executeUpdate(u);
+        } catch (Exception ex) {
+            log.error(methodName, ex);
+        }
+        completed(methodName);
+        return result;
+    }
+
+
+
+
+
+
+
+
+
+
     /**
      * Retrieves user details based on the provided email address.
      *
      * @param email The email address of the user
      * @return The User object containing user details, or null if not found
      */
-    public User getUserDetailByEmail(String email) {
+    public Staff getUserDetailByEmail(String email) {
         final String methodName = "getUserDetailByEmail";
         start(methodName);
 
@@ -112,54 +140,29 @@ public class StaffController extends BaseController {
         String sql = "SELECT uid, firstname, lastname, email, mobile_number, dob, status, create_dt, modify_dt " +
                 "FROM staff WHERE email = :email;";
 
-        User user = null;
+        Staff staff = null;
 
         try (Handle handle = getHandle(); Query q = handle.createQuery(sql)) {
             q.bind("email", email);
-            user = q.mapToBean(User.class).one();
+            staff = q.mapToBean(Staff.class).one();
         } catch (SQLException e) {
             log.error(methodName, e);
         }
 
         completed(methodName);
-        return user;
+        return staff;
     }
 
-    public List<User> getUserList() {
-        final String methodName = "getUserList";
-        start(methodName);
-        List<User> result = new ArrayList<>();
 
-        String sql = "SELECT u.uid, u.fullname, u.email, u.department, u.status, u.create_dt, u.modify_dt, " +
-                " ag.uid AS access_group_uid, ag.display_name AS access_group_name " +
-                " FROM user u " +
-                " LEFT JOIN user_access_group uag ON uag.user_uid = u.uid " +
-                " LEFT JOIN access_group ag ON ag.uid = uag.access_group_uid " +
-                " ORDER BY u.fullname ASC;";
 
-        log.debug(methodName, "SQL : " + sql);
-        // Bind the limit and offset parameters to the query
-        try (Handle handle = getHandle(); Query q = handle.createQuery(sql)) {
-            // Execute the query and get the result as a list of User objects
-            result = q.mapToBean(User.class).list();
-        } catch (Exception e) {
-            // Log any SQL exception that occurs during the authentication process
-            log.error(methodName, e);
-        }
-
-        completed(methodName);
-        return result;
-
-    }
-
-    public boolean create(User user) {
+    public boolean create(Staff staff) {
         final String methodName = "create";
         start(methodName);
         boolean result = false;
 
         try (Handle h = getHandle()) {
             // Execute the operations within a transaction
-            result = h.inTransaction(handle -> createUserBatch(handle, user));
+            result = h.inTransaction(handle -> createUserBatch(handle, staff));
         } catch (Exception ex) {
             log.error(methodName, ex);
         }
@@ -173,16 +176,16 @@ public class StaffController extends BaseController {
      * Inserts a user into the database using a prepared batch statement.
      *
      * @param handle the handle to the database connection
-     * @param user the user object to insert
+     * @param staff the user object to insert
      * @return true if the insertion was successful, false otherwise
      */
-    private boolean createUserBatch(Handle handle, User user){
+    private boolean createUserBatch(Handle handle, Staff staff){
         String sql = "INSERT INTO user " +
                 "(uid, firstname, lastname, fullname, department, email, mobile_number, dob, status, create_dt) " +
                 "VALUES" +
                 "( :uid, :firstname, :lastname, :fullname, :department, :email, :mobileNumber, :dob, :status, :createDt);";
         PreparedBatch insertUser = handle.prepareBatch(sql);
-        insertUser.bindBean(user);
+        insertUser.bindBean(staff);
         return executeBatch(insertUser);
     }
 
@@ -218,7 +221,7 @@ public class StaffController extends BaseController {
         return result;
     }
 
-    public boolean update(User user) {
+    public boolean update(Staff staff) {
         final String methodName = "update";
         start(methodName);
         boolean result = false;
@@ -227,7 +230,7 @@ public class StaffController extends BaseController {
                         " mobile_number = :mobileNumber, dob =:dob, department = :department, modify_dt =:modifyDt " +
                         " WHERE uid = :uid";
         try (Handle h = getHandle(); Update u = h.createUpdate(sql)) {
-            u.bindBean(user);
+            u.bindBean(staff);
             result = executeUpdate(u);
         } catch (Exception ex) {
             log.error(methodName, ex);
@@ -236,20 +239,7 @@ public class StaffController extends BaseController {
         return result;
     }
 
-    public boolean delete(String uid) {
-        final String methodName = "delete";
-        start(methodName);
-        boolean result = false;
-        final String sql = "DELETE FROM user WHERE uid = :uid";
-        try (Handle h = getHandle(); Update u = h.createUpdate(sql)) {
-            u.bind("uid", uid);
-            result = executeUpdate(u);
-        } catch (Exception ex) {
-            log.error(methodName, ex);
-        }
-        completed(methodName);
-        return result;
-    }
+
 
 
 

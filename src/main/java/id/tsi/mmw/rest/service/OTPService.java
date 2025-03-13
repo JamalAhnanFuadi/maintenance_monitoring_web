@@ -6,7 +6,7 @@ import id.tsi.mmw.controller.microservice.EmailController;
 import id.tsi.mmw.filter.ApplicationFilter;
 import id.tsi.mmw.model.OTP;
 import id.tsi.mmw.model.Principal;
-import id.tsi.mmw.model.User;
+import id.tsi.mmw.model.Staff;
 import id.tsi.mmw.property.Constants;
 import id.tsi.mmw.property.Property;
 import id.tsi.mmw.rest.model.request.OTPRequest;
@@ -68,19 +68,19 @@ public class OTPService extends BaseService {
 
             if (userExist) {
 
-                User user = staffController.getUserDetailByEmail(request.getEmail());
+                Staff staff = staffController.getUserDetailByEmail(request.getEmail());
 
                 // If the user exists,
                 Principal principal = new Principal(request.getEmail());
                 setSessionAttribute(ApplicationFilter.SESSION_KEY, principal);
                 setSessionAttribute(Constants.SESSION_RESET_PASSWORD, true);
-                setSessionAttribute(Constants.SESSION_USER, user);
+                setSessionAttribute(Constants.SESSION_USER, staff);
                 setSessionAttribute(Constants.SESSION_RESET_PASSWORD_EMAIL, request.getEmail());
                 setTrackingID(trackingId);
 
                 boolean hasOtp= otpController.validateOtp(request.getEmail());
                 if (hasOtp) {
-                    otpController.deleteOtp(user.getEmail());
+                    otpController.deleteOtp(staff.getEmail());
                 }
 
                 // Generate OTP
@@ -96,14 +96,14 @@ public class OTPService extends BaseService {
                 LocalDateTime otpExpiry = ldtNow.plusMinutes(getIntegerProperty(Property.OTP_EXPIRY));
 
                 OTP otp = new OTP();
-                otp.setUser(user.getEmail());
+                otp.setUser(staff.getEmail());
                 otp.setOtpCode(otpCode);
                 otp.setCreateDt(DateHelper.formatDBDateTime(ldtNow));
                 otp.setExpiryDt(DateHelper.formatDBDateTime(otpExpiry));
                 otp.setRetryCount(0);
 
                 otpController.insertOtp(otp);
-                sendResetPasswordEmail(user, otpCode, getProperty(Property.OTP_EXPIRY));
+                sendResetPasswordEmail(staff, otpCode, getProperty(Property.OTP_EXPIRY));
 
                 response = buildSuccessResponse();
             } else {
@@ -128,16 +128,16 @@ public class OTPService extends BaseService {
         return otpCode;
     }
 
-    private void sendResetPasswordEmail(User user, String otpCode,String expiry) {
+    private void sendResetPasswordEmail(Staff staff, String otpCode, String expiry) {
 
         String subject = "Verify Your Identity: Password Reset OTP";
         String template = FileHelper.readFileFromResources("otp-email-template.txt");
         String body = template
-                .replace("{fullName}", user.getFirstname())
+                .replace("{fullName}", staff.getFirstname())
                 .replace("{otpCode}", otpCode)
                 .replace("{expiry}", expiry);
 
-        emailController.send(user.getEmail(), subject, body);
+        emailController.send(staff.getEmail(), subject, body);
         //EmailHelper.sendEmail(subject, body, user.getEmail(), null);
     }
 

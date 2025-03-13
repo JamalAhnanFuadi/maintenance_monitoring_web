@@ -30,37 +30,8 @@
                     <span class="sidebar-header-title">Master Data</span>
                 </li>
                 <li>
-                    <a href="#" id="user-management-link" class="sidebar-nav-menu"><i
-                            class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i
-                            class="gi gi-user sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Staff Management</span></a>
-                    <ul>
-                        <li>
-                            <a id="user-management-sub-link" href="user-management">Staff</a>
-                        </li>
-                        <li>
-                            <a id="user-access-matrix-sub-link" href="#">Staff Access</a>
-                        </li>
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="#" id="customer-management-link" class="sidebar-nav-menu"><i
-                            class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i
-                            class="gi gi-group sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Stakeholders</span></a>
-                    <ul>
-                        <li>
-                            <a id="end-user-management-sub-link" href="end-user-management">End Users</a>
-                        </li>
-                        <li>
-                            <a id="principal-user-management-sub-link" href="principal-user-management">Principal Users</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="stakeholders" id="stakeholder-link"><i class="gi gi-group sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Stakeholders</span></a>
+                    <a href="staff" id="staff-link"><i class="gi gi-user sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">Staff</span></a>
                 </li>
                 <li>
                     <a href="departments" id="department-link"><i class="gi gi-building sidebar-nav-icon"></i><span

@@ -1,21 +1,14 @@
 package id.tsi.mmw.rest.service;
 
 import id.tsi.mmw.controller.DepartmentController;
-import id.tsi.mmw.model.Application;
 import id.tsi.mmw.model.Department;
-import id.tsi.mmw.model.User;
 import id.tsi.mmw.property.Constants;
 import id.tsi.mmw.rest.model.request.DepartmentRequest;
-import id.tsi.mmw.rest.model.request.UserRequest;
 import id.tsi.mmw.rest.validator.DepartmentValidator;
-import id.tsi.mmw.rest.validator.UserValidator;
 import id.tsi.mmw.util.csv.CSVRecord;
 import id.tsi.mmw.util.csv.CSVWriter;
-import id.tsi.mmw.util.helper.DateHelper;
 import id.tsi.mmw.util.json.JsonHelper;
 import org.apache.commons.codec.Charsets;
-import org.jdbi.v3.core.Handle;
-import org.jdbi.v3.core.statement.Query;
 
 import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
@@ -28,12 +21,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 @Singleton
 @Path("departments")
@@ -50,13 +40,6 @@ public class DepartmentService extends BaseService {
         validator = new DepartmentValidator();
     }
 
-    /**
-     * This method handles a GET request to the "departments" URL.
-     * The method is marked as @PermitAll, meaning that no authentication
-     * is required to access this endpoint.
-     *
-     * @return a JSON response containing a list of Department objects.
-     */
     @PermitAll
     @GET
     public Response getDepartmentList() {

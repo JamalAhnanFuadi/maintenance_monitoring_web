@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="The Special One">
     <meta name="robots" content="noindex, nofollow">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,staff-scalable=0">
 
     <%@include file="/WEB-INF/pages/css_import.jsp" %>
 </head>
@@ -60,18 +60,18 @@
                 <!-- Content -->
                 <div class="block full block-alt-noborder">
                     <div class="text-right">
-                        <a id="add-user-button" href="#user-modal" class="btn btn-sm btn-primary"
+                        <a id="add-staff-button" href="#staff-modal" class="btn btn-sm btn-primary"
                            data-toggle="modal"><i class="fa fa-plus"></i> Add User</a>
                     </div>
                     <br />
                     <!-- Datatables Content -->
                     <div class="table-responsive">
-                        <table id="user-management"
+                        <table id="staff-management"
                                class="table table-vcenter table-striped table-bordered">
                             <thead>
                             <tr>
                                 <th class="text-center"></th>
-                                <th class="text-center"><i class="gi gi-user"></i></th>
+                                <th class="text-center"><i class="gi gi-staff"></i></th>
                                 <th class="text-center">Email</th>
                                 <th class="text-center">Department</th>
                                 <th class="text-center">User Group</th>
@@ -111,15 +111,15 @@
 
 
 <!-- Add/Update User modal -->
-<div id="user-modal" class="modal fade" tabindex="-1" role="dialog">
+<div id="staff-modal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Add user</h3>
+                <h3 class="modal-title">Add staff</h3>
             </div>
             <div class="modal-body">
-                <form id="user-form" class="form-horizontal form-bordered">
+                <form id="staff-form" class="form-horizontal form-bordered">
                     <fieldset>
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="val_firstname">First Name <span
@@ -159,7 +159,7 @@
                             </label>
                             <div class="col-md-6">
                                 <select id="val_usergroup" name="val_usergroup"
-                                        class="form-control select-chosen" data-placeholder="Select user group"
+                                        class="form-control select-chosen" data-placeholder="Select staff group"
                                         style="width: 250px;">
                                     <option value=""></option>
                                     <!-- User group list fetch from API -->
@@ -206,7 +206,7 @@
 <!-- END Add/Update User modal -->
 
 <!-- Delete User modal -->
-<div id="delete-user-modal" class="modal fade" tabindex="-1" role="dialog">
+<div id="delete-staff-modal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

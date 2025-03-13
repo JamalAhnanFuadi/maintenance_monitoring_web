@@ -1,7 +1,7 @@
 package id.tsi.mmw.rest.service;
 
 import id.tsi.mmw.controller.MasterUserGroupController;
-import id.tsi.mmw.model.User;
+import id.tsi.mmw.model.Staff;
 
 import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
@@ -24,29 +24,29 @@ public class MasterUserGroupService extends BaseService {
         final String methodName = "getUserList";
         start(methodName);
 
-        List<User> userList;
-        userList = masterUserGroupController.getUserList();
+        List<Staff> staffList;
+        staffList = masterUserGroupController.getUserList();
         completed(methodName);
-        return buildSuccessResponse(userList);
+        return buildSuccessResponse(staffList);
     }
 
     @POST
-    public Response create(User user) {
+    public Response create(Staff staff) {
         final String methodName = "create";
         Response response = null;
         start(methodName);
 
-        boolean result = masterUserGroupController.create(user);
+        boolean result = masterUserGroupController.create(staff);
         completed(methodName);
         return response;
     }
 
     @PUT
-    public Response update(User user) {
+    public Response update(Staff staff) {
         final String methodName = "update";
         Response response = buildSuccessResponse();
         start(methodName);
-        boolean result = masterUserGroupController.update(user);
+        boolean result = masterUserGroupController.update(staff);
 
         completed(methodName);
         return response;
@@ -59,9 +59,9 @@ public class MasterUserGroupService extends BaseService {
         start(methodName);
 
         Response response = buildBadRequestResponse();
-        User user = masterUserGroupController.getUserByUid(uid);
+        Staff staff = masterUserGroupController.getUserByUid(uid);
 
-        if (user.getUid() != null) {
+        if (staff.getUid() != null) {
             boolean result = masterUserGroupController.delete(uid);
             if (result) {
                 response = buildSuccessResponse();

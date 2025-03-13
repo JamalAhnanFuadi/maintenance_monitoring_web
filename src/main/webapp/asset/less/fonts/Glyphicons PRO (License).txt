@@ -41,6 +41,6 @@ Twitter: http://twitter.com/glyphicons
 -------------------------------------------
 NOTE
 -------------------------------------------
-PRO users do not have to indicate the name of the author, but it always makes me happy when I see a link or a nice tweet about GLYPHICONS :) If you use the icons in your application, website or anywherelse and if you want to, email me, please, and maybe I will mention about it on Twitter, eventually publish your application on www.glyphicons.com/examples-of-use/.
+PRO staff do not have to indicate the name of the author, but it always makes me happy when I see a link or a nice tweet about GLYPHICONS :) If you use the icons in your application, website or anywherelse and if you want to, email me, please, and maybe I will mention about it on Twitter, eventually publish your application on www.glyphicons.com/examples-of-use/.
 
 Jan Kovařík

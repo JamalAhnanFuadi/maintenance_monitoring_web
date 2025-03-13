@@ -2,13 +2,6 @@ package id.tsi.mmw.rest.service;
 
 import id.tsi.mmw.controller.ApplicationController;
 import id.tsi.mmw.model.Application;
-import id.tsi.mmw.model.Pagination;
-import id.tsi.mmw.model.User;
-import id.tsi.mmw.property.Constants;
-import id.tsi.mmw.rest.model.request.PaginationRequest;
-import id.tsi.mmw.rest.model.response.UserPaginationResponse;
-import id.tsi.mmw.rest.validator.AuthenticationValidator;
-import id.tsi.mmw.util.json.JsonHelper;
 
 import javax.annotation.security.PermitAll;
 import javax.inject.Inject;

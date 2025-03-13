@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="The Special One">
     <meta name="robots" content="noindex, nofollow">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,staff-scalable=0">
 
     <%@include file="/WEB-INF/pages/css_import.jsp" %>
 </head>
@@ -59,13 +59,18 @@
 
                 <!-- Content -->
                 <div class="block full block-alt-noborder">
-                    <div class="text-right">
-                        <a id="add-department-button" href="#add-modal" class="btn btn-sm btn-primary"
-                           data-toggle="modal"><i class="fa fa-plus"></i> Add Department</a>
-                        <a id="export-department-button"  class="btn btn-sm btn-primary"
-                        ><i class="fa fa-plus"></i> Export</a>
+
+                    <div class="table-options clearfix">
+
+                        <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
+                            <a id="export-department-button" class="btn btn-sm btn-default">
+                                <i class="fa fa-print"></i> Export</a>
+                        </div>
+                        <div class="btn-group btn-group-sm pull-right" data-toggle="buttons">
+                            <a id="add-department-button" href="#add-modal" class="btn btn-sm btn-info"
+                               data-toggle="modal"><i class="fa fa-plus"></i> Add Department</a>
+                        </div>
                     </div>
-                    <br/>
                     <!-- Datatables Content -->
                     <div class="table-responsive">
                         <table id="table_department"
@@ -110,7 +115,7 @@
 </div>
 
 
-<!-- Add/Update modal -->
+<!-- Add modal -->
 <div id="add-modal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -122,30 +127,25 @@
                 <form id="add-form" class="form-horizontal form-bordered">
                     <fieldset>
                         <div class="form-group">
-                            <label class="col-md-4 control-label" for="val_department">Department Name <span
+                            <label class="col-md-4 control-label" for="val_department_name">Department Name <span
                                     class="text-danger">*</span></label>
                             <div class="col-md-6">
-                                <input type="text" id="val_department" name="val_department" class="form-control"
-                                       placeholder="Department Name..">
+                                <input type="text" id="val_department_name" name="val_department_name"
+                                       class="form-control" placeholder="Department Name..">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="val_description">Description </label>
                             <div class="col-md-6">
-                                <textarea id="val_description" name="val_description" class="form-control"
-                                          placeholder="Description.." rows="4"></textarea>
+                                        <textarea id="val_description" name="val_description" class="form-control"
+                                                  placeholder="Description.." rows="4"></textarea>
                             </div>
                         </div>
                     </fieldset>
-                    <div class=" modal-footer form-group form-actions">
-                        <div class="col-md-8 col-md-offset-4">
-                            <button id="submit-button" type="submit" class="btn btn-sm btn-primary"><i
-                                    class="fa fa-arrow-right"></i>
-                                Submit
-                            </button>
-                            <button id="reset-button" type="reset" class="btn btn-sm btn-warning"><i
-                                    class="fa fa-repeat"></i> Reset
-                            </button>
+
+                    <div class="modal-footer">
+                        <div class="btn-group btn-group-sm pull-right" data-toggle="buttons">
+                            <a id="submit-button" class="btn btn-sm btn-info submit-button"></i>Submit</a>
                         </div>
                     </div>
                 </form>
@@ -153,7 +153,61 @@
         </div>
     </div>
 </div>
-<!-- END Add/Update modal -->
+<!-- END Add modal -->
+
+<!-- View/Update modal -->
+<div id="view-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title" style="display: inline-block; margin: 0; margin-right: 10px;">View department</h3>
+                <a id="update-button" class="btn btn-sm btn-info update-button" style="display: inline-block; vertical-align: middle; margin-top: -2px;">Edit</a>
+            </div>
+            <div class="modal-body">
+                <form id="update-form" class="form-horizontal form-bordered">
+                    <fieldset>
+                        <div id="department-id" class="form-group">
+                            <label class="col-md-4 control-label" for="val_vdepartment_id">Department ID <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-md-6">
+                                <input type="text" id="val_vdepartment_id" name="val_vdepartment_id"
+                                       class="form-control" placeholder="Department ID.." readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_vdepartment_name">Department Name <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-md-6">
+                                <input type="text" id="val_vdepartment_name" name="val_vdepartment_name"
+                                       class="form-control" placeholder="Department Name..">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_vdescription">Description </label>
+                            <div class="col-md-6">
+                                        <textarea id="val_vdescription" name="val_vdescription" class="form-control"
+                                                  placeholder="Description.." rows="4"></textarea>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <div id="update-modal-footer" class="modal-footer">
+                        <div class="modal-footer">
+                            <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
+                                <a id="cancel-update-button" class="btn btn-sm btn-default cancel-update-button">Cancel</a>
+                            </div>
+                            <div class="btn-group btn-group-sm pull-right" data-toggle="buttons">
+                                <a id="confirm-update-button" class="btn btn-sm btn-danger confirm-update-button"></i>Save changes</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END View/Update modal -->
 
 <!-- Delete modal -->
 <div id="delete-modal" class="modal fade" tabindex="-1" role="dialog">
@@ -166,6 +220,12 @@
             <div class="modal-body">
             </div>
             <div class="modal-footer">
+                <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
+                    <a id="cancel-delete-button" class="btn btn-sm btn-default cancel-delete-button">Cancel</a>
+                </div>
+                <div class="btn-group btn-group-sm pull-right" data-toggle="buttons">
+                    <a id="confirm-delete-button" class="btn btn-sm btn-danger confirm-delete-button"></i>Confirm Delete</a>
+                </div>
             </div>
         </div>
     </div>

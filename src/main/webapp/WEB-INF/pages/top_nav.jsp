@@ -26,7 +26,7 @@
                 <li class="divider"></li>
                 <li>
                     <a href="page_ready_user_profile.html">
-                        <i class="fa fa-user fa-fw pull-right"></i>
+                        <i class="fa fa-staff fa-fw pull-right"></i>
                         Profile
                     </a>
                 </li>

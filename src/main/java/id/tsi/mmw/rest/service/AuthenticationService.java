@@ -1,6 +1,5 @@
 package id.tsi.mmw.rest.service;
 
-import com.sun.net.httpserver.Authenticator;
 import id.tsi.mmw.controller.AuthenticationController;
 import id.tsi.mmw.controller.StaffController;
 import id.tsi.mmw.controller.audit.AuditAuthenticationController;
@@ -8,7 +7,7 @@ import id.tsi.mmw.filter.ApplicationFilter;
 import id.tsi.mmw.manager.EncryptionManager;
 import id.tsi.mmw.model.Authentication;
 import id.tsi.mmw.model.Principal;
-import id.tsi.mmw.model.User;
+import id.tsi.mmw.model.Staff;
 import id.tsi.mmw.model.audit.AuditAuthentication;
 import id.tsi.mmw.property.Constants;
 import id.tsi.mmw.rest.model.request.AuthenticationRequest;
@@ -109,17 +108,17 @@ public class AuthenticationService extends BaseService {
                         log.info("Authentication : " + authenticate);
 
                         if (authenticate) {
-                            User user = staffController.getUserByUid(authentication.getUid());
+                            Staff staff = staffController.getStaff(authentication.getUid());
                             // Update user login timestamp upon successful authentication
                             log.info("Update last login timestamp");
-                            authenticationController.updateLoginTimestamp(user.getUid(), startProcessingDT);
+                            authenticationController.updateLoginTimestamp(staff.getUid(), startProcessingDT);
 
                             // Clear any existing session
                             clearSession();
 
                             // Create a new session and set session attributes
                             Principal principal = new Principal(authRequest.getUsername());
-                            setSessionAttribute(Constants.SESSION_USER, user);
+                            setSessionAttribute(Constants.SESSION_USER, staff);
                             setSessionAttribute(ApplicationFilter.SESSION_KEY, principal);
                             setSessionAttribute(Principal.class.getCanonicalName(), principal);
                             setTrackingID(trackingId);
@@ -165,13 +164,13 @@ public class AuthenticationService extends BaseService {
         start(methodName);
 
         String trackingId = getSessionAttribute(Constants.SESSION_TRACKING_ID, String.class);
-        User user = getSessionAttribute(Constants.SESSION_USER, User.class);
+        Staff staff = getSessionAttribute(Constants.SESSION_USER, Staff.class);
         String startProcessingDT = DateHelper.formatDateTime(LocalDateTime.now());
 
         AuditAuthentication auditAuthentication = new AuditAuthentication();
         auditAuthentication.setUid(UUID.randomUUID().toString());
         auditAuthentication.setTrackingId(trackingId);
-        auditAuthentication.setUser(user.getEmail());
+        auditAuthentication.setUser(staff.getEmail());
         auditAuthentication.setEvent(Constants.EVENT_LOGOUT);
         auditAuthentication.setApplication(Constants.APPLICATION_NAME);
         auditAuthentication.setCreatedDt(startProcessingDT);
@@ -207,9 +206,9 @@ public class AuthenticationService extends BaseService {
         final String methodName = "getLoginProfile";
         start(methodName);
 
-        User user = getSessionAttribute(Constants.SESSION_USER, User.class);
+        Staff staff = getSessionAttribute(Constants.SESSION_USER, Staff.class);
         completed(methodName);
-        return buildSuccessResponse(user);
+        return buildSuccessResponse(staff);
     }
 
     private void insertAuditAuthentication(AuditAuthentication audit) {

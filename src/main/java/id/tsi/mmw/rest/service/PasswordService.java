@@ -4,7 +4,7 @@ import id.tsi.mmw.controller.AuthenticationController;
 import id.tsi.mmw.controller.StaffController;
 import id.tsi.mmw.manager.EncryptionManager;
 import id.tsi.mmw.model.Authentication;
-import id.tsi.mmw.model.User;
+import id.tsi.mmw.model.Staff;
 import id.tsi.mmw.property.Constants;
 import id.tsi.mmw.property.Property;
 import id.tsi.mmw.rest.model.request.PasswordRequest;
@@ -70,17 +70,17 @@ public class PasswordService extends BaseService {
             log.debug(methodName, "Email validation : " + validUser);
             if (validUser) {
                 // Get the user's detail
-                User user = staffController.getUserDetailByEmail(request.getEmail());
+                Staff staff = staffController.getUserDetailByEmail(request.getEmail());
 
                 // Check if the user already has an authentication record in the database
-                boolean hasAuthentication = authenticationController.hasAuthentication(user.getUid());
+                boolean hasAuthentication = authenticationController.hasAuthentication(staff.getUid());
                 log.debug(methodName, "User has existing authentication : " + hasAuthentication);
 
                 // Generate a new salt value for the user
                 String salt = "";
                 if (hasAuthentication) {
                     // Get the existing salt value from the database
-                    salt = authenticationController.getUserSalt(user.getUid());
+                    salt = authenticationController.getUserSalt(staff.getUid());
                     log.debug(methodName, "Retrieve existing salt value : " + salt);
                 } else {
                     // Generate a new salt value for the user
@@ -95,7 +95,7 @@ public class PasswordService extends BaseService {
                 // Create a new authentication record with the new password hash
                 String processingTime = DateHelper.formatDBDateTime(LocalDateTime.now());
                 Authentication authentication = new Authentication();
-                authentication.setUid(user.getUid());
+                authentication.setUid(staff.getUid());
                 authentication.setSalt(salt);
                 authentication.setPassword(hashedPassword);
                 authentication.setLoginAllowed(true);
@@ -106,7 +106,7 @@ public class PasswordService extends BaseService {
                 log.debug(methodName, "Create authentication : " + createAuth);
                 if (createAuth) {
                     // Update the user's status to enabled
-                    staffController.updateUserStatus(user.getUid(), true);
+                    staffController.updateUserStatus(staff.getUid(), true);
                     response = buildSuccessResponse();
                 } else {
                     response = buildBadRequestResponse("Failed to create authentication");
