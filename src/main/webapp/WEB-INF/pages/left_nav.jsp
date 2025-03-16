@@ -37,6 +37,10 @@
                     <a href="departments" id="department-link"><i class="gi gi-building sidebar-nav-icon"></i><span
                             class="sidebar-nav-mini-hide">Departments</span></a>
                 </li>
+                <li>
+                    <a href="sales-levels" id="sales-level-link"><i class="gi gi-building sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">Sales Levels</span></a>
+                </li>
                 <li class="sidebar-header">
                     <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip" title="Quick menu"><i class="gi gi-package"></i></a></span>
                     <span class="sidebar-header-title">Menu</span>

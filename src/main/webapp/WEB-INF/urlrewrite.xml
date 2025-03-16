@@ -20,6 +20,10 @@
 		<from>^/staff$</from>
 		<to>/WEB-INF/masterdata/staff.jsp</to>
 	</rule>
+	<rule>
+		<from>^/sales-levels$</from>
+		<to>/WEB-INF/masterdata/sales_level.jsp</to>
+	</rule>
 
 
 
