@@ -19,14 +19,14 @@ public class UserRequest {
     @JsonProperty("mobileNumber")
     private String mobileNumber;
 
-    @JsonProperty("department")
-    private String department;
+    @JsonProperty("departmentUid")
+    private String departmentUid;
 
     @JsonProperty("dob")
     private String dob;
 
-    @JsonProperty("accessGroupUid")
-    private String accessGroupUid;
+    @JsonProperty("status")
+    private boolean status;
 
     public UserRequest() {
         // default constructor
@@ -72,12 +72,12 @@ public class UserRequest {
         this.mobileNumber = mobileNumber;
     }
 
-    public String getDepartment() {
-        return department;
+    public String getDepartmentUid() {
+        return departmentUid;
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
+    public void setDepartmentUid(String departmentUid) {
+        this.departmentUid = departmentUid;
     }
 
     public String getDob() {
@@ -88,11 +88,11 @@ public class UserRequest {
         this.dob = dob;
     }
 
-    public String getAccessGroupUid() {
-        return accessGroupUid;
+    public boolean isStatus() {
+        return status;
     }
 
-    public void setAccessGroupUid(String accessGroupUid) {
-        this.accessGroupUid = accessGroupUid;
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }

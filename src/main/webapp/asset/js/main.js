@@ -20,7 +20,6 @@ var Notification = (function ($) {
 
         // Call bootstrapGrowl with the combined message
         $.bootstrapGrowl(notificationMessage, {
-            ele: '#notification-container', // Specify the container to append to
             type: 'info', // Change to the desired growl type
             delay: 2500,
             allow_dismiss: true
@@ -41,6 +40,19 @@ var Notification = (function ($) {
     }
 
 
+    function notifyWarning(title, message = '') {
+        // Combine title and message into a single HTML string
+        var notificationMessage = `<h4>${title}</h4><p>${message}</p>`;
+
+        // Call bootstrapGrowl with the combined message
+        $.bootstrapGrowl(notificationMessage, {
+            type: 'warning', // Change to the desired growl type
+            delay: 2500,
+            allow_dismiss: true
+        });
+    }
+
+
     // Function to unescape Unicode characters
     function unescapeUnicode(str) {
         return str.replace(/\\u([a-fA-F0-9]{4})/g, function (g, m1) {
@@ -52,6 +64,7 @@ var Notification = (function ($) {
     return {
         notifySuccess: notifySuccess,
         notifyInfo: notifyInfo,
+        notifyWarning: notifyWarning,
         notifyError: notifyError,
         unescapeUnicode: unescapeUnicode
     };

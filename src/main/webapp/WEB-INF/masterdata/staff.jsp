@@ -62,12 +62,13 @@
                     <div class="table-options clearfix">
 
                         <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-                            <a id="export-staff-button" class="btn btn-sm btn-default" >
+                            <a id="export-staff-button" class="btn btn-sm btn-default">
                                 <i class="fa fa-print"></i> Export</a>
                         </div>
                         <div class="btn-group btn-group-sm pull-right" data-toggle="buttons">
-                            <a id="add-staff-button" href="#add-modal" class="btn btn-sm btn-info add-staff-button"
-                               data-toggle="modal"><i class="fa fa-plus"></i> Add Staff</a>
+                            <a id="add-staff-button" href="#add-modal"
+                               class="btn btn-sm btn-info add-staff-button" data-toggle="modal"><i
+                                    class="fa fa-plus"></i> Add Staff</a>
                         </div>
                     </div>
 
@@ -199,11 +200,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title" style="display: inline-block; margin: 0; margin-right: 10px;">View staff</h3>
-                <a id="update-button" class="btn btn-sm btn-info update-button" style="display: inline-block; vertical-align: middle; margin-top: -2px;">Edit</a>
+                <h3 class="modal-title" style="display: inline-block; margin: 0; margin-right: 10px;">View staff
+                </h3>
+                <a id="update-button" class="btn btn-sm btn-info update-button"
+                   style="display: inline-block; vertical-align: middle; margin-top: -2px;">Edit</a>
             </div>
             <div class="modal-body">
-                <form id="view-form" class="form-horizontal form-bordered">
+                <form id="update-form" class="form-horizontal form-bordered">
                     <fieldset>
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="val_vuid">Staff ID <span
@@ -219,7 +222,8 @@
                             <div class="col-md-6">
                                 <label class="switch switch-primary" for="val_vstatus">
                                     <input type="checkbox" id="val_vstatus" name="val_vstatus">
-                                    <span data-toggle="tooltip" title="" data-original-title="Enable / Disable staff"></span>
+                                    <span data-toggle="tooltip" title=""
+                                          data-original-title="Enable / Disable staff"></span>
                                 </label>
                             </div>
                         </div>
@@ -227,8 +231,8 @@
                             <label class="col-md-4 control-label" for="val_vfirstname">First Name <span
                                     class="text-danger">*</span></label>
                             <div class="col-md-6">
-                                <input type="text" id="val_vfirstname" name="val_vfirstname" class="form-control"
-                                       placeholder="First Name..">
+                                <input type="text" id="val_vfirstname" name="val_vfirstname"
+                                       class="form-control" placeholder="First Name..">
                             </div>
                         </div>
                         <div class="form-group">
@@ -274,10 +278,15 @@
                             </div>
                         </div>
                     </fieldset>
-                    <div class=" modal-footer form-group form-actions">
-                        <div class="col-md-8 col-md-offset-4">
+                    <div id="update-modal-footer" class="modal-footer">
+                        <div class="modal-footer">
+                            <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
+                                <a id="cancel-update-button"
+                                   class="btn btn-sm btn-default cancel-update-button">Cancel</a>
+                            </div>
                             <div class="btn-group btn-group-sm pull-right" data-toggle="buttons">
-                                <a id="submit-button" class="btn btn-sm btn-info submit-button"></i>Submit</a>
+                                <a id="confirm-update-button"
+                                   class="btn btn-sm btn-danger confirm-update-button"></i>Save changes</a>
                             </div>
                         </div>
                     </div>
@@ -303,7 +312,8 @@
                     <a id="cancel-delete-button" class="btn btn-sm btn-default cancel-delete-button">Cancel</a>
                 </div>
                 <div class="btn-group btn-group-sm pull-right" data-toggle="buttons">
-                    <a id="confirm-delete-button" class="btn btn-sm btn-danger confirm-delete-button"></i>Confirm Delete</a>
+                    <a id="confirm-delete-button"
+                       class="btn btn-sm btn-danger confirm-delete-button"></i>Confirm Delete</a>
                 </div>
             </div>
         </div>

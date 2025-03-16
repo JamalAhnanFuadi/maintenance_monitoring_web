@@ -1,16 +1,17 @@
 package id.tsi.mmw.rest.service;
 
+import id.tsi.mmw.controller.AuthenticationController;
 import id.tsi.mmw.controller.StaffController;
 import id.tsi.mmw.controller.microservice.EmailController;
 import id.tsi.mmw.filter.ApplicationFilter;
+import id.tsi.mmw.manager.EncryptionManager;
+import id.tsi.mmw.model.Authentication;
 import id.tsi.mmw.model.Principal;
 import id.tsi.mmw.model.Staff;
 import id.tsi.mmw.property.Constants;
 import id.tsi.mmw.property.Property;
 import id.tsi.mmw.rest.model.request.EmailValidateRequest;
 import id.tsi.mmw.rest.model.request.UserRequest;
-import id.tsi.mmw.rest.model.request.UserStatusRequest;
-import id.tsi.mmw.rest.model.response.StaffResponse;
 import id.tsi.mmw.rest.validator.UserValidator;
 import id.tsi.mmw.util.helper.DateHelper;
 import id.tsi.mmw.util.helper.FileHelper;
@@ -26,6 +27,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
 
 @Singleton
 @Path("staff")
@@ -36,9 +38,15 @@ public class StaffService extends BaseService {
     private StaffController staffController;
 
     @Inject
+    private AuthenticationController authenticationController;
+
+    @Inject
     private EmailController emailController;
 
     private UserValidator validator;
+
+    @Inject
+    protected ExecutorService executor;
 
     public StaffService() {
         log = getLogger(this.getClass());
@@ -106,15 +114,151 @@ public class StaffService extends BaseService {
 
         log.info(methodName, "Get staff by id (" + uid + ")");
 
-        boolean validateUser = staffController.validateUser(uid);
-        log.debug(methodName, "User validation : " + validateUser);
+        boolean validStaff = staffController.validateStaff(uid);
+        log.debug(methodName, "Staff validation : " + validStaff);
 
-        if (validateUser) {
+        if (validStaff) {
             Staff staff = staffController.getStaff(uid);
+            log.debug(methodName, JsonHelper.toJson(staff));
             response = buildSuccessResponse(staff);
         } else {
             // Build a bad request response if the user id is invalid
             response = buildBadRequestResponse("Invalid User id");
+        }
+        completed(methodName);
+        return response;
+    }
+
+
+    @POST
+    @PermitAll
+    public Response create(UserRequest request) {
+        final String methodName = "create";
+        Response response = null;
+        start(methodName);
+        log.info(methodName, "Create User");
+        log.info(methodName, JsonHelper.toJson(request));
+
+        boolean validPayload = validator.create(request);
+        log.debug(methodName, "Request payload validation : " + validPayload);
+
+        if (validPayload) {
+            boolean emailExist = staffController.validateEmail(request.getEmail());
+            log.debug(methodName, "Email exist : " + emailExist);
+
+            if (!emailExist) {
+                String uuid = UUID.randomUUID().toString();
+
+                Staff staff = new Staff();
+                staff.setUid(uuid);
+                staff.setFirstname(request.getFirstname());
+                staff.setLastname(request.getLastname());
+
+                staff.setEmail(request.getEmail());
+                staff.setMobileNumber(request.getMobileNumber());
+                staff.setDepartmentUid(request.getDepartmentUid());
+
+                if(!request.getDob().isEmpty() && request.getDob() != null) {
+                    LocalDate dobLD = DateHelper.parseFEDate(request.getDob());
+                    LocalDateTime dobLDT = dobLD.atStartOfDay();
+                    staff.setDob(DateHelper.formatDBDateTime(dobLDT));
+                }
+
+                String processingTime = DateHelper.formatDateTime(LocalDateTime.now());
+                staff.setCreateDt(processingTime);
+
+                String salt = EncryptionManager.getInstance().generateRandomString(getIntegerProperty(Property.ENCRYPTION_SALT_LENGTH));
+                String defaultPassword = getProperty(Property.STAFF_DEFAULT_PASSWORD);
+                String hashedPassword = EncryptionManager.getInstance().hash(defaultPassword, salt);
+
+                Authentication authentication = new Authentication();
+                authentication.setUid(uuid);
+                authentication.setSalt(salt);
+                authentication.setPassword(hashedPassword);
+
+                boolean created = staffController.addStaff(staff);
+                log.debug(methodName, "Staff creation : " + created);
+                if (created) {
+                    boolean createdAuthentication = authenticationController.createAuthentication(authentication);
+                    log.debug(methodName, "Authentication creation : " + createdAuthentication);
+                    if(createdAuthentication) {
+                        executor.execute(() -> sendCreateUserEmail(staff));
+                        response = buildSuccessResponse();
+                    }else {
+                        log.debug(methodName, "Rollback staff creation");
+                        staffController.delete(uuid);
+
+                        response = buildBadRequestResponse("Staff creation failed");
+                    }
+                } else {
+                    response = buildBadRequestResponse("Staff creation failed");
+                }
+            } else {
+                response = buildConflictResponse("Staff email already exists");
+            }
+        } else {
+            response = buildBadRequestResponse(Constants.MESSAGE_INVALID_REQUEST);
+        }
+        completed(methodName);
+        return response;
+    }
+
+    @PUT
+    @PermitAll
+    public Response updateStaff(UserRequest request) {
+        final String methodName = "updateStaff";
+        Response response;
+        start(methodName);
+        log.info(methodName, "Update staff");
+        log.info(methodName, JsonHelper.toJson(request));
+
+        boolean validPayload = validator.update(request);
+        log.debug(methodName, "Request payload validation : " + validPayload);
+
+        if (validPayload) {
+            boolean validStaff = staffController.validateStaff(request.getUid());
+            log.debug(methodName, "Staff validation : " + validStaff);
+
+            if (validStaff) {
+
+                Staff staff = new Staff();
+                staff.setUid(request.getUid());
+                staff.setFirstname(request.getFirstname());
+                staff.setLastname(request.getLastname());
+                staff.setEmail(request.getEmail());
+                staff.setMobileNumber(request.getMobileNumber());
+                staff.setDepartment(request.getDepartmentUid());
+                staff.setStatus(request.isStatus());
+
+                if(!request.getDob().isEmpty() && request.getDob() != null) {
+                    LocalDate dobLD = DateHelper.parseFEDate(request.getDob());
+                    LocalDateTime dobLDT = dobLD.atStartOfDay();
+                    staff.setDob(DateHelper.formatDBDateTime(dobLDT));
+                }
+
+                String processingTime = DateHelper.formatDateTime(LocalDateTime.now());
+
+                // proceed user update to database
+                boolean created = staffController.updateStaff(staff);
+                if (created) {
+
+                    // if activate staff, allow user to login
+                    // else block staff login
+                    if(staff.isStatus()) {
+                        authenticationController.updateAllowedLogin(staff.getUid(), true);
+                    }else {
+                        authenticationController.updateAllowedLogin(staff.getUid(), false);
+                    }
+
+                    response = buildSuccessResponse();
+                } else {
+                    response = buildBadRequestResponse("User update failed");
+                }
+            } else {
+                response = buildConflictResponse("User not exists");
+            }
+        } else {
+            response = buildBadRequestResponse(Constants.MESSAGE_INVALID_REQUEST);
         }
         completed(methodName);
         return response;
@@ -131,13 +275,14 @@ public class StaffService extends BaseService {
         Response response;
         log.info(methodName, "Delete staff (" + uid + ")");
 
-        boolean userExist = staffController.validateUser(uid);
-        log.debug(methodName, "Staff validation : " + userExist);
+        boolean validStaff = staffController.validateStaff(uid);
+        log.debug(methodName, "Staff validation : " + validStaff);
 
-        if (userExist) {
+        if (validStaff) {
             boolean deleted = staffController.delete(uid);
-            log.debug(methodName, "User deletion : " + deleted);
+            log.debug(methodName, "Staff deletion : " + deleted);
             if (deleted) {
+                authenticationController.deleteAuthentication(uid);
                 response = buildSuccessResponse();
             } else {
                 response = buildBadRequestResponse("User deletion failed");
@@ -148,112 +293,6 @@ public class StaffService extends BaseService {
         completed(methodName);
         return response;
     }
-
-    /**
-     * Creates a new user with the given request payload.
-     * <p>
-     * This function will validate the request payload first, and only proceed
-     * if the payload is valid. If the payload is invalid, the function will return
-     * HTTP 400 Bad Request.
-     * <p>
-     * If the payload is valid, the function will check if the user email is already
-     * exist in the database. If the email is already exist, the function will return
-     * HTTP 409 Conflict with a message "User email already exists".
-     * <p>
-     * If the email is not exist, the function will generate a user primary key,
-     * generate user information to be create to database, generate user authentication
-     * information, and proceed user creation to database. If the user creation is
-     * successful, the function will return HTTP 201 Created with a message "User created".
-     * Otherwise, the function will return HTTP 400 Bad Request with a message "User creation failed".
-     *
-     * @param request The request payload containing the user information.
-     * @return A response containing the result of the user creation.
-     */
-    /*@POST
-    @PermitAll
-    public Response create(UserRequest request) {
-        final String methodName = "create";
-        Response response = null;
-        start(methodName);
-        log.info(methodName, "Create User");
-        log.info(methodName, JsonHelper.toJson(request));
-
-        // validate request payload. This is done by calling the validator.create() method,
-        // which will validate the request payload and return true if the payload is valid,
-        // otherwise false.
-        boolean validPayload = validator.create(request);
-        log.debug(methodName, "Request payload validation : " + validPayload);
-
-        // if payload is valid, continue proceed,
-        // else return bad request
-        if (validPayload) {
-            // validate if user email is already exist. This is done by calling the
-            // userController.validateEmail() method, which will validate if the user email
-            // is already exist in the database and return true if the email is already exist,
-            // otherwise false.
-            boolean userExist = staffController.validateEmail(request.getEmail());
-            log.debug(methodName, "Email validation : " + userExist);
-
-            // if user not exist, continue user creation process
-            // else return user already exist response
-            if (!userExist) {
-                // generate user primary key. This is done by generating a UUID string.
-                String uuid = UUID.randomUUID().toString();
-
-                // Generate user information to be create to database.
-                // This is done by creating a new User object and set the properties:
-                // uid, firstname, lastname, fullname, email, mobile number, date of birth
-                Staff staff = new Staff();
-                staff.setUid(uuid);
-                staff.setFirstname(request.getFirstname());
-                staff.setLastname(request.getLastname());
-
-                staff.setEmail(request.getEmail());
-                staff.setMobileNumber(request.getMobileNumber());
-                staff.setDepartment(request.getDepartment());
-                LocalDate dobLD = DateHelper.parseFEDate(request.getDob());
-                LocalDateTime dobLDT = dobLD.atStartOfDay();
-                staff.setDob(DateHelper.formatDBDateTime(dobLDT));
-
-                String processingTime = DateHelper.formatDateTime(LocalDateTime.now());
-                staff.setCreateDt(processingTime);
-                staff.setModifyDt(processingTime);
-
-*//*                // generate user authentication information. This is done by generating
-                // a salt string, hashing the default password with the salt, and creating
-                // a new Authentication object and set the properties: uid, salt, passwordHash,
-                // loginAllowed, and createDt.
-                String salt = EncryptionManager.getInstance().generateRandomString(getIntegerProperty(Property.ENCRYPTION_SALT_LENGTH));
-                String defaultPassword = getProperty(Property.USER_DEFAULT_PASSWORD);
-                String hashedPassword = EncryptionManager.getInstance().hash(defaultPassword, salt);
-
-                Authentication authentication = new Authentication();
-                authentication.setUid(uuid);
-                authentication.setSalt(salt);
-                authentication.setPasswordHash(hashedPassword);
-                authentication.setLoginAllowed(false);
-                authentication.setCreateDt(processingTime);*//*
-
-                // proceed user creation to database
-                boolean created = staffController.create(staff);
-                if (created) {
-                    boolean addToAccessGroup = userAccessGroupController.addUserToAccessGroup(staff.getUid(), request.getAccessGroupUid());
-                    // TO DO send email to user after user created to activate login and change the password
-                    sendCreateUserEmail(staff);
-
-                    response = buildSuccessResponse();
-                } else {
-                    response = buildBadRequestResponse("User creation failed");
-                }
-            } else {
-                response = buildConflictResponse("User email already exists");
-            }
-        } else {
-            response = buildBadRequestResponse(Constants.MESSAGE_INVALID_REQUEST);
-        }
-        completed(methodName);
-        return response;
-    }*/
 
     private void sendCreateUserEmail(Staff staff) {
 
@@ -267,79 +306,9 @@ public class StaffService extends BaseService {
                 .replace("{userEmail}", staff.getEmail());
 
         emailController.send(staff.getEmail(), subject, body);
-        //EmailHelper.sendEmail(subject, body, user.getEmail(), null);
     }
 
-/*    @PUT
-    @PermitAll
-    public Response update(UserRequest request) {
-        final String methodName = "update";
-        Response response;
-        start(methodName);
-        log.info(methodName, "Update User");
-        log.info(methodName, JsonHelper.toJson(request));
-
-        // validate request payload. This is done by calling the validator.create() method,
-        // which will validate the request payload and return true if the payload is valid,
-        // otherwise false.
-        boolean validPayload = validator.update(request);
-        log.debug(methodName, "Request payload validation : " + validPayload);
-
-        // if payload is valid, continue proceed,
-        // else return bad request
-        if (validPayload) {
-            // validate if user email is already exist. This is done by calling the
-            // userController.validateEmail() method, which will validate if the user email
-            // is already exist in the database and return true if the email is already exist,
-            // otherwise false.
-            boolean userExist = staffController.validateUserUid(request.getUid());
-            log.debug(methodName, "User validation : " + userExist);
-
-            // if user not exist, continue user creation process
-            // else return user already exist response
-            if (userExist) {
-
-                // Generate user information to be create to database.
-                // This is done by creating a new User object and set the properties:
-                // uid, firstname, lastname, fullname, email, mobile number, date of birth
-                Staff staff = new Staff();
-                staff.setUid(request.getUid());
-                staff.setFirstname(request.getFirstname());
-                staff.setLastname(request.getLastname());
-
-                staff.setEmail(request.getEmail());
-                staff.setMobileNumber(request.getMobileNumber());
-                staff.setDepartment(request.getDepartment());
-                LocalDate dobLD = DateHelper.parseFEDate(request.getDob());
-                LocalDateTime dobLDT = dobLD.atStartOfDay();
-                staff.setDob(DateHelper.formatDBDateTime(dobLDT));
-
-                String processingTime = DateHelper.formatDateTime(LocalDateTime.now());
-                staff.setModifyDt(processingTime);
-
-                // proceed user update to database
-                boolean created = staffController.update(staff);
-                if (created) {
-                    boolean hasAccessGroup = userAccessGroupController.validateHasAccessGroup(request.getUid());
-                    if(hasAccessGroup){
-                        boolean updateToAccessGroup = userAccessGroupController.UpdateUserToAccessGroup(staff.getUid(), request.getAccessGroupUid());
-                    }else {
-                        boolean addToAccessGroup = userAccessGroupController.addUserToAccessGroup(staff.getUid(), request.getAccessGroupUid());
-                    }
-
-                    response = buildSuccessResponse();
-                } else {
-                    response = buildBadRequestResponse("User update failed");
-                }
-            } else {
-                response = buildConflictResponse("User not exists");
-            }
-        } else {
-            response = buildBadRequestResponse(Constants.MESSAGE_INVALID_REQUEST);
-        }
-        completed(methodName);
-        return response;
-    }*/
+/*    */
 
     /**
      * Deletes a user from the database.

@@ -106,7 +106,7 @@ public class PasswordService extends BaseService {
                 log.debug(methodName, "Create authentication : " + createAuth);
                 if (createAuth) {
                     // Update the user's status to enabled
-                    staffController.updateUserStatus(staff.getUid(), true);
+                    staffController.updateStaffStatus(staff.getUid(), true);
                     response = buildSuccessResponse();
                 } else {
                     response = buildBadRequestResponse("Failed to create authentication");

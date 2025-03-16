@@ -16,7 +16,7 @@ public class Property {
 
 
     public static final String ENCRYPTION_SALT_LENGTH = "encryption.salt.length";
-    public static final String USER_DEFAULT_PASSWORD = "user.default.password";
+    public static final String STAFF_DEFAULT_PASSWORD = "staff.default.password";
 
     public static final String MAIL_SMTP_HOST = "mail.host";
     public static final String MAIL_SMTP_PORT = "mail.port";

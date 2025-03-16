@@ -18,6 +18,9 @@ public class Staff {
     @JsonProperty("department")
     private String department;
 
+    @JsonProperty("departmentUid")
+    private String departmentUid;
+
     @JsonProperty("email")
     private String email;
 
@@ -73,6 +76,14 @@ public class Staff {
 
     public void setDepartment(String department) {
         this.department = department;
+    }
+
+    public String getDepartmentUid() {
+        return departmentUid;
+    }
+
+    public void setDepartmentUid(String departmentUid) {
+        this.departmentUid = departmentUid;
     }
 
     public String getEmail() {

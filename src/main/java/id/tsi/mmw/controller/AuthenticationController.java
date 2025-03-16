@@ -69,7 +69,58 @@ public class AuthenticationController extends BaseController {
         completed(methodName);
     }
 
+    public boolean createAuthentication(Authentication authentication) {
+        final String methodName = "createAuthentication";
+        start(methodName);
+        boolean result = false;
+        String sql = "INSERT INTO authentication " +
+                "(uid, salt, password, login_allowed) " +
+                "VALUES(:uid, :salt, :password, 0);";
 
+        try (Handle handle = getHandle(); Update update = handle.createUpdate(sql)) {
+            update.bindBean(authentication);
+            result = executeUpdate(update);
+        } catch (Exception e) {
+            log.error(methodName, e);
+        }
+
+        completed(methodName);
+        return result;
+    }
+
+    public void updateAllowedLogin(String uid, boolean allowedLogin) {
+        final String methodName = "updateAllowedLogin";
+        start(methodName);
+
+        String sql = "UPDATE authentication " +
+                "SET login_allowed = :allowedLogin " +
+                "WHERE uid= :uid;";
+
+        try (Handle handle = getHandle(); Update u = handle.createUpdate(sql)) {
+            u.bind("allowedLogin", allowedLogin);
+            u.bind("uid", uid);
+
+            executeUpdate(u);
+
+        } catch (SQLException e) {
+            log.error(methodName, e);
+        }
+        completed(methodName);
+    }
+
+    public void deleteAuthentication(String uid) {
+        final String methodName = "deleteAuthentication";
+        start(methodName);
+        String sql = "DELETE FROM authentication WHERE uid = :uid;";
+        try (Handle handle = getHandle(); Update u = handle.createUpdate(sql)) {
+            u.bind("uid", uid);
+            executeUpdate(u);
+
+        } catch (SQLException e) {
+            log.error(methodName, e);
+        }
+        completed(methodName);
+    }
 
 
 
@@ -175,13 +226,8 @@ public class AuthenticationController extends BaseController {
         return result;
     }
 
-    /**
-     * Creates a new authentication record in the 'authentications' table, or updates the existing one if the
-     * user already has an authentication record.
-     *
-     * @param authentication The authentication object to be inserted or updated
-     * @return True if the operation was successful, false otherwise
-     */
+
+/*
     public boolean createAuthentication(Authentication authentication) {
         final String methodName = "createAuthentication";
         start(methodName);
@@ -213,33 +259,6 @@ public class AuthenticationController extends BaseController {
 
         completed(methodName);
         return result;
-    }
+    }*/
 
-    // Method to update the login allowed status for a user identified by uid
-    public void updateLoginAllowed(String uid, boolean allowed) {
-        final String methodName = "updateLoginAllowed";
-        start(methodName);
-
-        // SQL query to update the 'login_allowed' field in the 'authentications' table
-        String sql = "UPDATE authentications " +
-                "SET login_allowed = :allowed " +
-                "WHERE uid= :uid;";
-
-        // Get a database connection handle
-        try (Handle handle = getHandle(); Update u = handle.createUpdate(sql)) {
-
-            // Bind the 'allowed' and 'uid' parameters to the update object
-            u.bind("allowed", allowed);
-            u.bind("uid", uid);
-
-            // Execute the update operation
-            executeUpdate(u);
-
-        } catch (SQLException e) {
-            // Log any SQL exception that occurs during the update operation
-            log.error(methodName, e);
-        }
-
-        completed(methodName);
-    }
 }

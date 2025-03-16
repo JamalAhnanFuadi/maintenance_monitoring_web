@@ -61,19 +61,16 @@ var DepartmentDatatables = (function () {
                         return `
                             <div class="btn-group">
                             <div class="text-center">
-                                <a class="btn btn-sm btn-info view-button" data-id="${
-                            row.uid
+                                <a class="btn btn-sm btn-info view-button" data-id="${row.uid
                         }">
                                     <i class="fa fa-eye"></i> View
                                 </a>
-                                <a class="btn btn-sm btn-danger delete-btn" data-id="${
-                            row.uid
+                                <a class="btn btn-sm btn-danger delete-btn" data-id="${row.uid
                         }" 
                                     data-displayname="${row.displayName}" 
-                                    ${
-                            locked
-                                ? ""
-                                : 'disabled title="Cannot delete when department in use"'
+                                    ${locked
+                            ? ""
+                            : 'disabled title="Cannot delete when department in use"'
                         }">
                                     <i class="fa fa-times-circle"></i> Delete
                                 </a>
@@ -234,7 +231,7 @@ $(document).on("click", ".view-button", function () {
     $.ajax({
         url: "/monitoring/rest/departments/" + departmentId,
         method: "GET",
-        data: { id: departmentId},
+        data: { id: departmentId },
         success: function (response, status, xhr) {
 
             $("#val_vdepartment_id").val(response.uid);
@@ -385,22 +382,29 @@ function updateValidation() {
 
 
 $(document).on("click", ".delete-btn", function () {
-    var id = $(this).data("id");
-    var displayName = $(this).data("displayname");
+    if ($(this).is('[disabled]')) {
+        Notification.notifyWarning(
+            "Warning",
+            "Unable to delete staff when status is locked"
+        );
+    } else {
+        var id = $(this).data("id");
+        var displayName = $(this).data("displayname");
 
-    $("#cancel-delete-button").removeClass("disabled").html('Cancel');
+        $("#cancel-delete-button").removeClass("disabled").html('Cancel');
 
-    $("#confirm-delete-button").attr("data-id", id);
-    $("#confirm-delete-button").removeClass("disabled").html('Confirm Delete');
+        $("#confirm-delete-button").attr("data-id", id);
+        $("#confirm-delete-button").removeClass("disabled").html('Confirm Delete');
 
-    $("#delete-modal .modal-body").empty();
-    $("#delete-modal .modal-body").html(
-        `Are you sure you want to delete : <strong>${displayName}</strong>?`
-    );
+        $("#delete-modal .modal-body").empty();
+        $("#delete-modal .modal-body").html(
+            `Are you sure you want to delete : <strong>${displayName}</strong>?`
+        );
 
-    $("#delete-modal").data("id", id);
-    $(".modal-title").text("Delete Department");
-    $("#delete-modal").modal("show");
+        $("#confirm-delete-button").data("id", id);
+        $(".modal-title").text("Delete Department");
+        $("#delete-modal").modal("show");
+    }
 });
 
 $(document).on("click", ".cancel-delete-button", function () {
@@ -411,6 +415,7 @@ $(document).on("click", ".cancel-delete-button", function () {
 });
 
 $(document).on("click", ".confirm-delete-button", function () {
+
     var id = $(this).data("id");
 
     $("#cancel-delete-button").addClass("disabled").html('<i class="fa fa-spinner fa-spin"></i> Cancel');

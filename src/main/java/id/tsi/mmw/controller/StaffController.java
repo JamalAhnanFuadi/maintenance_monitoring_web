@@ -17,12 +17,6 @@ public class StaffController extends BaseController {
         log = getLogger(this.getClass());
     }
 
-    /**
-     * Validates the user email by checking if it exists in the database table.
-     *
-     * @param email The email address to validate
-     * @return true if the email exists, false otherwise
-     */
     public boolean validateEmail(String email) {
         final String methodName = "validateEmail";
         start(methodName);
@@ -48,7 +42,7 @@ public class StaffController extends BaseController {
         start(methodName);
 
         Staff staff = new Staff();
-        String sql = "SELECT a.uid, a.firstname, a.lastname, a.mobile_number, a.email, b.display_name AS department, a.status, a.dob, a.create_dt, a.modify_dt " +
+        String sql = "SELECT a.uid, a.firstname, a.lastname, a.mobile_number, a.email, b.display_name AS department, a.department_uid, a.status, a.dob, a.create_dt, a.modify_dt " +
                 " FROM staff a " +
                 " LEFT JOIN department b ON a.department_uid = b.uid " +
                 " WHERE a.uid = :userUid;";
@@ -84,8 +78,8 @@ public class StaffController extends BaseController {
         return result;
 
     }
-    public boolean validateUser(String uid) {
-        final String methodName = "validateUser";
+    public boolean validateStaff(String uid) {
+        final String methodName = "validateStaff";
         start(methodName);
         boolean result = false;
         String sql = "SELECT if(COUNT(*)>0,'true','false') " +
@@ -101,6 +95,63 @@ public class StaffController extends BaseController {
         completed(methodName);
         return result;
     }
+
+    public boolean addStaff(Staff staff) {
+        final String methodName = "addStaff";
+        start(methodName);
+        boolean result = false;
+        // SQL query to update the 'status' field in the 'user' table
+        String sql = "INSERT INTO staff " +
+                "(uid, firstname, lastname, department_uid, email, mobile_number, dob, status, create_dt) " +
+                "VALUES(:uid, :firstname, :lastname, :departmentUid, :email, :mobileNumber, :dob, 0, CURRENT_TIMESTAMP);" ;
+
+        try (Handle handle = getHandle(); Update u = handle.createUpdate(sql)) {
+
+            u.bindBean(staff);
+            result = executeUpdate(u);
+
+        } catch (SQLException e) {
+            log.error(methodName, e);
+        }
+        completed(methodName);
+        return result;
+    }
+
+    public boolean updateStaff(Staff staff) {
+        final String methodName = "updateStaff";
+        start(methodName);
+        boolean result = false;
+        final String sql =
+                "UPDATE staff " +
+                        "SET firstname = :firstname, lastname = :lastname, department_uid = :department, mobile_number = :mobileNumber, dob = :dob, status = :status, modify_dt = CURRENT_TIMESTAMP " +
+                        "WHERE uid = :uid; ";
+        try (Handle h = getHandle(); Update u = h.createUpdate(sql)) {
+            u.bindBean(staff);
+            result = executeUpdate(u);
+        } catch (Exception ex) {
+            log.error(methodName, ex);
+        }
+        completed(methodName);
+        return result;
+    }
+
+    public boolean updateStaffStatus(String uid, boolean status) {
+        final String methodName = "updateStaffStatus";
+        start(methodName);
+        boolean result = false;
+        final String sql =
+                "UPDATE staff SET status = :status, modify_dt = CURRENT_TIMESTAMP WHERE uid = :uid; ";
+        try (Handle h = getHandle(); Update u = h.createUpdate(sql)) {
+            u.bind("status", status);
+            u.bind("uid", uid);
+            result = executeUpdate(u);
+        } catch (Exception ex) {
+            log.error(methodName, ex);
+        }
+        completed(methodName);
+        return result;
+    }
+
 
     public boolean delete(String uid) {
         final String methodName = "delete";
@@ -152,95 +203,4 @@ public class StaffController extends BaseController {
         completed(methodName);
         return staff;
     }
-
-
-
-    public boolean create(Staff staff) {
-        final String methodName = "create";
-        start(methodName);
-        boolean result = false;
-
-        try (Handle h = getHandle()) {
-            // Execute the operations within a transaction
-            result = h.inTransaction(handle -> createUserBatch(handle, staff));
-        } catch (Exception ex) {
-            log.error(methodName, ex);
-        }
-
-        completed(methodName);
-        return result;
-
-    }
-
-    /**
-     * Inserts a user into the database using a prepared batch statement.
-     *
-     * @param handle the handle to the database connection
-     * @param staff the user object to insert
-     * @return true if the insertion was successful, false otherwise
-     */
-    private boolean createUserBatch(Handle handle, Staff staff){
-        String sql = "INSERT INTO user " +
-                "(uid, firstname, lastname, fullname, department, email, mobile_number, dob, status, create_dt) " +
-                "VALUES" +
-                "( :uid, :firstname, :lastname, :fullname, :department, :email, :mobileNumber, :dob, :status, :createDt);";
-        PreparedBatch insertUser = handle.prepareBatch(sql);
-        insertUser.bindBean(staff);
-        return executeBatch(insertUser);
-    }
-
-    /**
-     * Updates the 'status' field of a user with the specified 'uid' to the specified 'status'.
-     *
-     * @param uid    The unique identifier of the user to update
-     * @param status The new status of the user (true for active, false for inactive)
-     */
-    public boolean updateUserStatus(String uid, boolean status) {
-        final String methodName = "updateUserStatus";
-        start(methodName);
-        boolean result = false;
-        // SQL query to update the 'status' field in the 'user' table
-        String sql = "UPDATE user " +
-                "SET status = :status " + // Set the 'status' field to the value of the 'status' parameter
-                "WHERE uid= :uid;"; // Filter the update operation to the 'user' with the specified 'uid'
-
-        try (Handle handle = getHandle(); Update u = handle.createUpdate(sql)) {
-
-            // Bind the 'status' and 'uid' parameters to the update object
-            u.bind("status", status);
-            u.bind("uid", uid);
-
-            // Execute the update operation
-            result = executeUpdate(u);
-
-        } catch (SQLException e) {
-            // Log any SQL exception that occurs during the update operation
-            log.error(methodName, e);
-        }
-        completed(methodName);
-        return result;
-    }
-
-    public boolean update(Staff staff) {
-        final String methodName = "update";
-        start(methodName);
-        boolean result = false;
-        final String sql =
-                "UPDATE user SET firstname = :firstname, lastname = :lastname, fullname = :fullname, " +
-                        " mobile_number = :mobileNumber, dob =:dob, department = :department, modify_dt =:modifyDt " +
-                        " WHERE uid = :uid";
-        try (Handle h = getHandle(); Update u = h.createUpdate(sql)) {
-            u.bindBean(staff);
-            result = executeUpdate(u);
-        } catch (Exception ex) {
-            log.error(methodName, ex);
-        }
-        completed(methodName);
-        return result;
-    }
-
-
-
-
-
 }
