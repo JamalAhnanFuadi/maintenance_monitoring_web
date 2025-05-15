@@ -128,9 +128,9 @@ public class SalesLevelService extends BaseService {
             salesLevel.setDisplayName(request.getDisplayName());
             salesLevel.setDescription(request.getDescription());
 
-            boolean deleted = salesLevelController.updateSalesLevel(salesLevel);
-            log.debug(methodName, "Sales Level update : " + deleted);
-            if (deleted) {
+            boolean updated = salesLevelController.updateSalesLevel(salesLevel);
+            log.debug(methodName, "Sales Level update : " + updated);
+            if (updated) {
                 response = buildSuccessResponse();
             } else {
                 response = buildBadRequestResponse("Failed update sales level");
@@ -157,7 +157,7 @@ public class SalesLevelService extends BaseService {
 
         if (isExist) {
             boolean deleted = salesLevelController.deleteSalesLevel(uid);
-            log.debug(methodName, "User deletion : " + deleted);
+            log.debug(methodName, "Sales Level deletion : " + deleted);
             if (deleted) {
                 response = buildSuccessResponse();
             } else {

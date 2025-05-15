@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <!-- Main Sidebar -->
 <div id="sidebar" class="themed-color-dark-lake themed-background-dark-lake">
@@ -14,7 +14,8 @@
             <!-- Sidebar Navigation -->
             <ul class="sidebar-nav">
                 <li class="sidebar-header">
-                    <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip" title="Master data"><i class="gi gi-server"></i></a></span>
+                        <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip"
+                                                                         title="Master data"><i class="gi gi-server"></i></a></span>
                     <span class="sidebar-header-title">Reports</span>
                 </li>
                 <li>
@@ -26,7 +27,8 @@
                             class="sidebar-nav-mini-hide">Maintenance Reports</span></a>
                 </li>
                 <li class="sidebar-header">
-                    <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip" title="Master data"><i class="gi gi-cargo"></i></a></span>
+                        <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip"
+                                                                         title="Master data"><i class="gi gi-cargo"></i></a></span>
                     <span class="sidebar-header-title">Master Data</span>
                 </li>
                 <li>
@@ -38,15 +40,35 @@
                             class="sidebar-nav-mini-hide">Departments</span></a>
                 </li>
                 <li>
-                    <a href="sales-levels" id="sales-level-link"><i class="gi gi-building sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Sales Levels</span></a>
+                    <a href="sales-levels" id="sales-level-link"><i
+                            class="gi gi-vcard sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Sales
+                                Levels</span></a>
+                </li>
+                <li>
+                    <a href="#" id="product-parent-link" class="sidebar-nav-menu"><i
+                            class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i
+                            class="gi gi-sort sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">Products</span></a>
+                    <ul>
+                        <li>
+                            <a id="product-link" href="products">Products</a>
+                        </li>
+                        <li>
+                            <a id="product-brand-link" href="product-brands">Product Brands</a>
+                        </li>
+                        <li>
+                            <a id="product-category-link" href="product-categories">Product Categories</a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="sidebar-header">
-                    <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip" title="Quick menu"><i class="gi gi-package"></i></a></span>
+                        <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip"
+                                                                         title="Quick menu"><i class="gi gi-package"></i></a></span>
                     <span class="sidebar-header-title">Menu</span>
                 </li>
                 <li>
-                    <a href="${pageContext.request.contextPath}/rest/authentications/logout"><i class="gi gi-log_out sidebar-nav-icon"></i><span
+                    <a href="${pageContext.request.contextPath}/rest/authentications/logout"><i
+                            class="gi gi-log_out sidebar-nav-icon"></i><span
                             class="sidebar-nav-mini-hide">logout</span></a>
                 </li>
             </ul>

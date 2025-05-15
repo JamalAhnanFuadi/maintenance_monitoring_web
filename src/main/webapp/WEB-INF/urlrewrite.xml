@@ -24,6 +24,18 @@
 		<from>^/sales-levels$</from>
 		<to>/WEB-INF/masterdata/sales_level.jsp</to>
 	</rule>
+	<rule>
+		<from>^/products$</from>
+		<to>/WEB-INF/masterdata/product.jsp</to>
+	</rule>
+	<rule>
+		<from>^/product-brands$</from>
+		<to>/WEB-INF/masterdata/product_brand.jsp</to>
+	</rule>
+	<rule>
+		<from>^/product-categories$</from>
+		<to>/WEB-INF/masterdata/product_category.jsp</to>
+	</rule>
 
 
 
