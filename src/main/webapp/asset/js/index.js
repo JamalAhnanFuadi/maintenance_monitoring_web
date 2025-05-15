@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    let fullname = 'Guest'; // Default value
+    let firstname = 'Guest'; // Default value
     let authenticated = sessionStorage.getItem("authenticated");
 
     session(); // Call session function on document ready
@@ -27,12 +27,12 @@ $(document).ready(function () {
             url: '/monitoring/rest/authentications/profile',
             method: 'GET',
             success: function (response) {
-                if (response && response.fullname) {
-                    fullname = response.fullname; // Update fullname
-                    sessionStorage.setItem("fullname", fullname); // Save to sessionStorage
+                if (response && response.firstname) {
+                    firstname = response.firstname; // Update fullname
+                    sessionStorage.setItem("firstname", firstname); // Save to sessionStorage
 
                     // Update the welcome message on the page
-                    $('#fullName').text(fullname);
+                    $('#firstname').text(firstname);
                 } else {
                     Notification.notifyError('Profile retrieval failed, status', response.status);
                 }

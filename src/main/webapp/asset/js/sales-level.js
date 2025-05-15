@@ -70,7 +70,7 @@ var SalesLevelDatatables = (function () {
                                     data-displayname="${row.displayName}" 
                                     ${locked
                             ? ""
-                            : 'disabled title="Cannot delete when department in use"'
+                            : 'disabled title="Cannot delete when sales level in use"'
                         }">
                                     <i class="fa fa-times-circle"></i> Delete
                                 </a>
@@ -98,11 +98,11 @@ var SalesLevelDatatables = (function () {
     };
 })();
 
-$(document).on("click", "#export-department-button", function () {
+$(document).on("click", "#export-saleslevel-button", function () {
     console.log("Export button clicked");
 
     $.ajax({
-        url: "/monitoring/rest/departments/export",
+        url: "/monitoring/rest/salesLevels/export",
         method: "GET",
         contentType: "application/json", // Set content type for the request
         dataType: "text", // Expecting text response (CSV)
@@ -110,13 +110,13 @@ $(document).on("click", "#export-department-button", function () {
             if (xhr.status === 200) {
                 // Assuming response is a CSV formatted string
                 const csvData = response.split("\n").map((row) => row.split(","));
-                exportToCSV("department.csv", csvData);
+                exportToCSV("sales-level.csv", csvData);
             } else {
                 console.log("Error: " + response.description);
             }
         },
         error: function () {
-            console.log("Error fetching department data");
+            console.log("Error fetching sales level data");
         },
     });
 });
@@ -134,7 +134,7 @@ function exportToCSV(filename, csvData) {
     link.click(); // This will download the file
 }
 
-$(document).on("click", "#add-department-button", function () {
+$(document).on("click", "#add-saleslevel-button", function () {
     // Reset the form fields
     $("#add-form")[0].reset();
     // Reset the validation (remove error classes and messages)
@@ -166,15 +166,15 @@ function addValidation() {
                 e.closest(".help-block").remove();
             },
             rules: {
-                val_department_name: {
+                val_saleslevel_name: {
                     required: true,
                     minlength: 2,
                 },
             },
             messages: {
-                val_department_name: {
-                    required: "Please enter the department name",
-                    minlength: "The department name must be at least 2 characters long",
+                val_saleslevel_name: {
+                    required: "Please enter the sales level name",
+                    minlength: "The sales level name must be at least 2 characters long",
                 },
             },
         });
@@ -191,21 +191,21 @@ $(document).on("click", "#submit-button", function () {
     if (isValid) {
         $("#submit-button").addClass("disabled").html('<i class="fa fa-spinner fa-spin"></i> Submiting...');
 
-        const deparmentRequest = {
-            displayName: $("#val_department_name").val(),
+        const request = {
+            displayName: $("#val_saleslevel_name").val(),
             description: $("#val_description").val(),
         };
 
         $.ajax({
-            url: "/monitoring/rest/departments",
+            url: "/monitoring/rest/salesLevels",
             method: "POST",
             dataType: "json",
             contentType: "application/json",
-            data: JSON.stringify(deparmentRequest),
+            data: JSON.stringify(request),
             success: function (response) {
                 Notification.notifySuccess(
                     "Success",
-                    "Successfully added department"
+                    "Successfully added sales level"
                 );
                 setTimeout(function () {
                     $("#add-modal").modal("hide"); // Close the modal
@@ -217,7 +217,7 @@ $(document).on("click", "#submit-button", function () {
                 // Handle error response
                 Notification.notifyError(
                     "Error",
-                    "Unable to add department"
+                    "Unable to add sales level"
                 );
                 $("#submit-button").removeClass("disabled").html('Submit');
             },
@@ -226,20 +226,20 @@ $(document).on("click", "#submit-button", function () {
 });
 
 $(document).on("click", ".view-button", function () {
-    var departmentId = $(this).data("id");
+    var salesLevelId = $(this).data("id");
 
     $.ajax({
-        url: "/monitoring/rest/departments/" + departmentId,
+        url: "/monitoring/rest/salesLevels/" + salesLevelId,
         method: "GET",
-        data: { id: departmentId },
+        data: { id: salesLevelId },
         success: function (response, status, xhr) {
 
-            $("#val_vdepartment_id").val(response.uid);
-            $("#val_vdepartment_name").val(response.displayName);
+            $("#val_vsalesname_id").val(response.uid);
+            $("#val_vsaleslevel_name").val(response.displayName);
             $("#val_vdescription").val(response.description);
 
-            $("#val_vdepartment_id").prop("readonly", true);
-            $("#val_vdepartment_name").prop("readonly", true);
+            $("#val_vsalesname_id").prop("readonly", true);
+            $("#val_vsaleslevel_name").prop("readonly", true);
             $("#val_vdescription").prop("readonly", true);
 
             $("#cancel-update-button").removeClass("disabled").html('Cancel');
@@ -253,7 +253,7 @@ $(document).on("click", ".view-button", function () {
         error: function () {
             Notification.notifyError(
                 "Error",
-                "Unable to fetch department information"
+                "Unable to fetch sales level information"
             );
         },
     });
@@ -261,15 +261,15 @@ $(document).on("click", ".view-button", function () {
 
 $(document).on("click", "#update-button", function () {
     $("#update-button").hide();
-    $("#val_vdepartment_id").prop("readonly", true);
-    $("#val_vdepartment_name").prop("readonly", false);
+    $("#val_vsalesname_id").prop("readonly", true);
+    $("#val_vsaleslevel_name").prop("readonly", false);
     $("#val_vdescription").prop("readonly", false);
 
     $("#update-modal-footer").show();
 
     sessionStorage.setItem("originalData", JSON.stringify({
-        uid: $("#val_vdepartment_id").val(),
-        displayName: $("#val_vdepartment_name").val(),
+        uid: $("#val_vsalesname_id").val(),
+        displayName: $("#val_vsaleslevel_name").val(),
         description: $("#val_vdescription").val(),
     }));
 
@@ -277,8 +277,8 @@ $(document).on("click", "#update-button", function () {
 
 $(document).on("click", "#cancel-update-button", function () {
     $("#update-button").show();
-    $("#val_vdepartment_id").prop("readonly", true);
-    $("#val_vdepartment_name").prop("readonly", true);
+    $("#val_vsalesname_id").prop("readonly", true);
+    $("#val_vsaleslevel_name").prop("readonly", true);
     $("#val_vdescription").prop("readonly", true);
 
     $("#update-modal-footer").hide();
@@ -286,8 +286,8 @@ $(document).on("click", "#cancel-update-button", function () {
     // Retrieve original values from sessionStorage
     var originalData = JSON.parse(sessionStorage.getItem("originalData"));
     if (originalData) {
-        $("#val_vdepartment_id").val(originalData.uid);
-        $("#val_vdepartment_name").val(originalData.displayName);
+        $("#val_vsalesname_id").val(originalData.uid);
+        $("#val_vsaleslevel_name").val(originalData.displayName);
         $("#val_vdescription").val(originalData.description);
     }
 });
@@ -299,12 +299,12 @@ $(document).on("click", ".confirm-update-button", function () {
         $("#confirm-update-button").addClass("disabled").html('<i class="fa fa-spinner fa-spin"></i> Saving...');
 
         const deparmentRequest = {
-            uid: $("#val_vdepartment_id").val(),
-            displayName: $("#val_vdepartment_name").val(),
+            uid: $("#val_vsalesname_id").val(),
+            displayName: $("#val_vsaleslevel_name").val(),
             description: $("#val_vdescription").val(),
         };
         $.ajax({
-            url: "/monitoring/rest/departments", // Your endpoint
+            url: "/monitoring/rest/salesLevels", // Your endpoint
             method: "PUT",
             dataType: "json",
             contentType: "application/json",
@@ -312,7 +312,7 @@ $(document).on("click", ".confirm-update-button", function () {
             success: function (response) {
                 Notification.notifySuccess(
                     "Success",
-                    "Successfully update department"
+                    "Successfully update sales level"
                 );
                 setTimeout(function () {
                     $("#view-modal").modal("hide"); // Close the modal
@@ -324,7 +324,7 @@ $(document).on("click", ".confirm-update-button", function () {
                 // Handle error response
                 Notification.notifyError(
                     "Error",
-                    "Unable to update department"
+                    "Unable to update sales level"
                 );
                 $("#cancel-update-button").removeClass("disabled").html('Cancel');
                 $("#confirm-update-button").removeClass("disabled").html('Save changes');
@@ -356,21 +356,21 @@ function updateValidation() {
                 e.closest(".help-block").remove();
             },
             rules: {
-                val_vdepartment_name: {
+                val_vsaleslevel_name: {
                     required: true,
                     minlength: 2,
                 },
-                val_vdepartment_id: {
+                val_vsalesname_id: {
                     required: true,
                 }
             },
             messages: {
-                val_vdepartment_name: {
-                    required: "Please enter the department name",
-                    minlength: "The department name must be at least 2 characters long",
+                val_vsaleslevel_name: {
+                    required: "Please enter the sales level name",
+                    minlength: "The sales level name must be at least 2 characters long",
                 },
-                val_vdepartment_id: {
-                    required: "Department ID is required",
+                val_vsalesname_id: {
+                    required: "Sales level ID is required",
                 }
             },
         });
@@ -402,7 +402,7 @@ $(document).on("click", ".delete-btn", function () {
         );
 
         $("#confirm-delete-button").data("id", id);
-        $(".modal-title").text("Delete Department");
+        $(".modal-title").text("Delete Sales Level");
         $("#delete-modal").modal("show");
     }
 });
@@ -422,7 +422,7 @@ $(document).on("click", ".confirm-delete-button", function () {
     $("#confirm-delete-button").addClass("disabled").html('<i class="fa fa-spinner fa-spin"></i> Confirming...');
 
     $.ajax({
-        url: `/monitoring/rest/departments/${id}`,
+        url: `/monitoring/rest/salesLevels/${id}`,
         type: "DELETE",
         data: { id: id }, // Send the id to the server
         success: function (response) {
@@ -440,7 +440,7 @@ $(document).on("click", ".confirm-delete-button", function () {
             // Handle error response
             Notification.notifyError(
                 "Error",
-                "Unable to delete department"
+                "Unable to delete sales level"
             );
             $("#cancel-delete-button").removeClass("disabled").html('Cancel');
             $("#confirm-delete-button").removeClass("disabled").html('Confirm Delete');

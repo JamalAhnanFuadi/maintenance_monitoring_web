@@ -63,17 +63,17 @@
                     <div class="table-options clearfix">
 
                         <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-                            <a id="export-department-button" class="btn btn-sm btn-default">
+                            <a id="export-saleslevel-button" class="btn btn-sm btn-default">
                                 <i class="fa fa-print"></i> Export</a>
                         </div>
                         <div class="btn-group btn-group-sm pull-right" data-toggle="buttons">
-                            <a id="add-department-button" href="#add-modal" class="btn btn-sm btn-info"
+                            <a id="add-saleslevel-button" href="#add-modal" class="btn btn-sm btn-info"
                                data-toggle="modal"><i class="fa fa-plus"></i> Add Sales Level</a>
                         </div>
                     </div>
                     <!-- Datatables Content -->
                     <div class="table-responsive">
-                        <table id="table_department"
+                        <table id="sales-level-table"
                                class="table table-vcenter table-striped table-bordered">
                             <thead>
                             <tr>
@@ -127,11 +127,11 @@
                 <form id="add-form" class="form-horizontal form-bordered">
                     <fieldset>
                         <div class="form-group">
-                            <label class="col-md-4 control-label" for="val_department_name">Sales Levels Name <span
+                            <label class="col-md-4 control-label" for="val_saleslevel_name">Sales Levels Name <span
                                     class="text-danger">*</span></label>
                             <div class="col-md-6">
-                                <input type="text" id="val_department_name" name="val_department_name"
-                                       class="form-control" placeholder="Department Name..">
+                                <input type="text" id="val_saleslevel_name" name="val_saleslevel_name"
+                                       class="form-control" placeholder="Sales Level Name..">
                             </div>
                         </div>
                         <div class="form-group">
@@ -167,20 +167,20 @@
             <div class="modal-body">
                 <form id="update-form" class="form-horizontal form-bordered">
                     <fieldset>
-                        <div id="department-id" class="form-group">
-                            <label class="col-md-4 control-label" for="val_vdepartment_id">Sales Levels ID <span
+                        <div id="saleslevel-id" class="form-group">
+                            <label class="col-md-4 control-label" for="val_vsalesname_id">Sales Levels ID <span
                                     class="text-danger">*</span></label>
                             <div class="col-md-6">
-                                <input type="text" id="val_vdepartment_id" name="val_vdepartment_id"
-                                       class="form-control" placeholder="Department ID.." readonly>
+                                <input type="text" id="val_vsalesname_id" name="val_vsalesname_id"
+                                       class="form-control" placeholder="Sales Level ID.." readonly>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-4 control-label" for="val_vdepartment_name">Sales Levels Name <span
+                            <label class="col-md-4 control-label" for="val_vsaleslevel_name">Sales Levels Name <span
                                     class="text-danger">*</span></label>
                             <div class="col-md-6">
-                                <input type="text" id="val_vdepartment_name" name="val_vdepartment_name"
-                                       class="form-control" placeholder="Department Name..">
+                                <input type="text" id="val_vsaleslevel_name" name="val_vsaleslevel_name"
+                                       class="form-control" placeholder="Sales Level Name..">
                             </div>
                         </div>
                         <div class="form-group">

@@ -47,7 +47,7 @@
                 <div class="content-header">
                     <div class="header-section">
                         <h1>
-                            <i class="gi gi-show_big_thumbnails"></i>Welcome, <strong><span id="fullName"></span></strong>
+                            <i class="gi gi-show_big_thumbnails"></i>Welcome, <strong><span id="firstname"></span></strong>
                         </h1>
                     </div>
                 </div>
