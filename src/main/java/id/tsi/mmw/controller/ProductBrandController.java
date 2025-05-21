@@ -21,7 +21,8 @@ public class ProductBrandController extends BaseController {
         start(methodName);
         List<ProductBrand> result = new ArrayList<>();
 
-        String sql = "SELECT d.uid, d.display_name, d.description, d.create_dt, d.modify_dt " +
+        String sql = "SELECT d.uid, d.display_name, d.description, d.create_dt, d.modify_dt, " +
+                " CASE WHEN EXISTS ( SELECT 1  FROM product p  WHERE p.brand_uid = d.uid )   THEN TRUE  ELSE FALSE  END AS locked " +
                 " FROM product_brand d " +
                 " ORDER BY d.display_name ASC;";
 

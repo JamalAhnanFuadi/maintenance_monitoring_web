@@ -3,24 +3,28 @@ $(document).ready(function () {
     $('#product-parent-link').trigger('click');
     $('#product-link').addClass('active');
 
-    SalesLevelDatatables.init(); // Initialize the datatable when the document is ready
+    ProductDatatables.init(); // Initialize the datatable when the document is ready
+
+    $(".select-chosen").chosen(); // Initialize Chosen
+    populateProductBrands();
+    populateProductCategories();
 });
 
-var SalesLevelDatatables = (function () {
+var ProductDatatables = (function () {
     var initDatatable = function () {
         // Check if DataTable is already initialized and destroy it
-        if ($.fn.DataTable.isDataTable("#sales-level-table")) {
-            $("#sales-level-table").DataTable().destroy();
+        if ($.fn.DataTable.isDataTable("#product-table")) {
+            $("#product-table").DataTable().destroy();
         }
 
         // Initialize Bootstrap Datatables Integration
         App.datatables();
 
         // Initialize Datatables with AJAX source
-        $("#sales-level-table").DataTable({
+        $("#product-table").DataTable({
             autoWidth: false, // Disable auto width calculation
             ajax: {
-                url: "/monitoring/rest/salesLevels",
+                url: "/monitoring/rest/products",
                 method: "GET",
                 dataSrc: function (json) {
                     return json ? json : [];
@@ -35,6 +39,18 @@ var SalesLevelDatatables = (function () {
                 },
                 {
                     data: "description",
+                    render: function (data) {
+                        return data ? data : "-";
+                    },
+                },
+                {
+                    data: "brandName",
+                    render: function (data) {
+                        return data ? data : "-";
+                    },
+                },
+                {
+                    data: "categoryName",
                     render: function (data) {
                         return data ? data : "-";
                     },
@@ -71,7 +87,7 @@ var SalesLevelDatatables = (function () {
                                     data-displayname="${row.displayName}" 
                                     ${locked
                             ? ""
-                            : 'disabled title="Cannot delete when sales level in use"'
+                            : 'disabled title="Cannot delete when product in use"'
                         }">
                                     <i class="fa fa-times-circle"></i> Delete
                                 </a>
@@ -99,11 +115,11 @@ var SalesLevelDatatables = (function () {
     };
 })();
 
-$(document).on("click", "#export-saleslevel-button", function () {
+$(document).on("click", "#export-product-button", function () {
     console.log("Export button clicked");
 
     $.ajax({
-        url: "/monitoring/rest/salesLevels/export",
+        url: "/monitoring/rest/products/export",
         method: "GET",
         contentType: "application/json", // Set content type for the request
         dataType: "text", // Expecting text response (CSV)
@@ -111,13 +127,13 @@ $(document).on("click", "#export-saleslevel-button", function () {
             if (xhr.status === 200) {
                 // Assuming response is a CSV formatted string
                 const csvData = response.split("\n").map((row) => row.split(","));
-                exportToCSV("sales-level.csv", csvData);
+                exportToCSV("products.csv", csvData);
             } else {
                 console.log("Error: " + response.description);
             }
         },
         error: function () {
-            console.log("Error fetching sales level data");
+            console.log("Error fetching product data");
         },
     });
 });
@@ -135,7 +151,69 @@ function exportToCSV(filename, csvData) {
     link.click(); // This will download the file
 }
 
-$(document).on("click", "#add-saleslevel-button", function () {
+function populateProductBrands() {
+    $.ajax({
+        url: '/monitoring/rest/productBrands',
+        method: 'GET',
+        dataType: 'json',
+        success: function (response) {
+            response.forEach(function (brand) {
+                $('#val_brand').append(
+                    $('<option>', {
+                        value: brand.uid,
+                        text: brand.displayName
+                    })
+                );
+
+                $('#val_vbrand').append(
+                    $('<option>', {
+                        value: brand.uid,
+                        text: brand.displayName
+                    })
+                );
+            });
+
+            $('#val_brand').trigger("chosen:updated");
+            $('#val_vbrand').trigger("chosen:updated");
+        },
+        error: function (xhr, status, error) {
+            console.error("Unable to fetching product brands");
+        }
+    });
+}
+
+function populateProductCategories() {
+    $.ajax({
+        url: '/monitoring/rest/productCategories',
+        method: 'GET',
+        dataType: 'json',
+        success: function (response) {
+            response.forEach(function (category) {
+                $('#val_category').append(
+                    $('<option>', {
+                        value: category.uid,
+                        text: category.displayName
+                    })
+                );
+
+                $('#val_vcategory').append(
+                    $('<option>', {
+                        value: category.uid,
+                        text: category.displayName
+                    })
+                );
+            });
+
+            $('#val_category').trigger("chosen:updated");
+            $('#val_vcategory').trigger("chosen:updated");
+        },
+        error: function (xhr, status, error) {
+            console.error("Unable to fetching product categories");
+        }
+    });
+}
+
+$(document).on("click", "#add-product-button", function () {
     // Reset the form fields
     $("#add-form")[0].reset();
     // Reset the validation (remove error classes and messages)
@@ -167,16 +245,28 @@ function addValidation() {
                 e.closest(".help-block").remove();
             },
             rules: {
-                val_saleslevel_name: {
+                val_product_name: {
                     required: true,
                     minlength: 2,
                 },
+                val_brand: {
+                    required: true
+                },
+                val_category: {
+                    required: true
+                },
             },
             messages: {
-                val_saleslevel_name: {
-                    required: "Please enter the sales level name",
-                    minlength: "The sales level name must be at least 2 characters long",
+                val_product_name: {
+                    required: "Please enter the product name",
+                    minlength: "The product name must be at least 2 characters long",
                 },
+                val_brand: {
+                    required: "Brand is required",
+                },
+                val_category: {
+                    required: "Category is required",
+                }
             },
         });
     }
@@ -193,12 +283,14 @@ $(document).on("click", "#submit-button", function () {
         $("#submit-button").addClass("disabled").html('<i class="fa fa-spinner fa-spin"></i> Submiting...');
 
         const request = {
-            displayName: $("#val_saleslevel_name").val(),
+            displayName: $("#val_product_name").val(),
             description: $("#val_description").val(),
+            brandUid: $("#val_brand").val(),
+            categoryUid: $("#val_category").val()
         };
 
         $.ajax({
-            url: "/monitoring/rest/salesLevels",
+            url: "/monitoring/rest/products",
             method: "POST",
             dataType: "json",
             contentType: "application/json",
@@ -206,19 +298,19 @@ $(document).on("click", "#submit-button", function () {
             success: function (response) {
                 Notification.notifySuccess(
                     "Success",
-                    "Successfully added sales level"
+                    "Successfully added product"
                 );
                 setTimeout(function () {
                     $("#add-modal").modal("hide"); // Close the modal
-                    $("#sales-level-table").DataTable().destroy();
-                    SalesLevelDatatables.init();
+                    $("#product-table").DataTable().destroy();
+                    ProductDatatables.init();
                 }, 2000);
             },
             error: function (xhr, status, error) {
                 // Handle error response
                 Notification.notifyError(
                     "Error",
-                    "Unable to add sales level"
+                    "Unable to add product"
                 );
                 $("#submit-button").removeClass("disabled").html('Submit');
             },
@@ -227,21 +319,39 @@ $(document).on("click", "#submit-button", function () {
 });
 
 $(document).on("click", ".view-button", function () {
-    var salesLevelId = $(this).data("id");
+    var productId = $(this).data("id");
 
     $.ajax({
-        url: "/monitoring/rest/salesLevels/" + salesLevelId,
+        url: "/monitoring/rest/products/" + productId,
         method: "GET",
-        data: { id: salesLevelId },
+        data: { id: productId },
         success: function (response, status, xhr) {
 
-            $("#val_vsalesname_id").val(response.uid);
-            $("#val_vsaleslevel_name").val(response.displayName);
-            $("#val_vdescription").val(response.description);
-
-            $("#val_vsalesname_id").prop("readonly", true);
-            $("#val_vsaleslevel_name").prop("readonly", true);
+            $("#val_vproduct_id").prop("readonly", true);
+            $("#val_vproduct_name").prop("readonly", true);
             $("#val_vdescription").prop("readonly", true);
+            $("#val_vbrand").prop("disabled", true);
+            $("#val_vcategory").prop("disabled", true);
+            $("#val_vstatus").prop("disabled", true);
+
+            $('#val_vbrand').val('').trigger('chosen:updated');
+            $('#val_vcategory').val('').trigger('chosen:updated');
+
+
+            $("#val_vproduct_id").val(response.uid);
+            $("#val_vproduct_name").val(response.displayName);
+            $("#val_vdescription").val(response.description);
+            $("#val_vbrand").val(response.brandUid);
+            $("#val_vcategory").val(response.categoryUid);
+            $("#val_vstatus").val(response.active);
+
+            $('#val_vbrand').val(response.brandUid);
+            $('#val_vbrand').trigger("chosen:updated");
+
+            $('#val_vcategory').val(response.categoryUid);
+            $('#val_vcategory').trigger("chosen:updated");
+
+            $('#val_vstatus').prop('checked', response.active).change();
 
             $("#cancel-update-button").removeClass("disabled").html('Cancel');
             $("#confirm-update-button").removeClass("disabled").html('Save changes');
@@ -254,7 +364,7 @@ $(document).on("click", ".view-button", function () {
         error: function () {
             Notification.notifyError(
                 "Error",
-                "Unable to fetch sales level information"
+                "Unable to fetch product information"
             );
         },
     });
@@ -262,35 +372,63 @@ $(document).on("click", ".view-button", function () {
 
 $(document).on("click", "#update-button", function () {
     $("#update-button").hide();
-    $("#val_vsalesname_id").prop("readonly", true);
-    $("#val_vsaleslevel_name").prop("readonly", false);
+
+    $("#val_vstatus").prop('disabled', false);
+    $("#val_vproduct_id").prop("readonly", true);
+    $("#val_vproduct_name").prop("readonly", false);
     $("#val_vdescription").prop("readonly", false);
+
+    $("#val_vbrand").prop("disabled", false);
+    $('#val_vbrand').trigger("chosen:updated");
+
+    $("#val_vcategory").prop("disabled", false);
+    $('#val_vcategory').trigger("chosen:updated");
 
     $("#update-modal-footer").show();
 
-    sessionStorage.setItem("originalData", JSON.stringify({
-        uid: $("#val_vsalesname_id").val(),
-        displayName: $("#val_vsaleslevel_name").val(),
+    sessionStorage.setItem("originalProductData", JSON.stringify({
+        uid: $("#val_vproduct_id").val(),
+        displayName: $("#val_vproduct_name").val(),
         description: $("#val_vdescription").val(),
+        brandUid: $("#val_vbrand").val(),
+        categoryUid: $("#val_vcategory").val(),
+        status: $("#val_vstatus").val(),
     }));
 
 });
 
 $(document).on("click", "#cancel-update-button", function () {
-    $("#update-button").show();
-    $("#val_vsalesname_id").prop("readonly", true);
-    $("#val_vsaleslevel_name").prop("readonly", true);
-    $("#val_vdescription").prop("readonly", true);
 
-    $("#update-modal-footer").hide();
+    $("#val_vbrand").prop("disabled", true);
+    $('#val_vbrand').trigger("chosen:updated");
+
+    $("#val_vcategory").prop("disabled", true);
+    $('#val_vcategory').trigger("chosen:updated");
 
     // Retrieve original values from sessionStorage
-    var originalData = JSON.parse(sessionStorage.getItem("originalData"));
+    var originalData = JSON.parse(sessionStorage.getItem("originalProductData"));
     if (originalData) {
-        $("#val_vsalesname_id").val(originalData.uid);
-        $("#val_vsaleslevel_name").val(originalData.displayName);
+        $("#val_vproduct_id").val(originalData.uid);
+        $("#val_vproduct_name").val(originalData.displayName);
         $("#val_vdescription").val(originalData.description);
+
+        $("#val_vbrand").val(originalData.brandUid);
+        $('#val_vbrand').trigger("chosen:updated");
+
+        $("#val_vcategory").val(originalData.categoryUid);
+        $('#val_vcategory').trigger("chosen:updated");
+
+        $("#val_vstatus").val(originalData.active);
+        $('#val_vstatus').prop('checked', originalData.status).change();
     }
+
+
+    $("#update-button").show();
+    $("#val_vstatus").prop('disabled', true);
+    $("#val_vproduct_id").prop("readonly", true);
+    $("#val_vproduct_name").prop("readonly", true);
+    $("#val_vdescription").prop("readonly", true);
+    $("#update-modal-footer").hide();
 });
 
 $(document).on("click", ".confirm-update-button", function () {
@@ -300,12 +438,15 @@ $(document).on("click", ".confirm-update-button", function () {
         $("#confirm-update-button").addClass("disabled").html('<i class="fa fa-spinner fa-spin"></i> Saving...');
 
         const deparmentRequest = {
-            uid: $("#val_vsalesname_id").val(),
-            displayName: $("#val_vsaleslevel_name").val(),
+            uid: $("#val_vproduct_id").val(),
+            displayName: $("#val_vproduct_name").val(),
             description: $("#val_vdescription").val(),
+            brandUid: $("#val_vbrand").val(),
+            categoryUid: $("#val_vcategory").val(),
+            active: $("#val_vstatus").val()
         };
         $.ajax({
-            url: "/monitoring/rest/salesLevels", // Your endpoint
+            url: "/monitoring/rest/products", // Your endpoint
             method: "PUT",
             dataType: "json",
             contentType: "application/json",
@@ -313,19 +454,19 @@ $(document).on("click", ".confirm-update-button", function () {
             success: function (response) {
                 Notification.notifySuccess(
                     "Success",
-                    "Successfully update sales level"
+                    "Successfully update product"
                 );
                 setTimeout(function () {
                     $("#view-modal").modal("hide"); // Close the modal
-                    $("#sales-level-table").DataTable().destroy();
-                    SalesLevelDatatables.init();
+                    $("#product-table").DataTable().destroy();
+                    ProductDatatables.init();
                 }, 2000);
             },
             error: function (xhr, status, error) {
                 // Handle error response
                 Notification.notifyError(
                     "Error",
-                    "Unable to update sales level"
+                    "Unable to update product"
                 );
                 $("#cancel-update-button").removeClass("disabled").html('Cancel');
                 $("#confirm-update-button").removeClass("disabled").html('Save changes');
@@ -357,21 +498,33 @@ function updateValidation() {
                 e.closest(".help-block").remove();
             },
             rules: {
-                val_vsaleslevel_name: {
+                val_vproduct_name: {
                     required: true,
                     minlength: 2,
                 },
-                val_vsalesname_id: {
-                    required: true,
+                val_vcategory: {
+                    required: true
+                },
+                val_vbrand: {
+                    required: true
+                },
+                val_vproduct_id: {
+                    required: true
                 }
             },
             messages: {
-                val_vsaleslevel_name: {
-                    required: "Please enter the sales level name",
-                    minlength: "The sales level name must be at least 2 characters long",
+                val_vproduct_name: {
+                    required: "Please enter the product name",
+                    minlength: "The product name must be at least 2 characters long",
                 },
-                val_vsalesname_id: {
-                    required: "Sales level ID is required",
+                val_vproduct_id: {
+                    required: "Product ID is required",
+                },
+                val_vbrand: {
+                    required: "Brand is required",
+                },
+                val_vcategory: {
+                    required: "Category is required",
                 }
             },
         });
@@ -386,7 +539,7 @@ $(document).on("click", ".delete-btn", function () {
     if ($(this).is('[disabled]')) {
         Notification.notifyWarning(
             "Warning",
-            "Unable to delete staff when status is locked"
+            "Unable to delete product when in used"
         );
     } else {
         var id = $(this).data("id");
@@ -403,7 +556,7 @@ $(document).on("click", ".delete-btn", function () {
         );
 
         $("#confirm-delete-button").data("id", id);
-        $(".modal-title").text("Delete Sales Level");
+        $(".modal-title").text("Delete product");
         $("#delete-modal").modal("show");
     }
 });
@@ -423,7 +576,7 @@ $(document).on("click", ".confirm-delete-button", function () {
     $("#confirm-delete-button").addClass("disabled").html('<i class="fa fa-spinner fa-spin"></i> Confirming...');
 
     $.ajax({
-        url: `/monitoring/rest/salesLevels/${id}`,
+        url: `/monitoring/rest/products/${id}`,
         type: "DELETE",
         data: { id: id }, // Send the id to the server
         success: function (response) {
@@ -433,15 +586,15 @@ $(document).on("click", ".confirm-delete-button", function () {
             );
             setTimeout(function () {
                 $("#delete-modal").modal("hide"); // Close the modal
-                $("#sales-level-table").DataTable().destroy();
-                SalesLevelDatatables.init();
+                $("#product-table").DataTable().destroy();
+                ProductDatatables.init();
             }, 2000);
         },
         error: function (xhr, status, error) {
             // Handle error response
             Notification.notifyError(
                 "Error",
-                "Unable to delete sales level"
+                "Unable to delete product"
             );
             $("#cancel-delete-button").removeClass("disabled").html('Cancel');
             $("#confirm-delete-button").removeClass("disabled").html('Confirm Delete');

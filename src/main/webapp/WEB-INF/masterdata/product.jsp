@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>Sales Levels</title>
+    <title>Products</title>
 
     <meta name="description" content="">
     <meta name="author" content="The Special One">
@@ -63,22 +63,24 @@
                     <div class="table-options clearfix">
 
                         <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-                            <a id="export-saleslevel-button" class="btn btn-sm btn-default">
+                            <a id="export-product-button" class="btn btn-sm btn-default">
                                 <i class="fa fa-print"></i> Export</a>
                         </div>
                         <div class="btn-group btn-group-sm pull-right" data-toggle="buttons">
-                            <a id="add-saleslevel-button" href="#add-modal" class="btn btn-sm btn-info"
-                               data-toggle="modal"><i class="fa fa-plus"></i> Add Sales Level</a>
+                            <a id="add-product-button" href="#add-modal" class="btn btn-sm btn-info"
+                               data-toggle="modal"><i class="fa fa-plus"></i> Add Product</a>
                         </div>
                     </div>
                     <!-- Datatables Content -->
                     <div class="table-responsive">
-                        <table id="sales-level-table"
+                        <table id="product-table"
                                class="table table-vcenter table-striped table-bordered">
                             <thead>
                             <tr>
-                                <th class="text-center">Sales Level</th>
+                                <th class="text-center">Product</th>
                                 <th class="text-center">Description</th>
+                                <th class="text-center">Brand</th>
+                                <th class="text-center">Category</th>
                                 <th class="text-center">Created</th>
                                 <th class="text-center">Modified</th>
                                 <th class="text-center">Actions</th>
@@ -121,17 +123,17 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Add Sales Levels</h3>
+                <h3 class="modal-title">Add Products</h3>
             </div>
             <div class="modal-body">
                 <form id="add-form" class="form-horizontal form-bordered">
                     <fieldset>
                         <div class="form-group">
-                            <label class="col-md-4 control-label" for="val_saleslevel_name">Sales Levels Name <span
+                            <label class="col-md-4 control-label" for="val_product_name">Products Name <span
                                     class="text-danger">*</span></label>
                             <div class="col-md-6">
-                                <input type="text" id="val_saleslevel_name" name="val_saleslevel_name"
-                                       class="form-control" placeholder="Sales Level Name..">
+                                <input type="text" id="val_product_name" name="val_product_name"
+                                       class="form-control" placeholder="Product Name..">
                             </div>
                         </div>
                         <div class="form-group">
@@ -139,6 +141,30 @@
                             <div class="col-md-6">
                                         <textarea id="val_description" name="val_description" class="form-control"
                                                   placeholder="Description.." rows="4"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_brand">
+                                Brand <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-md-6">
+                                <select id="val_brand" name="val_brand"
+                                        class="form-control select-chosen" data-placeholder="Select product brand"
+                                        style="width: 250px;">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_category">
+                                Category <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-md-6">
+                                <select id="val_category" name="val_category"
+                                        class="form-control select-chosen" data-placeholder="Select product category"
+                                        style="width: 250px;">
+                                    <option value=""></option>
+                                </select>
                             </div>
                         </div>
                     </fieldset>
@@ -161,26 +187,37 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title" style="display: inline-block; margin: 0; margin-right: 10px;">View Sales Levels</h3>
+                <h3 class="modal-title" style="display: inline-block; margin: 0; margin-right: 10px;">View Products</h3>
                 <a id="update-button" class="btn btn-sm btn-info update-button" style="display: inline-block; vertical-align: middle; margin-top: -2px;">Edit</a>
             </div>
             <div class="modal-body">
                 <form id="update-form" class="form-horizontal form-bordered">
                     <fieldset>
-                        <div id="saleslevel-id" class="form-group">
-                            <label class="col-md-4 control-label" for="val_vsalesname_id">Sales Levels ID <span
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_vstatus">Status <span
                                     class="text-danger">*</span></label>
                             <div class="col-md-6">
-                                <input type="text" id="val_vsalesname_id" name="val_vsalesname_id"
-                                       class="form-control" placeholder="Sales Level ID.." readonly>
+                                <label class="switch switch-primary" for="val_vstatus">
+                                    <input type="checkbox" id="val_vstatus" name="val_vstatus">
+                                    <span data-toggle="tooltip" title=""
+                                          data-original-title="Enable / Disable product"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div id="product-id" class="form-group">
+                            <label class="col-md-4 control-label" for="val_vproduct_id">Products ID <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-md-6">
+                                <input type="text" id="val_vproduct_id" name="val_vproduct_id"
+                                       class="form-control" placeholder="Product ID.." readonly>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-4 control-label" for="val_vsaleslevel_name">Sales Levels Name <span
+                            <label class="col-md-4 control-label" for="val_vproduct_name">Products Name <span
                                     class="text-danger">*</span></label>
                             <div class="col-md-6">
-                                <input type="text" id="val_vsaleslevel_name" name="val_vsaleslevel_name"
-                                       class="form-control" placeholder="Sales Level Name..">
+                                <input type="text" id="val_vproduct_name" name="val_vproduct_name"
+                                       class="form-control" placeholder="Product Name..">
                             </div>
                         </div>
                         <div class="form-group">
@@ -188,6 +225,30 @@
                             <div class="col-md-6">
                                         <textarea id="val_vdescription" name="val_vdescription" class="form-control"
                                                   placeholder="Description.." rows="4"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_vbrand">
+                                Brand <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-md-6">
+                                <select id="val_vbrand" name="val_vbrand"
+                                        class="form-control select-chosen" data-placeholder="Select product brand"
+                                        style="width: 250px;">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_vcategory">
+                                Category <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-md-6">
+                                <select id="val_vcategory" name="val_vcategory"
+                                        class="form-control select-chosen" data-placeholder="Select product category"
+                                        style="width: 250px;">
+                                    <option value=""></option>
+                                </select>
                             </div>
                         </div>
                     </fieldset>
@@ -235,7 +296,7 @@
 
 <%@include file="/WEB-INF/pages/js_import.jsp" %>
 <!-- Load and execute javascript code used only in this page -->
-<script src="${pageContext.request.contextPath}/asset/js/products.js"></script>
+<script src="${pageContext.request.contextPath}/asset/js/product.js"></script>
 </body>
 
 </html>

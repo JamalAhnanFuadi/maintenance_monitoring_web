@@ -386,7 +386,7 @@ $(document).on("click", ".delete-btn", function () {
     if ($(this).is('[disabled]')) {
         Notification.notifyWarning(
             "Warning",
-            "Unable to delete staff when status is locked"
+            "Unable to delete category when in used"
         );
     } else {
         var id = $(this).data("id");
