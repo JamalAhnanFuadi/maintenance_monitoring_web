@@ -1,7 +1,5 @@
 package id.tsi.mmw.console;
 
-import id.tsi.mmw.util.helper.EmailHelper;
-
 public class SendEmailConsole {
 
 
