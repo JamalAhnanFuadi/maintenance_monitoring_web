@@ -353,7 +353,7 @@ $(document).on("click", "#update-button", function () {
         email: $("#val_vemail").val(),
         mobileNumber: $("#val_vmobileNumber").val(),
         departmentUid: $("#val_vdepartment").val(),
-        status: $("#val_vstatus").val(),
+        status: $("#val_vstatus").is(':checked'),
         dob: $("#val_vdob").val()
     }));
 
@@ -377,7 +377,7 @@ $(document).on("click", "#cancel-update-button", function () {
         $('#val_vdepartment').val(originalData.departmentUid);
         $('#val_vdepartment').trigger("chosen:updated");
 
-        $('#val_vstatus').prop('checked', originalData.status).change();
+        $('#val_vstatus').prop('checked', originalData.status).trigger('change');
         $("#val_vdob").val(originalData.dob);
     }
 

@@ -1,4 +1,4 @@
-package id.tsi.mmw.rest.model;
+package id.tsi.mmw.rest.model.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

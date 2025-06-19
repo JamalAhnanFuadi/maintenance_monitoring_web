@@ -36,6 +36,10 @@
 		<from>^/product-categories$</from>
 		<to>/WEB-INF/masterdata/product_category.jsp</to>
 	</rule>
+	<rule>
+		<from>^/customer$</from>
+		<to>/WEB-INF/masterdata/customer.jsp</to>
+	</rule>
 
 
 

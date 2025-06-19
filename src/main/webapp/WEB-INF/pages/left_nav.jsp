@@ -36,6 +36,10 @@
                             class="sidebar-nav-mini-hide">Staff</span></a>
                 </li>
                 <li>
+                    <a href="customer" id="customer-link"><i class="gi gi-old_man sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">Customers</span></a>
+                </li>
+                <li>
                     <a href="departments" id="department-link"><i class="gi gi-building sidebar-nav-icon"></i><span
                             class="sidebar-nav-mini-hide">Departments</span></a>
                 </li>

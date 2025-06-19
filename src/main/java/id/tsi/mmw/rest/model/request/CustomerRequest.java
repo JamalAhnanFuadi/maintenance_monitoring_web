@@ -1,19 +1,25 @@
-package id.tsi.mmw.model;
+package id.tsi.mmw.rest.model.request;
 
-public class Customer {
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+public class CustomerRequest {
+
+    @JsonProperty("uid")
     private String uid;
+    @JsonProperty("displayName")
     private String displayName;
+    @JsonProperty("email")
     private String email;
+    @JsonProperty("phone")
     private String phone;
+    @JsonProperty("address")
     private String address;
+    @JsonProperty("website")
     private String website;
+    @JsonProperty("status")
     private boolean status;
-    private String createDt;
-    private String modifyDt;
-    private boolean locked;
 
-    public Customer() {
+    public CustomerRequest() {
     }
 
     public String getUid() {
@@ -70,29 +76,5 @@ public class Customer {
 
     public void setStatus(boolean status) {
         this.status = status;
-    }
-
-    public String getCreateDt() {
-        return createDt;
-    }
-
-    public void setCreateDt(String createDt) {
-        this.createDt = createDt;
-    }
-
-    public String getModifyDt() {
-        return modifyDt;
-    }
-
-    public void setModifyDt(String modifyDt) {
-        this.modifyDt = modifyDt;
-    }
-
-    public boolean isLocked() {
-        return locked;
-    }
-
-    public void setLocked(boolean locked) {
-        this.locked = locked;
     }
 }

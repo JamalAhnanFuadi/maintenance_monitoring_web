@@ -1,18 +1,11 @@
 package id.tsi.mmw.rest.service;
 
 import id.tsi.mmw.controller.CustomerTypeController;
-import id.tsi.mmw.controller.DepartmentController;
 import id.tsi.mmw.model.CustomerType;
-import id.tsi.mmw.model.Department;
 import id.tsi.mmw.property.Constants;
-import id.tsi.mmw.rest.model.CustomerTypeRequest;
-import id.tsi.mmw.rest.model.request.DepartmentRequest;
+import id.tsi.mmw.rest.model.request.CustomerTypeRequest;
 import id.tsi.mmw.rest.validator.CustomerTypeValidator;
-import id.tsi.mmw.rest.validator.DepartmentValidator;
-import id.tsi.mmw.util.csv.CSVRecord;
-import id.tsi.mmw.util.csv.CSVWriter;
 import id.tsi.mmw.util.json.JsonHelper;
-import org.apache.commons.codec.Charsets;
 
 import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
@@ -20,13 +13,6 @@ import javax.inject.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.StreamingOutput;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Singleton
