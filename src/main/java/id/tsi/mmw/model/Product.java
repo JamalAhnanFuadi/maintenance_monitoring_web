@@ -4,6 +4,8 @@ public class Product {
 
     private String uid;
     private String displayName;
+    private String principalUid;
+    private String principalName;
     private String categoryUid;
     private String categoryName;
     private String brandUid;
@@ -31,6 +33,22 @@ public class Product {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public String getPrincipalUid() {
+        return principalUid;
+    }
+
+    public void setPrincipalUid(String principalUid) {
+        this.principalUid = principalUid;
+    }
+
+    public String getPrincipalName() {
+        return principalName;
+    }
+
+    public void setPrincipalName(String principalName) {
+        this.principalName = principalName;
     }
 
     public String getCategoryUid() {

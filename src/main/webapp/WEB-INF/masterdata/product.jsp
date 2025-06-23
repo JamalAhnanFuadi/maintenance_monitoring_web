@@ -78,11 +78,10 @@
                             <thead>
                             <tr>
                                 <th class="text-center">Product</th>
-                                <th class="text-center">Description</th>
+                                <th class="text-center">Principal</th>
                                 <th class="text-center">Brand</th>
                                 <th class="text-center">Category</th>
-                                <th class="text-center">Created</th>
-                                <th class="text-center">Modified</th>
+                                <th class="text-center">Status</th>
                                 <th class="text-center">Actions</th>
                             </tr>
                             </thead>
@@ -129,6 +128,33 @@
                 <form id="add-form" class="form-horizontal form-bordered">
                     <fieldset>
                         <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_producttype">
+                                Product type
+                                <i class="fa fa-question-circle text-info" data-toggle="tooltip"
+                                   title="Select 'In-house Product' if the product is owned by the company, else select 'Principal Product' if the product is owned by a vendor."></i>
+
+                            </label>
+                            <div class="col-md-6">
+                                <select id="val_producttype" name="val_producttype" class="form-control"
+                                        data-placeholder="Select Type" style="width: 250px;">
+                                    <option value="in-house">In-house Product</option>
+                                    <option value="principal">Principal Product</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_principal">
+                                Principal Name <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-md-6">
+                                <select id="val_principal" name="val_principal"
+                                        class="form-control select-chosen" data-placeholder="Select principal"
+                                        style="width: 250px;">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-md-4 control-label" for="val_product_name">Products Name <span
                                     class="text-danger">*</span></label>
                             <div class="col-md-6">
@@ -148,9 +174,8 @@
                                 Brand <span class="text-danger">*</span>
                             </label>
                             <div class="col-md-6">
-                                <select id="val_brand" name="val_brand"
-                                        class="form-control select-chosen" data-placeholder="Select product brand"
-                                        style="width: 250px;">
+                                <select id="val_brand" name="val_brand" class="form-control select-chosen"
+                                        data-placeholder="Select product brand" style="width: 250px;">
                                     <option value=""></option>
                                 </select>
                             </div>
@@ -160,9 +185,8 @@
                                 Category <span class="text-danger">*</span>
                             </label>
                             <div class="col-md-6">
-                                <select id="val_category" name="val_category"
-                                        class="form-control select-chosen" data-placeholder="Select product category"
-                                        style="width: 250px;">
+                                <select id="val_category" name="val_category" class="form-control select-chosen"
+                                        data-placeholder="Select product category" style="width: 250px;">
                                     <option value=""></option>
                                 </select>
                             </div>
@@ -187,12 +211,41 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title" style="display: inline-block; margin: 0; margin-right: 10px;">View Products</h3>
-                <a id="update-button" class="btn btn-sm btn-info update-button" style="display: inline-block; vertical-align: middle; margin-top: -2px;">Edit</a>
+                <h3 class="modal-title" style="display: inline-block; margin: 0; margin-right: 10px;">View
+                    Products</h3>
+                <a id="update-button" class="btn btn-sm btn-info update-button"
+                   style="display: inline-block; vertical-align: middle; margin-top: -2px;">Edit</a>
             </div>
             <div class="modal-body">
                 <form id="update-form" class="form-horizontal form-bordered">
                     <fieldset>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_vproducttype">
+                                Product type
+                                <i class="fa fa-question-circle text-info" data-toggle="tooltip"
+                                   title="Select 'In-house Product' if the product is owned by the company, else select 'Principal Product' if the product is owned by a vendor."></i>
+
+                            </label>
+                            <div class="col-md-6">
+                                <select id="val_vproducttype" name="val_vproducttype" class="form-control"
+                                        data-placeholder="Select Type" style="width: 250px;">
+                                    <option value="in-house">In-house Product</option>
+                                    <option value="principal">Principal Product</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_vprincipal">
+                                Brand <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-md-6">
+                                <select id="val_vprincipal" name="val_vprincipal"
+                                        class="form-control select-chosen" data-placeholder="Select principal"
+                                        style="width: 250px;">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="val_vstatus">Status <span
                                     class="text-danger">*</span></label>
@@ -232,9 +285,8 @@
                                 Brand <span class="text-danger">*</span>
                             </label>
                             <div class="col-md-6">
-                                <select id="val_vbrand" name="val_vbrand"
-                                        class="form-control select-chosen" data-placeholder="Select product brand"
-                                        style="width: 250px;">
+                                <select id="val_vbrand" name="val_vbrand" class="form-control select-chosen"
+                                        data-placeholder="Select product brand" style="width: 250px;">
                                     <option value=""></option>
                                 </select>
                             </div>
@@ -245,8 +297,8 @@
                             </label>
                             <div class="col-md-6">
                                 <select id="val_vcategory" name="val_vcategory"
-                                        class="form-control select-chosen" data-placeholder="Select product category"
-                                        style="width: 250px;">
+                                        class="form-control select-chosen"
+                                        data-placeholder="Select product category" style="width: 250px;">
                                     <option value=""></option>
                                 </select>
                             </div>
@@ -256,10 +308,12 @@
                     <div id="update-modal-footer" class="modal-footer">
                         <div class="modal-footer">
                             <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-                                <a id="cancel-update-button" class="btn btn-sm btn-default cancel-update-button">Cancel</a>
+                                <a id="cancel-update-button"
+                                   class="btn btn-sm btn-default cancel-update-button">Cancel</a>
                             </div>
                             <div class="btn-group btn-group-sm pull-right" data-toggle="buttons">
-                                <a id="confirm-update-button" class="btn btn-sm btn-danger confirm-update-button"></i>Save changes</a>
+                                <a id="confirm-update-button"
+                                   class="btn btn-sm btn-danger confirm-update-button"></i>Save changes</a>
                             </div>
                         </div>
                     </div>
@@ -285,7 +339,8 @@
                     <a id="cancel-delete-button" class="btn btn-sm btn-default cancel-delete-button">Cancel</a>
                 </div>
                 <div class="btn-group btn-group-sm pull-right" data-toggle="buttons">
-                    <a id="confirm-delete-button" class="btn btn-sm btn-danger confirm-delete-button"></i>Confirm Delete</a>
+                    <a id="confirm-delete-button"
+                       class="btn btn-sm btn-danger confirm-delete-button"></i>Confirm Delete</a>
                 </div>
             </div>
         </div>

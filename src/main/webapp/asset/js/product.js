@@ -8,6 +8,9 @@ $(document).ready(function () {
     $(".select-chosen").chosen(); // Initialize Chosen
     populateProductBrands();
     populateProductCategories();
+    populateCustomer();
+    togglePrincipalField();
+    $('[data-toggle="tooltip"]').tooltip();
 });
 
 var ProductDatatables = (function () {
@@ -34,40 +37,37 @@ var ProductDatatables = (function () {
                 {
                     data: "displayName",
                     render: function (data) {
-                        return data ? data : "-";
+                        return data ? `<strong>${data}</strong>` : "-";
                     },
                 },
                 {
-                    data: "description",
+                    data: "principalName",
                     render: function (data) {
                         return data ? data : "-";
                     },
                 },
                 {
                     data: "brandName",
+                    className: "text-center",
                     render: function (data) {
                         return data ? data : "-";
                     },
                 },
                 {
                     data: "categoryName",
-                    render: function (data) {
-                        return data ? data : "-";
-                    },
-                },
-                {
-                    data: "createDt",
                     className: "text-center",
                     render: function (data) {
                         return data ? data : "-";
                     },
                 },
                 {
-                    data: "modifyDt",
-                    className: "text-center",
-                    render: function (data) {
-                        return data ? data : "-";
-                    },
+                    data: 'active',
+                    className: 'text-center',
+                    render: function (data, type, row) {
+                        const statusClass = data ? 'label label-success' : 'label label-warning'; // Menentukan class berdasarkan status
+                        const statusText = data ? 'Active' : 'Inactive'; // Menentukan teks status
+                        return `<span class="${statusClass}">${statusText}</span>`; // Mengembalikan elemen dengan class dan teks status
+                    }
                 },
                 {
                     data: null,
@@ -213,6 +213,70 @@ function populateProductCategories() {
     });
 }
 
+function populateCustomer() {
+    $.ajax({
+        url: '/monitoring/rest/customers',
+        method: 'GET',
+        dataType: 'json',
+        success: function (response) {
+            $('#val_principal').empty().append($('<option>', {
+                value: '',
+                text: '-- Please select --'
+            }));
+
+            $('#val_vprincipal').empty().append($('<option>', {
+                value: '',
+                text: '-- Please select --'
+            }));
+            response.forEach(function (customer) {
+                $('#val_principal').append(
+                    $('<option>', {
+                        value: customer.uid,
+                        text: customer.displayName
+                    })
+                );
+
+                $('#val_vprincipal').append(
+                    $('<option>', {
+                        value: customer.uid,
+                        text: customer.displayName
+                    })
+                );
+            });
+
+            $('#val_principal').trigger("chosen:updated");
+            $('#val_vprincipal').trigger("chosen:updated");
+        },
+        error: function (xhr, status, error) {
+            console.error("Unable to fetching customers");
+        }
+    });
+}
+
+function togglePrincipalField() {
+    const type = $('#val_producttype').val();
+    if (type === 'principal') {
+        $('#val_principal').closest('.form-group').show();
+    } else {
+        $('#val_principal').closest('.form-group').hide();
+        $('#val_principal').val('').trigger("chosen:updated"); // optional: clear selection
+    }
+}
+
+function togglevPrincipalField() {
+    const vtype = $('#val_vproducttype').val();
+    if (vtype === 'principal') {
+        $('#val_vprincipal').closest('.form-group').show();
+    } else {
+        $('#val_vprincipal').closest('.form-group').hide();
+        $('#val_vprincipal').val('').trigger("chosen:updated"); // optional: clear selection
+    }
+}
+
+$('#val_producttype').on('change', function () {
+    togglePrincipalField()
+});
+
 $(document).on("click", "#add-product-button", function () {
     // Reset the form fields
     $("#add-form")[0].reset();
@@ -327,6 +391,7 @@ $(document).on("click", ".view-button", function () {
         data: { id: productId },
         success: function (response, status, xhr) {
 
+            $("#val_vproducttype").prop("disabled", true);
             $("#val_vproduct_id").prop("readonly", true);
             $("#val_vproduct_name").prop("readonly", true);
             $("#val_vdescription").prop("readonly", true);
@@ -381,6 +446,9 @@ $(document).on("click", "#update-button", function () {
     $("#val_vbrand").prop("disabled", false);
     $('#val_vbrand').trigger("chosen:updated");
 
+    $("#val_vproducttype").prop("disabled", false);
+    togglevPrincipalField();
+
     $("#val_vcategory").prop("disabled", false);
     $('#val_vcategory').trigger("chosen:updated");
 
@@ -398,6 +466,8 @@ $(document).on("click", "#update-button", function () {
 });
 
 $(document).on("click", "#cancel-update-button", function () {
+
+    $("#val_vproducttype").prop("disabled", true);
 
     $("#val_vbrand").prop("disabled", true);
     $('#val_vbrand').trigger("chosen:updated");
