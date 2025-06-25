@@ -40,6 +40,9 @@ function fetchProject(projectId) {
 
             renderStaffPICList(response.staffPic);
             renderCustomerPICList(response.customerPic);
+
+            maintenanceServiceDatatable.init(response.uid);
+
         },
         error: function () {
             $('#projectTitle').text('Unknown');
@@ -107,3 +110,85 @@ function renderCustomerPICList(customerPicList, containerSelector = '#customer-p
 
     $('[data-toggle="tooltip"]').tooltip(); // Reinitialize tooltips
 }
+
+var maintenanceServiceDatatable = (function () {
+    function initDatatable(projectId) {
+        if (!projectId) {
+            Notification.notifyError(
+                "Error",
+                "Unable to fetch project service information"
+            );
+            return;
+        }
+
+        // Destroy if already initialized
+        if ($.fn.DataTable.isDataTable("#project-service-table")) {
+            $("#project-service-table").DataTable().destroy();
+        }
+
+        App.datatables(); // Ensure Bootstrap integration
+
+        $("#project-service-table").DataTable({
+            autoWidth: false,
+            ajax: {
+                url: "/monitoring/rest/projects/service/" + projectId,
+                method: "GET",
+                dataSrc: function (json) {
+                    return json || [];
+                }
+            },
+            columns: [
+                {
+                    data: "contractNumber",
+                    render: function (data) {
+                        return data ? `<strong>${data}</strong>` : "-";
+                    }
+                },
+                {
+                    data: "serviceQty",
+                    className: "text-center",
+                    render: function (data) {
+                        return data;
+                    }
+                },
+                {
+                    data: null,
+                    className: "text-center",
+                    orderable: false,
+                    render: function (data, type, row) {
+                        const locked = parseInt(row.serviceQty) > 0;
+
+                        return `
+                                <div class="btn-group">
+                                    <div class="text-center">
+                                        <a class="btn btn-sm btn-info view-button" data-id="${row.uid}">
+                                            <i class="fa fa-eye"></i> View
+                                        </a>
+                                        <a class="btn btn-sm btn-danger delete-btn"
+                                        data-id="${row.uid}"
+                                        data-displayname="${row.displayName}"
+                                        ${locked ? 'disabled title="Cannot delete when serviceQty greather than 0"' : ''}>
+                                            <i class="fa fa-times-circle"></i> Delete
+                                        </a>
+                                    </div>
+                                </div>
+                            `;
+                    },
+                }
+
+            ],
+            pageLength: 10,
+            lengthMenu: [
+                [10, 20, 30, -1],
+                [10, 20, 30, "All"]
+            ],
+            responsive: true
+        });
+
+        $(".dataTables_filter input").attr("placeholder", "Search");
+    }
+
+    return {
+        init: initDatatable
+    };
+})();

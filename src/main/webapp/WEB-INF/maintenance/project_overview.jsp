@@ -132,19 +132,17 @@
                                 <h2><strong>Maintenance Service's</strong></h2>
                                 <a id="update-button" class="btn btn-sm btn-info update-button"
                                    style="display: inline-block; vertical-align: middle; margin-top: -2px;">
-                                    Update Service</a>
+                                    Add Service</a>
                             </div>
                             <!-- END Maintenance Sercice Title -->
                             <!-- Maintenance Sercice Content -->
                             <div class="table-responsive">
-                                <table id="service-table"
+                                <table id="project-service-table"
                                        class="table table-vcenter table-striped table-bordered">
                                     <thead>
                                     <tr>
                                         <th class="text-center">Contract No</th>
                                         <th class="text-center">Service Qty</th>
-                                        <th class="text-center">Start Date</th>
-                                        <th class="text-center">End Date</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                     </thead>

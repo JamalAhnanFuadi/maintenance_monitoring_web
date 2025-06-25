@@ -82,4 +82,28 @@ public class ProjectService extends BaseService {
         completed(methodName);
         return response;
     }
+
+    @GET
+    @Path("/service/{uid}")
+    @PermitAll
+    public Response getProjectService(@PathParam("uid") String uid) {
+        final String methodName = "getProjectService";
+        start(methodName);
+
+        Response response;
+        log.info(methodName, "Get Project Service (" + uid + ")");
+
+        boolean isExist = projectController.validateProject(uid);
+        log.debug(methodName, "Project validation : " + isExist);
+
+        if (isExist) {
+            List<ProjectServiceOrder> customerPICs = projectController.getServiceOrderList(uid);
+
+            response = buildSuccessResponse(customerPICs);
+        } else {
+            response = buildBadRequestResponse("Project ID not found");
+        }
+        completed(methodName);
+        return response;
+    }
 }

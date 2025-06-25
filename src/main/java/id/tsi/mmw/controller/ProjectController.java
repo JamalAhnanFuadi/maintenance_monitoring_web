@@ -1,9 +1,6 @@
 package id.tsi.mmw.controller;
 
-import id.tsi.mmw.model.Project;
-import id.tsi.mmw.model.ProjectCustomerPIC;
-import id.tsi.mmw.model.ProjectStaffPIC;
-import id.tsi.mmw.model.ProjectTag;
+import id.tsi.mmw.model.*;
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.statement.Query;
 
@@ -131,6 +128,24 @@ public class ProjectController extends BaseController {
             log.error(methodName, e);
         }
         completed(methodName);
+        return result;
+    }
+
+    public List <ProjectServiceOrder> getServiceOrderList(String projectUid ) {
+        final String methodName = "getServiceOrderList";
+        List<ProjectServiceOrder> result = new ArrayList<>();
+
+        String sql = "SELECT ps.uid, ps.contract_number, ps.service_qty " +
+                "FROM project_service_order ps " +
+                "WHERE ps.project_uid = :projectUid " +
+                "ORDER BY ps.contract_number ASC";
+
+        try (Handle handle = getHandle(); Query q = handle.createQuery(sql)) {
+            q.bind("projectUid", projectUid);
+            result = q.mapToBean(ProjectServiceOrder.class).list();
+        } catch (Exception e) {
+            log.error(methodName, e);
+        }
         return result;
     }
 }
