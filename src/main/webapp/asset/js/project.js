@@ -81,7 +81,7 @@ var ProjectDatatables = (function () {
                             <div class="text-center">
                                 <a class="btn btn-sm btn-info view-button" data-id="${row.uid
                         }">
-                                    <i class="fa fa-eye"></i> View
+                                    <i class="fa fa-eye"></i> Details
                                 </a>
                             </div>
                             </div>`;
@@ -106,3 +106,9 @@ var ProjectDatatables = (function () {
         },
     };
 })();
+
+$(document).on("click", ".view-button", function () {;
+    var projectId = $(this).data("id");
+    window.location.href = "project-overview?id=" + projectId;
+});
+

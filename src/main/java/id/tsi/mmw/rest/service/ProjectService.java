@@ -1,6 +1,7 @@
 package id.tsi.mmw.rest.service;
 
 import id.tsi.mmw.controller.ProjectController;
+import id.tsi.mmw.model.Product;
 import id.tsi.mmw.model.Project;
 import id.tsi.mmw.model.ProjectTag;
 import id.tsi.mmw.rest.validator.CustomerValidator;
@@ -47,5 +48,31 @@ public class ProjectService extends BaseService {
 
         completed(methodName);
         return buildSuccessResponse(result);
+    }
+
+    @GET
+    @Path("{uid}")
+    @PermitAll
+    public Response getProject(@PathParam("uid") String uid) {
+        final String methodName = "getProject";
+        start(methodName);
+
+        Response response;
+        log.info(methodName, "Get Project (" + uid + ")");
+
+        boolean isExist = projectController.validateProject(uid);
+        log.debug(methodName, "Project validation : " + isExist);
+
+        if (isExist) {
+            Project project = projectController.getProjectByUid(uid);
+            List<ProjectTag> tags = projectController.getProjectTagList(project.getUid());
+            project.setProjectTags(tags);
+
+            response = buildSuccessResponse(project);
+        } else {
+            response = buildBadRequestResponse("Project ID not found");
+        }
+        completed(methodName);
+        return response;
     }
 }

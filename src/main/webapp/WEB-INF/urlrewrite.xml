@@ -44,6 +44,10 @@
 		<from>^/projects$</from>
 		<to>/WEB-INF/maintenance/project.jsp</to>
 	</rule>
+	<rule>
+		<from>^/project-overview$</from>
+		<to>/WEB-INF/maintenance/project_overview.jsp</to>
+	</rule>
 
 
 

@@ -54,4 +54,45 @@ public class ProjectController extends BaseController {
         }
         return result;
     }
+
+    public Project getProjectByUid(String projectUid) {
+        final String methodName = "getProjectByUid";
+        start(methodName);
+        Project result = null;
+
+        String sql = "SELECT p.uid, p.display_name, c.display_name AS customerName, p.sales_order_number, p.job_code, " +
+                "CONCAT(s.firstname, ' ', s.lastname) AS staffName, p.create_dt , p.modify_dt " +
+                "FROM project p " +
+                "JOIN customer c ON c.uid = p.customer_uid " +
+                "JOIN staff s ON s.uid = p.staff_uid " +
+                "WHERE p.uid = :projectUid;";
+
+        try (Handle handle = getHandle(); Query q = handle.createQuery(sql)) {
+            q.bind("projectUid", projectUid);
+            result = q.mapToBean(Project.class).first();
+        } catch (Exception e) {
+            log.error(methodName, e);
+        }
+
+        completed(methodName);
+        return result;
+    }
+
+    public boolean validateProject(String uid) {
+        final String methodName = "validateProject";
+        start(methodName);
+        boolean result = false;
+        String sql = "SELECT if(COUNT(*)>0,'true','false') " +
+                " FROM project " +
+                " WHERE  uid = :uid;";
+        try (Handle handle = getHandle(); Query q = handle.createQuery(sql)) {
+            q.bind("uid", uid);
+            result = q.mapTo(Boolean.class).one();
+
+        } catch (Exception e) {
+            log.error(methodName, e);
+        }
+        completed(methodName);
+        return result;
+    }
 }

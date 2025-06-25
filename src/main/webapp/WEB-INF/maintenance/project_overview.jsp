@@ -1,0 +1,292 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Projects</title>
+
+    <meta name="description" content="">
+    <meta name="author" content="The Special One">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,staff-scalable=0">
+
+    <%@include file="/WEB-INF/pages/css_import.jsp" %>
+</head>
+
+<body>
+<!-- Page Wrapper -->
+<div id="page-wrapper">
+    <!-- Preloader -->
+    <div class="preloader themed-background">
+        <h1 class="push-top-bottom text-light text-center"><strong>Monitoring and Maintenance</strong></h1>
+        <div class="inner">
+            <h3 class="text-light visible-lt-ie10"><strong>Loading..</strong></h3>
+            <div class="preloader-spinner hidden-lt-ie10"></div>
+        </div>
+    </div>
+    <!-- END Preloader -->
+
+    <!-- Page Container -->
+    <div id="page-container" class="header-fixed-top sidebar-partial sidebar-visible-lg sidebar-no-animations">
+        <!-- Main Sidebar -->
+        <%@include file="/WEB-INF/pages/left_nav.jsp" %>
+        <!-- END Main Sidebar -->
+
+        <!-- Main Container -->
+        <div id="main-container">
+            <!-- Header -->
+            <%@include file="/WEB-INF/pages/top_nav.jsp" %>
+            <!-- END Header -->
+
+            <!-- Page content -->
+            <div id="page-content">
+                <!-- Fixed Top Header Header -->
+                <div class="content-header">
+                    <div class="header-section">
+                        <h1>
+                            <i class="gi gi-show_big_thumbnails"></i> <strong><span id="projectTitle"></span></strong>
+                        </h1>
+                        <h2><span id="customerTitle"></span></h2>
+                    </div>
+                </div>
+                <ul class="breadcrumb breadcrumb-top">
+                    <li><a href="index">Home</a></li>
+                    <li><a href="projects">Projects</a></li>
+                    <li><a href="#" id="bc-name"></a></li>
+                </ul>
+                <!-- END Fixed Top Header Header -->
+
+                <!-- Content -->
+                <div class="block full block-alt-noborder">
+                    <!-- Basic Form Elements Block -->
+                    <div class="block">
+                        <!-- Basic Form Elements Title -->
+                        <div class="block-title">
+                            <h2><strong>Basic information</strong></h2>
+                            <a id="update-button" class="btn btn-sm btn-info update-button" style="display: inline-block; vertical-align: middle; margin-top: -2px;">Update</a>
+                        </div>
+                        <!-- END Form Elements Title -->
+
+                        <!-- Basic Form Elements Content -->
+                        <form class="form-horizontal form-bordered">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Project Name :</label>
+                                <div class="col-xs-9">
+                                    <p class="form-control-static" id="projectName"> - </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Customer Name :</label>
+                                <div class="col-xs-9">
+                                    <p class="form-control-static" id="customerName"> - </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Sales Order Number :</label>
+                                <div class="col-xs-9">
+                                    <p class="form-control-static" id="salesOrderNumber"> - </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Job Code :</label>
+                                <div class="col-xs-9">
+                                    <p class="form-control-static" id="jobCode"> - </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Project PIC :</label>
+                                <div class="col-xs-9">
+                                    <p class="form-control-static" id="projectPic"> - </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Create Date :</label>
+                                <div class="col-xs-9">
+                                    <p class="form-control-static" id="createDt"> - </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Last Modified :</label>
+                                <div class="col-xs-9">
+                                    <p class="form-control-static" id="modified"> - </p>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- END Basic Form Elements Content -->
+                    </div>
+                    <!-- END Basic Form Elements Block -->
+
+                    <div class="table-options clearfix">
+                        <div class="btn-group btn-group-sm pull-right" data-toggle="buttons">
+                            <a id="add-customer-button" href="#add-modal" class="btn btn-sm btn-info"
+                               data-toggle="modal"><i class="fa fa-plus"></i> Add Project</a>
+                        </div>
+                    </div>
+                    <!-- Datatables Content -->
+                    <div class="table-responsive">
+                        <table id="project-table"
+                               class="table table-vcenter table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <th class="text-center">Project Name</th>
+                                <th class="text-center">Customer Name</th>
+                                <th class="text-center">Sales Order Number</th>
+                                <th class="text-center">Job Code</th>
+                                <th class="text-center">Staff Name</th>
+                                <th class="text-center">Tags</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- END Datatables Content -->
+                </div>
+                <!-- END Content -->
+            </div>
+            <!-- END Page Content -->
+
+            <!-- Footer -->
+            <footer class="clearfix">
+                <div class="pull-right">
+                    Crafted with <i class="fa fa-heart text-danger"></i> by <a href="#"
+                                                                               target="_blank">The Special One</a>
+                </div>
+            </footer>
+            <!-- END Footer -->
+        </div>
+        <!-- END Main Container -->
+    </div>
+    <!-- END Page Container -->
+</div>
+<!-- END Page Wrapper -->
+
+<!-- Scroll to top link, initialized in js/app.js - scrollToTop() -->
+<div class="pull-right">
+    <a href="#" id="to-top"><i class="fa fa-angle-double-up"></i></a>
+</div>
+
+<!-- View/Update modal -->
+<div id="update-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title" style="display: inline-block; margin: 0; margin-right: 10px;">Update Project</h3>
+            </div>
+            <div class="modal-body">
+                <form id="update-form" class="form-horizontal form-bordered">
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_vstatus">Status <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-md-6">
+                                <label class="switch switch-primary" for="val_vstatus">
+                                    <input type="checkbox" id="val_vstatus" name="val_vstatus">
+                                    <span data-toggle="tooltip" title=""
+                                          data-original-title="Enable / Disable product"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div id="product-id" class="form-group">
+                            <label class="col-md-4 control-label" for="val_vproduct_id">Products ID <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-md-6">
+                                <input type="text" id="val_vproduct_id" name="val_vproduct_id"
+                                       class="form-control" placeholder="Product ID.." readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_vproduct_name">Products Name <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-md-6">
+                                <input type="text" id="val_vproduct_name" name="val_vproduct_name"
+                                       class="form-control" placeholder="Product Name..">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_vdescription">Description </label>
+                            <div class="col-md-6">
+                                        <textarea id="val_vdescription" name="val_vdescription" class="form-control"
+                                                  placeholder="Description.." rows="4"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_vbrand">
+                                Brand <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-md-6">
+                                <select id="val_vbrand" name="val_vbrand" class="form-control select-chosen"
+                                        data-placeholder="Select product brand" style="width: 250px;">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_vcategory">
+                                Category <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-md-6">
+                                <select id="val_vcategory" name="val_vcategory"
+                                        class="form-control select-chosen"
+                                        data-placeholder="Select product category" style="width: 250px;">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <div id="update-modal-footer" class="modal-footer">
+                        <div class="modal-footer">
+                            <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
+                                <a id="cancel-update-button"
+                                   class="btn btn-sm btn-default cancel-update-button">Cancel</a>
+                            </div>
+                            <div class="btn-group btn-group-sm pull-right" data-toggle="buttons">
+                                <a id="confirm-update-button"
+                                   class="btn btn-sm btn-danger confirm-update-button"></i>Save changes</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END View/Update modal -->
+
+
+<!-- Delete modal -->
+<div id="delete-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Modal Title</h3>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
+                    <a id="cancel-delete-button" class="btn btn-sm btn-default cancel-delete-button">Cancel</a>
+                </div>
+                <div class="btn-group btn-group-sm pull-right" data-toggle="buttons">
+                    <a id="confirm-delete-button" class="btn btn-sm btn-danger confirm-delete-button"></i>Confirm Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END Delete modal -->
+
+
+<%@include file="/WEB-INF/pages/js_import.jsp" %>
+<!-- Load and execute javascript code used only in this page -->
+<script src="${pageContext.request.contextPath}/asset/js/project-overview.js"></script>
+</body>
+
+</html>
