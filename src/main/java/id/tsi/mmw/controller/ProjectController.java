@@ -53,6 +53,25 @@ public class ProjectController extends BaseController {
         return result;
     }
 
+    public List <ProjectTag> getProjectTagListByServiceOrder( String projectUid, String serviceOrderUid ) {
+        final String methodName = "getProjectTagListByServiceOrder";
+        List<ProjectTag> result = new ArrayList<>();
+
+        String sql = "SELECT tag " +
+                "FROM project_tag " +
+                "WHERE project_uid = :projectUid AND service_order_uid = :serviceOrderUid " +
+                "ORDER BY tag ASC;";
+
+        try (Handle handle = getHandle(); Query q = handle.createQuery(sql)) {
+            q.bind("projectUid", projectUid);
+            q.bind("serviceOrderUid", serviceOrderUid);
+            result = q.mapToBean(ProjectTag.class).list();
+        } catch (Exception e) {
+            log.error(methodName, e);
+        }
+        return result;
+    }
+
     public List <ProjectStaffPIC> getStaffPICList(String projectUid ) {
         final String methodName = "getStaffPICList";
         List<ProjectStaffPIC> result = new ArrayList<>();

@@ -66,8 +66,6 @@ public class ProjectService extends BaseService {
 
         if (isExist) {
             Project project = projectController.getProjectByUid(uid);
-            List<ProjectTag> tags = projectController.getProjectTagList(project.getUid());
-            project.setProjectTags(tags);
 
             List<ProjectStaffPIC> staffPICs = projectController.getStaffPICList(project.getUid());
             project.setStaffPic(staffPICs);
@@ -98,6 +96,10 @@ public class ProjectService extends BaseService {
 
         if (isExist) {
             List<ProjectServiceOrder> customerPICs = projectController.getServiceOrderList(uid);
+            for (ProjectServiceOrder projectServiceOrder : customerPICs) {
+                List<ProjectTag> projectServiceOrderDetails = projectController.getProjectTagListByServiceOrder(uid, projectServiceOrder.getUid());
+                projectServiceOrder.setProjectTags(projectServiceOrderDetails);
+            }
 
             response = buildSuccessResponse(customerPICs);
         } else {

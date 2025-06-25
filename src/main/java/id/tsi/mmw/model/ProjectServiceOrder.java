@@ -1,12 +1,14 @@
 package id.tsi.mmw.model;
 
+import java.util.List;
+
 public class ProjectServiceOrder {
 
     private String uid;
     private String projectUid;
     private String contractNumber;
     private String serviceQty;
-
+    private List<ProjectTag> projectTags;
 
     public ProjectServiceOrder() {
     }
@@ -41,5 +43,13 @@ public class ProjectServiceOrder {
 
     public void setServiceQty(String serviceQty) {
         this.serviceQty = serviceQty;
+    }
+
+    public List<ProjectTag> getProjectTags() {
+        return projectTags;
+    }
+
+    public void setProjectTags(List<ProjectTag> projectTags) {
+        this.projectTags = projectTags;
     }
 }

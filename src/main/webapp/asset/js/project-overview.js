@@ -152,6 +152,15 @@ var maintenanceServiceDatatable = (function () {
                     }
                 },
                 {
+                    data: "projectTags",
+                    className: "text-center",
+                    render: function (data, type, row) {
+                        if (!data || data.length === 0) return '-';
+                        const tags = data.map(t => `<span class="label label-info">${t.tag}</span>`);
+                        return tags.join(" "); // multiple tags as labeled badges
+                    }
+                },
+                {
                     data: null,
                     className: "text-center",
                     orderable: false,
@@ -162,12 +171,12 @@ var maintenanceServiceDatatable = (function () {
                                 <div class="btn-group">
                                     <div class="text-center">
                                         <a class="btn btn-sm btn-info view-button" data-id="${row.uid}">
-                                            <i class="fa fa-eye"></i> Detail
+                                            <i class="fa fa-eye"></i> View
                                         </a>
                                         <a class="btn btn-sm btn-danger delete-btn"
                                         data-id="${row.uid}"
                                         data-displayname="${row.displayName}"
-                                        ${locked ? 'disabled title="Cannot delete when service quantity greater than 0"' : ''}>
+                                        ${locked ? 'disabled title="Cannot delete when serviceQty greather than 0"' : ''}>
                                             <i class="fa fa-times-circle"></i> Delete
                                         </a>
                                     </div>

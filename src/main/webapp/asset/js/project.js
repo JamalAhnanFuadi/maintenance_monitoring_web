@@ -57,7 +57,7 @@ var ProjectDatatables = (function () {
                     data: "staffPic",
                     render: function (data, type, row) {
                         if (!data || data.length === 0) return '-';
-                        const pic = data.map(t => ` - ${t.staffName} (${t.staffEmail})`);
+                        const pic = data.map(t => ` - <span class="label label-primary">${t.staffName} (${t.staffEmail})</span>`);
                         return pic.join("<br>");
                     }
                 },
@@ -108,7 +108,8 @@ var ProjectDatatables = (function () {
     };
 })();
 
-$(document).on("click", ".view-button", function () {;
+$(document).on("click", ".view-button", function () {
+    ;
     var projectId = $(this).data("id");
     window.location.href = "project-overview?id=" + projectId;
 });

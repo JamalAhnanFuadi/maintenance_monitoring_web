@@ -145,6 +145,7 @@
                                     <tr>
                                         <th class="text-center">Contract No</th>
                                         <th class="text-center">Service Qty</th>
+                                        <th class="text-center">Notification</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                     </thead>
@@ -199,6 +200,111 @@
                     </div>
 
                 </div>
+
+                <!-- Project History Block -->
+                <div class="block full block-alt-noborder">
+                    <div class="block full">
+                        <!-- Project History Title -->
+                        <div class="block-title">
+                            <h2><strong>Project History</strong></h2>
+                        </div>
+                        <!-- END Project History Title -->
+
+                        <!-- Project History Content -->
+                        <div class="timeline block-content-full">
+                            <ul class="timeline-list timeline-hover">
+                                <li>
+                                    <div class="timeline-icon"><i class="gi gi-fire"></i></div>
+                                    <div class="timeline-time">26 June 2025</div>
+                                    <div class="timeline-content">
+                                        <p class="push-bit">14:00 <strong>PM</strong></p>
+                                        <p class="push-bit"><strong>Maintenance Reminder</strong></p>
+                                        <p class="push-bit">Renewal Maintenance Security 2022 - 2023
+                                            Maintenance Reminder</p>
+                                        <p class="push-bit">Triggered by <strong>System</strong></p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="timeline-icon"><i class="gi gi-fire"></i></div>
+                                    <div class="timeline-content">
+                                        <p class="push-bit">12:00 <strong>PM</strong></p>
+                                        <p class="push-bit"><strong>Maintenance Reminder</strong></p>
+                                        <p class="push-bit">Renewal Maintenance Security 2022 - 2023
+                                            Maintenance Reminder</p>
+                                        <p class="push-bit">Triggered by <strong>System</strong></p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="timeline-icon"><i class="gi gi-fire"></i></div>
+                                    <div class="timeline-time">26 June 2025</div>
+                                    <div class="timeline-content">
+                                        <p class="push-bit">8:00 <strong>AM</strong></p>
+                                        <p class="push-bit"><strong>Maintenance Reminder</strong></p>
+                                        <p class="push-bit">Renewal Maintenance Security 2022 - 2023
+                                            Maintenance Reminder</p>
+                                        <p class="push-bit">Triggered by <strong>System</strong></p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="timeline-icon"><i class="gi gi-cake"></i></div>
+                                    <div class="timeline-time">26 June 2025</div>
+                                    <div class="timeline-content">
+                                        <p class="push-bit">9:15 <strong>AM</strong></p>
+                                        <p class="push-bit"><strong>Project Created</strong></p>
+                                        <p class="push-bit">Renewal Maintenance Security 2022 - 2023
+                                            project created</p>
+                                        <p class="push-bit">Triggered by <strong>Bachtiar
+                                            Permadi</strong></p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="timeline-icon"><i class="gi gi-cake"></i></div>
+                                    <div class="timeline-content">
+                                        <p class="push-bit">9:15 <strong>AM</strong></p>
+                                        <p class="push-bit"><strong>Project Created</strong></p>
+                                        <p class="push-bit">Renewal Maintenance Security 2022 - 2023
+                                            project created</p>
+                                        <p class="push-bit">Triggered by <strong>Bachtiar
+                                            Permadi</strong></p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="timeline-icon"><i class="gi gi-cake"></i></div>
+                                    <div class="timeline-content">
+                                        <p class="push-bit">9:15 <strong>AM</strong></p>
+                                        <p class="push-bit"><strong>Project Created</strong></p>
+                                        <p class="push-bit">Renewal Maintenance Security 2022 - 2023
+                                            project created</p>
+                                        <p class="push-bit">Triggered by <strong>Bachtiar
+                                            Permadi</strong></p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="timeline-icon"><i class="gi gi-cart_in"></i></div>
+                                    <div class="timeline-time">26 June 2025</div>
+                                    <div class="timeline-content">
+                                        <p class="push-bit">9:15 <strong>AM</strong></p>
+                                        <p class="push-bit"><strong>Project Created</strong></p>
+                                        <p class="push-bit">Renewal Maintenance Security 2022 - 2023
+                                            project created</p>
+                                        <p class="push-bit">Triggered by <strong>Bachtiar
+                                            Permadi</strong></p>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="text-center mt-3">
+                                <button id="load-more-timeline" class="btn btn-sm btn-primary">
+                                    <i class="fa fa-arrow-down"></i> Load More
+                                </button>
+                            </div>
+                            <br />
+                        </div>
+                        <!-- END Project History Content -->
+                    </div>
+                    <!-- END Project History Block -->
+                </div>
+                <!-- END Project History Block -->
+
                 <!-- END Content -->
             </div>
             <!-- END Page Content -->
