@@ -1,9 +1,7 @@
 package id.tsi.mmw.rest.service;
 
 import id.tsi.mmw.controller.ProjectController;
-import id.tsi.mmw.model.Product;
-import id.tsi.mmw.model.Project;
-import id.tsi.mmw.model.ProjectTag;
+import id.tsi.mmw.model.*;
 import id.tsi.mmw.rest.validator.CustomerValidator;
 
 import javax.annotation.security.PermitAll;
@@ -42,6 +40,9 @@ public class ProjectService extends BaseService {
         for (Project project : projects) {
             List<ProjectTag> tags = projectController.getProjectTagList(project.getUid());
             project.setProjectTags(tags);
+
+            List<ProjectStaffPIC> staffPICs = projectController.getStaffPICList(project.getUid());
+            project.setStaffPic(staffPICs);
         }
 
         List<Project> result = new ArrayList<>(projects);
@@ -67,6 +68,12 @@ public class ProjectService extends BaseService {
             Project project = projectController.getProjectByUid(uid);
             List<ProjectTag> tags = projectController.getProjectTagList(project.getUid());
             project.setProjectTags(tags);
+
+            List<ProjectStaffPIC> staffPICs = projectController.getStaffPICList(project.getUid());
+            project.setStaffPic(staffPICs);
+
+            List<ProjectCustomerPIC> customerPICs = projectController.getCustomerPICList(project.getUid());
+            project.setCustomerPic(customerPICs);
 
             response = buildSuccessResponse(project);
         } else {

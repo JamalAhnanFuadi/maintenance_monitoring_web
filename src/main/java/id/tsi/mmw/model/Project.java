@@ -16,10 +16,9 @@ public class Project {
     private String customerUid;
     private String customerName;
 
-    private String staffUid;
-    private String staffName;
-
     private List<ProjectTag> projectTags;
+    private List<ProjectStaffPIC> staffPic;
+    private List<ProjectCustomerPIC> customerPic;
 
     public Project() {
     }
@@ -104,27 +103,27 @@ public class Project {
         this.customerName = customerName;
     }
 
-    public String getStaffUid() {
-        return staffUid;
-    }
-
-    public void setStaffUid(String staffUid) {
-        this.staffUid = staffUid;
-    }
-
-    public String getStaffName() {
-        return staffName;
-    }
-
-    public void setStaffName(String staffName) {
-        this.staffName = staffName;
-    }
-
     public List<ProjectTag> getProjectTags() {
         return projectTags;
     }
 
     public void setProjectTags(List<ProjectTag> projectTags) {
         this.projectTags = projectTags;
+    }
+
+    public List<ProjectStaffPIC> getStaffPic() {
+        return staffPic;
+    }
+
+    public void setStaffPic(List<ProjectStaffPIC> staffPic) {
+        this.staffPic = staffPic;
+    }
+
+    public List<ProjectCustomerPIC> getCustomerPic() {
+        return customerPic;
+    }
+
+    public void setCustomerPic(List<ProjectCustomerPIC> customerPic) {
+        this.customerPic = customerPic;
     }
 }

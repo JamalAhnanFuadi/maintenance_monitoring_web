@@ -76,7 +76,7 @@
                                 <th class="text-center">Customer Name</th>
                                 <th class="text-center">Sales Order Number</th>
                                 <th class="text-center">Job Code</th>
-                                <th class="text-center">Staff Name</th>
+                                <th class="text-center">Staff PIC</th>
                                 <th class="text-center">Tags</th>
                                 <th class="text-center">Action</th>
                             </tr>

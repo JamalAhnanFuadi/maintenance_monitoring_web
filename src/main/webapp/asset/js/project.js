@@ -54,11 +54,12 @@ var ProjectDatatables = (function () {
                     },
                 },
                 {
-                    data: "staffName",
-                    className: "text-center",
-                    render: function (data) {
-                        return data ? data : "-";
-                    },
+                    data: "staffPic",
+                    render: function (data, type, row) {
+                        if (!data || data.length === 0) return '-';
+                        const pic = data.map(t => ` - ${t.staffName} (${t.staffEmail})`);
+                        return pic.join("<br>");
+                    }
                 },
                 {
                     data: "projectTags",

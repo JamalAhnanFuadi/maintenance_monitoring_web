@@ -1,6 +1,8 @@
 package id.tsi.mmw.controller;
 
 import id.tsi.mmw.model.Project;
+import id.tsi.mmw.model.ProjectCustomerPIC;
+import id.tsi.mmw.model.ProjectStaffPIC;
 import id.tsi.mmw.model.ProjectTag;
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.statement.Query;
@@ -21,10 +23,9 @@ public class ProjectController extends BaseController {
         List<Project> result = new ArrayList<>();
 
         String sql = "SELECT p.uid, p.display_name, c.display_name AS customerName, p.sales_order_number, p.job_code, " +
-                "CONCAT(s.firstname, ' ', s.lastname) AS staffName, p.create_dt , p.modify_dt " +
+                "p.create_dt , p.modify_dt " +
                 "FROM project p " +
                 "JOIN customer c ON c.uid = p.customer_uid " +
-                "JOIN staff s ON s.uid = p.staff_uid " +
                 "ORDER BY p.display_name ASC;";
 
         try (Handle handle = getHandle(); Query q = handle.createQuery(sql)) {
@@ -49,6 +50,43 @@ public class ProjectController extends BaseController {
         try (Handle handle = getHandle(); Query q = handle.createQuery(sql)) {
             q.bind("projectUid", projectUid);
             result = q.mapToBean(ProjectTag.class).list();
+        } catch (Exception e) {
+            log.error(methodName, e);
+        }
+        return result;
+    }
+
+    public List <ProjectStaffPIC> getStaffPICList(String projectUid ) {
+        final String methodName = "getStaffPICList";
+        List<ProjectStaffPIC> result = new ArrayList<>();
+
+        String sql = "SELECT pp.uid, pp.staff_uid , CONCAT(s.firstname, ' ', s.lastname) AS staffName, s.email AS staffEmail " +
+                "FROM project_pic pp " +
+                "JOIN staff s ON s.uid = pp.staff_uid " +
+                "WHERE pp.project_uid = :projectUid " +
+                "ORDER BY staffName ASC;";
+
+        try (Handle handle = getHandle(); Query q = handle.createQuery(sql)) {
+            q.bind("projectUid", projectUid);
+            result = q.mapToBean(ProjectStaffPIC.class).list();
+        } catch (Exception e) {
+            log.error(methodName, e);
+        }
+        return result;
+    }
+
+    public List <ProjectCustomerPIC> getCustomerPICList(String projectUid ) {
+        final String methodName = "getCustomerPICList";
+        List<ProjectCustomerPIC> result = new ArrayList<>();
+
+        String sql = "SELECT pp.uid, pp.name, pp.phone, pp.email " +
+                "FROM project_customer_pic pp " +
+                "WHERE pp.project_uid = :projectUid " +
+                "ORDER BY pp.name ASC;";
+
+        try (Handle handle = getHandle(); Query q = handle.createQuery(sql)) {
+            q.bind("projectUid", projectUid);
+            result = q.mapToBean(ProjectCustomerPIC.class).list();
         } catch (Exception e) {
             log.error(methodName, e);
         }

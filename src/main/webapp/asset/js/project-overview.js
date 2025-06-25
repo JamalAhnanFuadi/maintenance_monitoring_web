@@ -14,7 +14,7 @@ function fetchProject(projectId) {
         method: "GET",
         data: { id: projectId },
         success: function (response, status, xhr) {
-            console.log(response);
+
             projectName = response.displayName;
             customerName = response.customerName;
             salesOrderNumber = response.salesOrderNumber;
@@ -37,6 +37,9 @@ function fetchProject(projectId) {
             $('#projectPic').text(staffName);
             $('#createDt').text(createDt);
             $('#modified').text(modifyDt);
+
+            renderStaffPICList(response.staffPic);
+            renderCustomerPICList(response.customerPic);
         },
         error: function () {
             $('#projectTitle').text('Unknown');
@@ -54,3 +57,53 @@ function fetchProject(projectId) {
 $(document).on("click", "#update-button", function () {
     $("#update-modal").modal("show");
 });
+
+function renderStaffPICList(staffPicList, containerSelector = '#staff-pic-container') {
+    const container = $(containerSelector);
+    container.empty();
+
+    staffPicList.forEach((pic, index) => {
+        const avatarIndex = (index % 13) + 1; // Cycle through avatar1.jpg to avatar13.jpg
+        const html = `
+            <div class="col-sm-6 col-lg-4">
+                <div class="widget">
+                    <div class="widget-simple">
+                        <h4 class="widget-content text-right">
+                            <strong>${pic.staffName}</strong><br>
+                            <small>${pic.staffEmail}</small>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        `;
+        container.append(html);
+    });
+
+    $('[data-toggle="tooltip"]').tooltip(); // Reinitialize tooltips
+}
+
+
+function renderCustomerPICList(customerPicList, containerSelector = '#customer-pic-container') {
+    const container = $(containerSelector);
+    container.empty();
+
+    customerPicList.forEach((pic, index) => {
+        const avatarIndex = (index % 13) + 1; // Cycle through avatar1.jpg to avatar13.jpg
+        const html = `
+            <div class="col-sm-6 col-lg-4">
+                <div class="widget">
+                    <div class="widget-simple">
+                        <h4 class="widget-content text-right">
+                            <strong>${pic.name}</strong><br>
+                            <small>${pic.email}</small><br>
+                            <small>${pic.phone}</small>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        `;
+        container.append(html);
+    });
+
+    $('[data-toggle="tooltip"]').tooltip(); // Reinitialize tooltips
+}
