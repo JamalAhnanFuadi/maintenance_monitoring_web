@@ -126,15 +126,17 @@
 
                     <!-- Maintenance Sercice Block -->
                     <div class="col-md-6">
-                        <div class="block">
+                        <div class="block full block-alt-noborder">
+
                             <!-- Maintenance Sercice Title -->
                             <div class="block-title">
-                                <h2><strong>Maintenance Service's</strong></h2>
+                                <h2><strong>Service Order</strong></h2>
                                 <a id="update-button" class="btn btn-sm btn-info update-button"
                                    style="display: inline-block; vertical-align: middle; margin-top: -2px;">
                                     Add Service</a>
                             </div>
                             <!-- END Maintenance Sercice Title -->
+
                             <!-- Maintenance Sercice Content -->
                             <div class="table-responsive">
                                 <table id="project-service-table"

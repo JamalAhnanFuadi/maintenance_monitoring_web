@@ -162,12 +162,12 @@ var maintenanceServiceDatatable = (function () {
                                 <div class="btn-group">
                                     <div class="text-center">
                                         <a class="btn btn-sm btn-info view-button" data-id="${row.uid}">
-                                            <i class="fa fa-eye"></i> View
+                                            <i class="fa fa-eye"></i> Detail
                                         </a>
                                         <a class="btn btn-sm btn-danger delete-btn"
                                         data-id="${row.uid}"
                                         data-displayname="${row.displayName}"
-                                        ${locked ? 'disabled title="Cannot delete when serviceQty greather than 0"' : ''}>
+                                        ${locked ? 'disabled title="Cannot delete when service quantity greater than 0"' : ''}>
                                             <i class="fa fa-times-circle"></i> Delete
                                         </a>
                                     </div>
