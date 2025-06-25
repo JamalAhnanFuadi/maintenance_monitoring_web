@@ -13,19 +13,18 @@
             <!-- END Brand -->
             <!-- Sidebar Navigation -->
             <ul class="sidebar-nav">
+                <!-- Project Navigation -->
                 <li class="sidebar-header">
                         <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip"
                                                                          title="Master data"><i class="gi gi-server"></i></a></span>
-                    <span class="sidebar-header-title">Reports</span>
+                    <span class="sidebar-header-title">Maintenance</span>
                 </li>
                 <li>
-                    <a href="#"><i class="gi gi-server_flag sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Service Reports</span></a>
+                    <a href="projects" id="project-link"><i class="gi gi-user sidebar-nav-icon"></i><span
+                            class="sidebar-nav-mini-hide">Project</span></a>
                 </li>
-                <li>
-                    <a href="#"><i class="gi gi-server_new sidebar-nav-icon"></i><span
-                            class="sidebar-nav-mini-hide">Maintenance Reports</span></a>
-                </li>
+                <!-- END OF Project Navigation -->
+                <!-- Master Data Navigation -->
                 <li class="sidebar-header">
                         <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip"
                                                                          title="Master data"><i class="gi gi-cargo"></i></a></span>
@@ -75,6 +74,7 @@
                             class="gi gi-log_out sidebar-nav-icon"></i><span
                             class="sidebar-nav-mini-hide">logout</span></a>
                 </li>
+                <!-- END OF Master Data Navigation -->
             </ul>
             <!-- END Sidebar Navigation -->
         </div>

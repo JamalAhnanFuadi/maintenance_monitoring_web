@@ -40,6 +40,10 @@
 		<from>^/customer$</from>
 		<to>/WEB-INF/masterdata/customer.jsp</to>
 	</rule>
+	<rule>
+		<from>^/projects$</from>
+		<to>/WEB-INF/maintenance/project.jsp</to>
+	</rule>
 
 
 
