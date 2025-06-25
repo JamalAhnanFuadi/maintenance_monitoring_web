@@ -77,43 +77,43 @@
                             <!-- Basic Project Information Content -->
                             <form class="form-horizontal form-bordered">
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Project Name :</label>
+                                    <label class="col-sm-3 control-label">Project Name :</label>
                                     <div class="col-xs-9">
                                         <p class="form-control-static" id="projectName"> - </p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Customer Name :</label>
+                                    <label class="col-sm-3 control-label">Customer Name :</label>
                                     <div class="col-xs-9">
                                         <p class="form-control-static" id="customerName"> - </p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Sales Order Number :</label>
+                                    <label class="col-sm-3 control-label">Sales Order Number :</label>
                                     <div class="col-xs-9">
                                         <p class="form-control-static" id="salesOrderNumber"> - </p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Job Code :</label>
+                                    <label class="col-sm-3 control-label">Job Code :</label>
                                     <div class="col-xs-9">
                                         <p class="form-control-static" id="jobCode"> - </p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Create Date :</label>
+                                    <label class="col-sm-3 control-label">Create Date :</label>
                                     <div class="col-xs-9">
                                         <p class="form-control-static" id="createDt"> - </p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Last Modified :</label>
+                                    <label class="col-sm-3 control-label">Last Modified :</label>
                                     <div class="col-xs-9">
                                         <p class="form-control-static" id="modified"> - </p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Last Maintenance :</label>
+                                    <label class="col-sm-3 control-label">Last Maintenance :</label>
                                     <div class="col-xs-9">
                                         <p class="form-control-static" id="maintenanced"> - </p>
                                     </div>
