@@ -1,6 +1,6 @@
 package id.tsi.mmw.model;
 
-public class SalesLevel {
+public class ServiceLevel {
 
     private String uid;
     private String displayName;
@@ -9,7 +9,7 @@ public class SalesLevel {
     private String modifyDt;
     private boolean locked;
 
-    public SalesLevel() {
+    public ServiceLevel() {
     }
 
     public String getUid() {

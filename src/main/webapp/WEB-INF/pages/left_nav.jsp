@@ -44,8 +44,8 @@
                             class="sidebar-nav-mini-hide">Departments</span></a>
                 </li>
                 <li>
-                    <a href="sales-levels" id="sales-level-link"><i
-                            class="gi gi-vcard sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Sales
+                    <a href="service-levels" id="service-level-link"><i
+                            class="gi gi-vcard sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Service
                                 Levels</span></a>
                 </li>
                 <li>

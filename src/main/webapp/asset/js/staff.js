@@ -41,7 +41,7 @@ var StaffDatatables = (function () {
                 {
                     data: null,
                     render: function (data) {
-                        return data ? `${data.firstname} ${data.lastname}` : '-'; // Handle null/undefined
+                        return data ? `<strong>${data.firstname} ${data.lastname}</strong>` : "-";
                     }
                 },
                 {

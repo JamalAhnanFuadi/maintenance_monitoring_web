@@ -21,8 +21,8 @@
 		<to>/WEB-INF/masterdata/staff.jsp</to>
 	</rule>
 	<rule>
-		<from>^/sales-levels$</from>
-		<to>/WEB-INF/masterdata/sales_level.jsp</to>
+		<from>^/service-levels$</from>
+		<to>/WEB-INF/masterdata/service_level.jsp</to>
 	</rule>
 	<rule>
 		<from>^/products$</from>

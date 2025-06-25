@@ -1,25 +1,25 @@
 $(document).ready(function () {
-    $("#sales-level-link").addClass("active");
-    $("#sales-level-link").trigger("click");
+    $("#service-level-link").addClass("active");
+    $("#service-level-link").trigger("click");
 
-    SalesLevelDatatables.init(); // Initialize the datatable when the document is ready
+    serviceLevelDatatables.init(); // Initialize the datatable when the document is ready
 });
 
-var SalesLevelDatatables = (function () {
+var serviceLevelDatatables = (function () {
     var initDatatable = function () {
         // Check if DataTable is already initialized and destroy it
-        if ($.fn.DataTable.isDataTable("#sales-level-table")) {
-            $("#sales-level-table").DataTable().destroy();
+        if ($.fn.DataTable.isDataTable("#service-level-table")) {
+            $("#service-level-table").DataTable().destroy();
         }
 
         // Initialize Bootstrap Datatables Integration
         App.datatables();
 
         // Initialize Datatables with AJAX source
-        $("#sales-level-table").DataTable({
+        $("#service-level-table").DataTable({
             autoWidth: false, // Disable auto width calculation
             ajax: {
-                url: "/monitoring/rest/salesLevels",
+                url: "/monitoring/rest/serviceLevels",
                 method: "GET",
                 dataSrc: function (json) {
                     return json ? json : [];
@@ -29,7 +29,7 @@ var SalesLevelDatatables = (function () {
                 {
                     data: "displayName",
                     render: function (data) {
-                        return data ? data : "-";
+                        return data ? `<strong>${data}</strong>` : "-";
                     },
                 },
                 {
@@ -70,7 +70,7 @@ var SalesLevelDatatables = (function () {
                                     data-displayname="${row.displayName}" 
                                     ${locked
                             ? ""
-                            : 'disabled title="Cannot delete when sales level in use"'
+                            : 'disabled title="Cannot delete when service level in use"'
                         }">
                                     <i class="fa fa-times-circle"></i> Delete
                                 </a>
@@ -98,11 +98,11 @@ var SalesLevelDatatables = (function () {
     };
 })();
 
-$(document).on("click", "#export-saleslevel-button", function () {
+$(document).on("click", "#export-servicelevel-button", function () {
     console.log("Export button clicked");
 
     $.ajax({
-        url: "/monitoring/rest/salesLevels/export",
+        url: "/monitoring/rest/serviceLevels/export",
         method: "GET",
         contentType: "application/json", // Set content type for the request
         dataType: "text", // Expecting text response (CSV)
@@ -110,13 +110,13 @@ $(document).on("click", "#export-saleslevel-button", function () {
             if (xhr.status === 200) {
                 // Assuming response is a CSV formatted string
                 const csvData = response.split("\n").map((row) => row.split(","));
-                exportToCSV("sales-level.csv", csvData);
+                exportToCSV("service-level.csv", csvData);
             } else {
                 console.log("Error: " + response.description);
             }
         },
         error: function () {
-            console.log("Error fetching sales level data");
+            console.log("Error fetching service level data");
         },
     });
 });
@@ -134,7 +134,7 @@ function exportToCSV(filename, csvData) {
     link.click(); // This will download the file
 }
 
-$(document).on("click", "#add-saleslevel-button", function () {
+$(document).on("click", "#add-servicelevel-button", function () {
     // Reset the form fields
     $("#add-form")[0].reset();
     // Reset the validation (remove error classes and messages)
@@ -166,15 +166,15 @@ function addValidation() {
                 e.closest(".help-block").remove();
             },
             rules: {
-                val_saleslevel_name: {
+                val_servicelevel_name: {
                     required: true,
                     minlength: 2,
                 },
             },
             messages: {
-                val_saleslevel_name: {
-                    required: "Please enter the sales level name",
-                    minlength: "The sales level name must be at least 2 characters long",
+                val_servicelevel_name: {
+                    required: "Please enter the service level name",
+                    minlength: "The service level name must be at least 2 characters long",
                 },
             },
         });
@@ -192,12 +192,12 @@ $(document).on("click", "#submit-button", function () {
         $("#submit-button").addClass("disabled").html('<i class="fa fa-spinner fa-spin"></i> Submiting...');
 
         const request = {
-            displayName: $("#val_saleslevel_name").val(),
+            displayName: $("#val_servicelevel_name").val(),
             description: $("#val_description").val(),
         };
 
         $.ajax({
-            url: "/monitoring/rest/salesLevels",
+            url: "/monitoring/rest/serviceLevels",
             method: "POST",
             dataType: "json",
             contentType: "application/json",
@@ -205,19 +205,19 @@ $(document).on("click", "#submit-button", function () {
             success: function (response) {
                 Notification.notifySuccess(
                     "Success",
-                    "Successfully added sales level"
+                    "Successfully added service level"
                 );
                 setTimeout(function () {
                     $("#add-modal").modal("hide"); // Close the modal
-                    $("#sales-level-table").DataTable().destroy();
-                    SalesLevelDatatables.init();
+                    $("#service-level-table").DataTable().destroy();
+                    serviceLevelDatatables.init();
                 }, 2000);
             },
             error: function (xhr, status, error) {
                 // Handle error response
                 Notification.notifyError(
                     "Error",
-                    "Unable to add sales level"
+                    "Unable to add service level"
                 );
                 $("#submit-button").removeClass("disabled").html('Submit');
             },
@@ -226,20 +226,20 @@ $(document).on("click", "#submit-button", function () {
 });
 
 $(document).on("click", ".view-button", function () {
-    var salesLevelId = $(this).data("id");
+    var serviceLevelId = $(this).data("id");
 
     $.ajax({
-        url: "/monitoring/rest/salesLevels/" + salesLevelId,
+        url: "/monitoring/rest/serviceLevels/" + serviceLevelId,
         method: "GET",
-        data: { id: salesLevelId },
+        data: { id: serviceLevelId },
         success: function (response, status, xhr) {
 
-            $("#val_vsalesname_id").val(response.uid);
-            $("#val_vsaleslevel_name").val(response.displayName);
+            $("#val_vservicename_id").val(response.uid);
+            $("#val_vservicelevel_name").val(response.displayName);
             $("#val_vdescription").val(response.description);
 
-            $("#val_vsalesname_id").prop("readonly", true);
-            $("#val_vsaleslevel_name").prop("readonly", true);
+            $("#val_vservicename_id").prop("readonly", true);
+            $("#val_vservicelevel_name").prop("readonly", true);
             $("#val_vdescription").prop("readonly", true);
 
             $("#cancel-update-button").removeClass("disabled").html('Cancel');
@@ -253,7 +253,7 @@ $(document).on("click", ".view-button", function () {
         error: function () {
             Notification.notifyError(
                 "Error",
-                "Unable to fetch sales level information"
+                "Unable to fetch service level information"
             );
         },
     });
@@ -261,15 +261,15 @@ $(document).on("click", ".view-button", function () {
 
 $(document).on("click", "#update-button", function () {
     $("#update-button").hide();
-    $("#val_vsalesname_id").prop("readonly", true);
-    $("#val_vsaleslevel_name").prop("readonly", false);
+    $("#val_vservicename_id").prop("readonly", true);
+    $("#val_vservicelevel_name").prop("readonly", false);
     $("#val_vdescription").prop("readonly", false);
 
     $("#update-modal-footer").show();
 
     sessionStorage.setItem("originalData", JSON.stringify({
-        uid: $("#val_vsalesname_id").val(),
-        displayName: $("#val_vsaleslevel_name").val(),
+        uid: $("#val_vservicename_id").val(),
+        displayName: $("#val_vservicelevel_name").val(),
         description: $("#val_vdescription").val(),
     }));
 
@@ -277,8 +277,8 @@ $(document).on("click", "#update-button", function () {
 
 $(document).on("click", "#cancel-update-button", function () {
     $("#update-button").show();
-    $("#val_vsalesname_id").prop("readonly", true);
-    $("#val_vsaleslevel_name").prop("readonly", true);
+    $("#val_vservicename_id").prop("readonly", true);
+    $("#val_vservicelevel_name").prop("readonly", true);
     $("#val_vdescription").prop("readonly", true);
 
     $("#update-modal-footer").hide();
@@ -286,8 +286,8 @@ $(document).on("click", "#cancel-update-button", function () {
     // Retrieve original values from sessionStorage
     var originalData = JSON.parse(sessionStorage.getItem("originalData"));
     if (originalData) {
-        $("#val_vsalesname_id").val(originalData.uid);
-        $("#val_vsaleslevel_name").val(originalData.displayName);
+        $("#val_vservicename_id").val(originalData.uid);
+        $("#val_vservicelevel_name").val(originalData.displayName);
         $("#val_vdescription").val(originalData.description);
     }
 });
@@ -299,12 +299,12 @@ $(document).on("click", ".confirm-update-button", function () {
         $("#confirm-update-button").addClass("disabled").html('<i class="fa fa-spinner fa-spin"></i> Saving...');
 
         const deparmentRequest = {
-            uid: $("#val_vsalesname_id").val(),
-            displayName: $("#val_vsaleslevel_name").val(),
+            uid: $("#val_vservicename_id").val(),
+            displayName: $("#val_vservicelevel_name").val(),
             description: $("#val_vdescription").val(),
         };
         $.ajax({
-            url: "/monitoring/rest/salesLevels", // Your endpoint
+            url: "/monitoring/rest/serviceLevels", // Your endpoint
             method: "PUT",
             dataType: "json",
             contentType: "application/json",
@@ -312,19 +312,19 @@ $(document).on("click", ".confirm-update-button", function () {
             success: function (response) {
                 Notification.notifySuccess(
                     "Success",
-                    "Successfully update sales level"
+                    "Successfully update service level"
                 );
                 setTimeout(function () {
                     $("#view-modal").modal("hide"); // Close the modal
-                    $("#sales-level-table").DataTable().destroy();
-                    SalesLevelDatatables.init();
+                    $("#service-level-table").DataTable().destroy();
+                    serviceLevelDatatables.init();
                 }, 2000);
             },
             error: function (xhr, status, error) {
                 // Handle error response
                 Notification.notifyError(
                     "Error",
-                    "Unable to update sales level"
+                    "Unable to update service level"
                 );
                 $("#cancel-update-button").removeClass("disabled").html('Cancel');
                 $("#confirm-update-button").removeClass("disabled").html('Save changes');
@@ -356,21 +356,21 @@ function updateValidation() {
                 e.closest(".help-block").remove();
             },
             rules: {
-                val_vsaleslevel_name: {
+                val_vservicelevel_name: {
                     required: true,
                     minlength: 2,
                 },
-                val_vsalesname_id: {
+                val_vservicename_id: {
                     required: true,
                 }
             },
             messages: {
-                val_vsaleslevel_name: {
-                    required: "Please enter the sales level name",
-                    minlength: "The sales level name must be at least 2 characters long",
+                val_vservicelevel_name: {
+                    required: "Please enter the service level name",
+                    minlength: "The service level name must be at least 2 characters long",
                 },
-                val_vsalesname_id: {
-                    required: "Sales level ID is required",
+                val_vservicename_id: {
+                    required: "service level ID is required",
                 }
             },
         });
@@ -402,7 +402,7 @@ $(document).on("click", ".delete-btn", function () {
         );
 
         $("#confirm-delete-button").data("id", id);
-        $(".modal-title").text("Delete Sales Level");
+        $(".modal-title").text("Delete service Level");
         $("#delete-modal").modal("show");
     }
 });
@@ -422,7 +422,7 @@ $(document).on("click", ".confirm-delete-button", function () {
     $("#confirm-delete-button").addClass("disabled").html('<i class="fa fa-spinner fa-spin"></i> Confirming...');
 
     $.ajax({
-        url: `/monitoring/rest/salesLevels/${id}`,
+        url: `/monitoring/rest/serviceLevels/${id}`,
         type: "DELETE",
         data: { id: id }, // Send the id to the server
         success: function (response) {
@@ -432,15 +432,15 @@ $(document).on("click", ".confirm-delete-button", function () {
             );
             setTimeout(function () {
                 $("#delete-modal").modal("hide"); // Close the modal
-                $("#sales-level-table").DataTable().destroy();
-                SalesLevelDatatables.init();
+                $("#service-level-table").DataTable().destroy();
+                serviceLevelDatatables.init();
             }, 2000);
         },
         error: function (xhr, status, error) {
             // Handle error response
             Notification.notifyError(
                 "Error",
-                "Unable to delete sales level"
+                "Unable to delete service level"
             );
             $("#cancel-delete-button").removeClass("disabled").html('Cancel');
             $("#confirm-delete-button").removeClass("disabled").html('Confirm Delete');

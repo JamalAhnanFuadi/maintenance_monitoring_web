@@ -2,7 +2,7 @@ package id.tsi.mmw.rest.model.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class SalesLevelRequest {
+public class ServiceLevelRequest {
 
     @JsonProperty("uid")
     private String uid;
@@ -11,7 +11,7 @@ public class SalesLevelRequest {
     @JsonProperty("description")
     private String description;
 
-    public SalesLevelRequest() {
+    public ServiceLevelRequest() {
     }
 
     public String getUid() {

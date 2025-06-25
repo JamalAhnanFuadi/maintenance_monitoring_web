@@ -29,7 +29,7 @@ var CustomerDatatables = (function () {
                 {
                     data: "displayName",
                     render: function (data) {
-                        return data ? data : "-";
+                        return data ? `<strong>${data}</strong>` : "-";
                     },
                 },
                 {
