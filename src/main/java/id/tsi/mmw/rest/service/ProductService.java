@@ -130,6 +130,7 @@ public class ProductService extends BaseService {
             product.setDisplayName(request.getDisplayName());
             product.setCategoryUid(request.getCategoryUid());
             product.setBrandUid(request.getBrandUid());
+            product.setActive(request.isActive());
             product.setDescription(request.getDescription());
 
             boolean updated = productController.updateProduct(product);

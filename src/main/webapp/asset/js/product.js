@@ -8,9 +8,6 @@ $(document).ready(function () {
     $(".select-chosen").chosen(); // Initialize Chosen
     populateProductBrands();
     populateProductCategories();
-    populateCustomer();
-    togglePrincipalField();
-    $('[data-toggle="tooltip"]').tooltip();
 });
 
 var ProductDatatables = (function () {
@@ -38,12 +35,6 @@ var ProductDatatables = (function () {
                     data: "displayName",
                     render: function (data) {
                         return data ? `<strong>${data}</strong>` : "-";
-                    },
-                },
-                {
-                    data: "principalName",
-                    render: function (data) {
-                        return data ? data : "-";
                     },
                 },
                 {
@@ -213,70 +204,6 @@ function populateProductCategories() {
     });
 }
 
-function populateCustomer() {
-    $.ajax({
-        url: '/monitoring/rest/customers',
-        method: 'GET',
-        dataType: 'json',
-        success: function (response) {
-            $('#val_principal').empty().append($('<option>', {
-                value: '',
-                text: '-- Please select --'
-            }));
-
-            $('#val_vprincipal').empty().append($('<option>', {
-                value: '',
-                text: '-- Please select --'
-            }));
-            response.forEach(function (customer) {
-                $('#val_principal').append(
-                    $('<option>', {
-                        value: customer.uid,
-                        text: customer.displayName
-                    })
-                );
-
-                $('#val_vprincipal').append(
-                    $('<option>', {
-                        value: customer.uid,
-                        text: customer.displayName
-                    })
-                );
-            });
-
-            $('#val_principal').trigger("chosen:updated");
-            $('#val_vprincipal').trigger("chosen:updated");
-        },
-        error: function (xhr, status, error) {
-            console.error("Unable to fetching customers");
-        }
-    });
-}
-
-function togglePrincipalField() {
-    const type = $('#val_producttype').val();
-    if (type === 'principal') {
-        $('#val_principal').closest('.form-group').show();
-    } else {
-        $('#val_principal').closest('.form-group').hide();
-        $('#val_principal').val('').trigger("chosen:updated"); // optional: clear selection
-    }
-}
-
-function togglevPrincipalField() {
-    const vtype = $('#val_vproducttype').val();
-    if (vtype === 'principal') {
-        $('#val_vprincipal').closest('.form-group').show();
-    } else {
-        $('#val_vprincipal').closest('.form-group').hide();
-        $('#val_vprincipal').val('').trigger("chosen:updated"); // optional: clear selection
-    }
-}
-
-$('#val_producttype').on('change', function () {
-    togglePrincipalField()
-});
-
 $(document).on("click", "#add-product-button", function () {
     // Reset the form fields
     $("#add-form")[0].reset();
@@ -391,7 +318,6 @@ $(document).on("click", ".view-button", function () {
         data: { id: productId },
         success: function (response, status, xhr) {
 
-            $("#val_vproducttype").prop("disabled", true);
             $("#val_vproduct_id").prop("readonly", true);
             $("#val_vproduct_name").prop("readonly", true);
             $("#val_vdescription").prop("readonly", true);
@@ -446,9 +372,6 @@ $(document).on("click", "#update-button", function () {
     $("#val_vbrand").prop("disabled", false);
     $('#val_vbrand').trigger("chosen:updated");
 
-    $("#val_vproducttype").prop("disabled", false);
-    togglevPrincipalField();
-
     $("#val_vcategory").prop("disabled", false);
     $('#val_vcategory').trigger("chosen:updated");
 
@@ -466,8 +389,6 @@ $(document).on("click", "#update-button", function () {
 });
 
 $(document).on("click", "#cancel-update-button", function () {
-
-    $("#val_vproducttype").prop("disabled", true);
 
     $("#val_vbrand").prop("disabled", true);
     $('#val_vbrand').trigger("chosen:updated");
@@ -513,7 +434,7 @@ $(document).on("click", ".confirm-update-button", function () {
             description: $("#val_vdescription").val(),
             brandUid: $("#val_vbrand").val(),
             categoryUid: $("#val_vcategory").val(),
-            active: $("#val_vstatus").val()
+            active: $("#val_vstatus").is(':checked'),
         };
         $.ajax({
             url: "/monitoring/rest/products", // Your endpoint

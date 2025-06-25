@@ -21,9 +21,8 @@ public class ProductController extends BaseController {
         start(methodName);
         List<Product> result = new ArrayList<>();
 
-        String sql = "SELECT p.uid, p.display_name, c.display_name AS principalName, pc.display_name AS categoryName,pb.display_name AS brandName, p.active " +
+        String sql = "SELECT p.uid, p.display_name, pc.display_name AS categoryName, pb.display_name AS brandName, p.active " +
                 " FROM product p " +
-                " LEFT JOIN customer c ON c.uid = p.customer_uid " +
                 " JOIN product_brand pb ON pb.uid = p.brand_uid " +
                 " JOIN product_category pc ON pc.uid =p.category_uid " +
                 " ORDER BY p.display_name ASC;";

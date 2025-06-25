@@ -4,14 +4,12 @@ public class Product {
 
     private String uid;
     private String displayName;
-    private String principalUid;
-    private String principalName;
     private String categoryUid;
     private String categoryName;
     private String brandUid;
     private String brandName;
     private String description;
-    private Boolean active;
+    private boolean active;
     private String createDt;
     private String modifyDt;
     private boolean locked;
@@ -33,22 +31,6 @@ public class Product {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
-    }
-
-    public String getPrincipalUid() {
-        return principalUid;
-    }
-
-    public void setPrincipalUid(String principalUid) {
-        this.principalUid = principalUid;
-    }
-
-    public String getPrincipalName() {
-        return principalName;
-    }
-
-    public void setPrincipalName(String principalName) {
-        this.principalName = principalName;
     }
 
     public String getCategoryUid() {
@@ -91,11 +73,11 @@ public class Product {
         this.description = description;
     }
 
-    public Boolean getActive() {
+    public boolean isActive() {
         return active;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 
