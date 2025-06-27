@@ -114,3 +114,12 @@ $(document).on("click", ".view-button", function () {
     window.location.href = "project-overview?id=" + projectId;
 });
 
+$(document).on("click", "#add-project-button", function () {
+    // Reset the form fields
+    $("#add-form")[0].reset();
+    // Reset the validation (remove error classes and messages)
+    $("#add-form").find(".form-group").removeClass("has-error has-success");
+    $("#add-form").find(".help-block").remove();
+    $("#submit-button").removeClass("disabled").html('Submit');
+});
+

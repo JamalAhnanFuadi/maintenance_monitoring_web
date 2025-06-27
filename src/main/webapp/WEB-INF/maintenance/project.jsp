@@ -62,7 +62,7 @@
 
                     <div class="table-options clearfix">
                         <div class="btn-group btn-group-sm pull-right" data-toggle="buttons">
-                            <a id="add-customer-button" href="#add-modal" class="btn btn-sm btn-info"
+                            <a id="add-project-button" href="#add-modal" class="btn btn-sm btn-info"
                                data-toggle="modal"><i class="fa fa-plus"></i> Add Project</a>
                         </div>
                     </div>
@@ -111,6 +111,73 @@
     <a href="#" id="to-top"><i class="fa fa-angle-double-up"></i></a>
 </div>
 
+<!-- Add modal -->
+<div id="add-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Add Project</h3>
+            </div>
+            <div class="modal-body">
+                <form id="add-form" class="form-horizontal form-bordered">
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_project_name">Project Name <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-md-6">
+                                <input type="text" id="val_project_name" name="val_project_name"
+                                       class="form-control" placeholder="Project Name..">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_customer_name">Customer Name <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-md-6">
+                                <input type="text" id="val_customer_name" name="val_customer_name"
+                                       class="form-control" placeholder="Customer Name.."></input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_so_number">Sales Order Number <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-md-6">
+                                <input type="text" id="val_so_number" name="val_so_number" class="form-control"
+                                       placeholder="Sales Order Number.."></input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_job_code">Job Code <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-md-6">
+                                <input type="text" id="val_job_code" name="val_job_code" class="form-control"
+                                       placeholder="Job Code.."></input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_staff_pic">Staff PIC
+                                <span class="text-danger">*</span></label>
+                            <div class="col-md-6">
+                                <select id="val_staff_pic" name="val_staff_pic" class="select-chosen"
+                                        data-placeholder="Select PIC.." style="width: 250px;" multiple>
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <div class="modal-footer">
+                        <div class="btn-group btn-group-sm pull-right" data-toggle="buttons">
+                            <a id="submit-button" class="btn btn-sm btn-info submit-button"></i>Submit</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END Add modal -->
+
 <!-- Delete modal -->
 <div id="delete-modal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog">
@@ -126,7 +193,8 @@
                     <a id="cancel-delete-button" class="btn btn-sm btn-default cancel-delete-button">Cancel</a>
                 </div>
                 <div class="btn-group btn-group-sm pull-right" data-toggle="buttons">
-                    <a id="confirm-delete-button" class="btn btn-sm btn-danger confirm-delete-button"></i>Confirm Delete</a>
+                    <a id="confirm-delete-button"
+                       class="btn btn-sm btn-danger confirm-delete-button"></i>Confirm Delete</a>
                 </div>
             </div>
         </div>
