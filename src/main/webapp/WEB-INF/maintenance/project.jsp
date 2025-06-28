@@ -131,11 +131,14 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-4 control-label" for="val_customer_name">Customer Name <span
-                                    class="text-danger">*</span></label>
+                            <label class="col-md-4 control-label" for="val_customer_name">
+                                Customer Name <span class="text-danger">*</span>
+                            </label>
                             <div class="col-md-6">
-                                <input type="text" id="val_customer_name" name="val_customer_name"
-                                       class="form-control" placeholder="Customer Name.."></input>
+                                <select id="val_customer_name" name="val_customer_name" class="form-control select-chosen"
+                                        data-placeholder="Select customer.." style="width: 250px;">
+                                    <option value=""></option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -160,8 +163,14 @@
                             <div class="col-md-6">
                                 <select id="val_staff_pic" name="val_staff_pic" class="select-chosen"
                                         data-placeholder="Select PIC.." style="width: 250px;" multiple>
-                                    <option value=""></option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="val_description">Description </label>
+                            <div class="col-md-6">
+                                        <textarea id="val_description" name="val_description" class="form-control"
+                                                  placeholder="Description.." rows="4"></textarea>
                             </div>
                         </div>
                     </fieldset>

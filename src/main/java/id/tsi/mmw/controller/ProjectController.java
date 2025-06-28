@@ -1,9 +1,14 @@
 package id.tsi.mmw.controller;
 
 import id.tsi.mmw.model.*;
+import id.tsi.mmw.util.helper.DateHelper;
 import org.jdbi.v3.core.Handle;
+import org.jdbi.v3.core.statement.PreparedBatch;
 import org.jdbi.v3.core.statement.Query;
+import org.jdbi.v3.core.statement.Update;
 
+import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +25,12 @@ public class ProjectController extends BaseController {
         List<Project> result = new ArrayList<>();
 
         String sql = "SELECT p.uid, p.display_name, c.display_name AS customerName, p.sales_order_number, p.job_code, " +
-                "p.create_dt , p.modify_dt " +
+                "p.create_dt , p.modify_dt, p.mark_for_deletion, " +
+                "    CONCAT( " +
+                "        DATE_FORMAT(p.mark_for_deletion_dt, '%d %M %Y'), " +
+                "        ' at ', " +
+                "        DATE_FORMAT(p.mark_for_deletion_dt, '%h:%i %p') " +
+                "    ) AS markForDeletionDt " +
                 "FROM project p " +
                 "JOIN customer c ON c.uid = p.customer_uid " +
                 "ORDER BY p.display_name ASC;";
@@ -35,7 +45,7 @@ public class ProjectController extends BaseController {
         return result;
     }
 
-    public List <ProjectTag> getProjectTagList( String projectUid ) {
+    public List<ProjectTag> getProjectTagList(String projectUid) {
         final String methodName = "getProjectList";
         List<ProjectTag> result = new ArrayList<>();
 
@@ -53,7 +63,7 @@ public class ProjectController extends BaseController {
         return result;
     }
 
-    public List <ProjectTag> getProjectTagListByServiceOrder( String projectUid, String serviceOrderUid ) {
+    public List<ProjectTag> getProjectTagListByServiceOrder(String projectUid, String serviceOrderUid) {
         final String methodName = "getProjectTagListByServiceOrder";
         List<ProjectTag> result = new ArrayList<>();
 
@@ -72,7 +82,7 @@ public class ProjectController extends BaseController {
         return result;
     }
 
-    public List <ProjectStaffPIC> getStaffPICList(String projectUid ) {
+    public List<ProjectStaffPIC> getStaffPICList(String projectUid) {
         final String methodName = "getStaffPICList";
         List<ProjectStaffPIC> result = new ArrayList<>();
 
@@ -91,7 +101,7 @@ public class ProjectController extends BaseController {
         return result;
     }
 
-    public List <ProjectCustomerPIC> getCustomerPICList(String projectUid ) {
+    public List<ProjectCustomerPIC> getCustomerPICList(String projectUid) {
         final String methodName = "getCustomerPICList";
         List<ProjectCustomerPIC> result = new ArrayList<>();
 
@@ -114,11 +124,14 @@ public class ProjectController extends BaseController {
         start(methodName);
         Project result = null;
 
-        String sql = "SELECT p.uid, p.display_name, c.display_name AS customerName, p.sales_order_number, p.job_code, " +
-                "CONCAT(s.firstname, ' ', s.lastname) AS staffName, p.create_dt , p.modify_dt " +
+        String sql = "SELECT p.uid, p.display_name, c.display_name AS customerName, p.customer_uid, p.sales_order_number, p.job_code, p.description, p.mark_for_deletion, p.create_dt , p.modify_dt, " +
+                "    CONCAT( " +
+                "        DATE_FORMAT(p.mark_for_deletion_dt, '%d %M %Y'), " +
+                "        ' at ', " +
+                "        DATE_FORMAT(p.mark_for_deletion_dt, '%h:%i %p') " +
+                "    ) AS markForDeletionDt " +
                 "FROM project p " +
                 "JOIN customer c ON c.uid = p.customer_uid " +
-                "JOIN staff s ON s.uid = p.staff_uid " +
                 "WHERE p.uid = :projectUid;";
 
         try (Handle handle = getHandle(); Query q = handle.createQuery(sql)) {
@@ -150,7 +163,7 @@ public class ProjectController extends BaseController {
         return result;
     }
 
-    public List <ProjectServiceOrder> getServiceOrderList(String projectUid ) {
+    public List<ProjectServiceOrder> getServiceOrderList(String projectUid) {
         final String methodName = "getServiceOrderList";
         List<ProjectServiceOrder> result = new ArrayList<>();
 
@@ -165,6 +178,88 @@ public class ProjectController extends BaseController {
         } catch (Exception e) {
             log.error(methodName, e);
         }
+        return result;
+    }
+
+    public boolean addProject(Project project) {
+        final String methodName = "addProject";
+        start(methodName);
+        boolean result = false;
+
+        String projectSql = "INSERT INTO project " +
+                "(uid, display_name, customer_uid, sales_order_number, job_code, description, create_dt) " +
+                "VALUES (:uid, :displayName, :customerUid, :salesOrderNumber, :jobCode, :description, :createDt);";
+
+        String staffPicSql = "INSERT INTO project_pic (uid, project_uid, staff_uid, create_dt) " +
+                " VALUES ( LOWER(UUID()), :projectUid, :staffUid, :createDt);";
+
+        try (Handle h = getHandle()) {
+            result = h.inTransaction(handle -> {
+                handle.begin();
+
+                PreparedBatch projectInsertBatch = handle.prepareBatch(projectSql);
+                projectInsertBatch.bindBean(project).add();
+                boolean projectInsert = executeBatch(projectInsertBatch);
+
+                if (!projectInsert) return false;
+
+                PreparedBatch staffPicBatch = handle.prepareBatch(staffPicSql);
+                for (ProjectStaffPIC staffPIC : project.getStaffPic()) {
+                    staffPicBatch.bindBean(staffPIC).add();
+                }
+
+                boolean staffPicInsert = executeBatch(staffPicBatch);
+
+                return projectInsert && staffPicInsert;
+            });
+        } catch (SQLException | IllegalArgumentException e) {
+            log.error(methodName, e);
+        }
+
+        completed(methodName);
+        return result;
+
+    }
+
+    public boolean markForDeletion(String uid) {
+        final String methodName = "markForDeletion";
+        start(methodName);
+        boolean result = false;
+        final String sql = "UPDATE project SET " +
+                "mark_for_deletion = 1, project.mark_for_deletion_dt = :markForDeletionDt, modify_dt = :modifyDt " +
+                "WHERE uid = :uid";
+        try (Handle h = getHandle(); Update u = h.createUpdate(sql)) {
+
+            LocalDateTime modifyLdt = LocalDateTime.now();
+            String modifyDt = DateHelper.formatDBDateTime(modifyLdt);
+
+            LocalDateTime markForDeletionLdt = modifyLdt.plusDays(30);
+            String markForDeletionDt = DateHelper.formatDBDateTime(markForDeletionLdt);
+
+            u.bind("uid", uid);
+            u.bind("modifyDt", modifyDt);
+            u.bind("markForDeletionDt", markForDeletionDt);
+
+            result = executeUpdate(u);
+        } catch (Exception ex) {
+            log.error(methodName, ex);
+        }
+        completed(methodName);
+        return result;
+    }
+
+    public boolean permanentDeleteProduct(String uid) {
+        final String methodName = "permanentDeleteProduct";
+        start(methodName);
+        boolean result = false;
+        final String sql = "DELETE FROM project WHERE uid = :uid";
+        try (Handle h = getHandle(); Update u = h.createUpdate(sql)) {
+            u.bind("uid", uid);
+            result = executeUpdate(u);
+        } catch (Exception ex) {
+            log.error(methodName, ex);
+        }
+        completed(methodName);
         return result;
     }
 }

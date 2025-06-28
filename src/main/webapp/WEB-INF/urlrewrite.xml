@@ -65,26 +65,4 @@
 	</rule>
 
 
-	<rule>
-		<from>^/end-staff-management$</from>
-		<to>/WEB-INF/end_users.jsp</to>
-	</rule>
-	<rule>
-		<from>^/principal-staff-management$</from>
-		<to>/WEB-INF/principal_users.jsp</to>
-	</rule>
-
-	<rule>
-		<from>^/staff-access-group$</from>
-		<to>/WEB-INF/staff-access-group.jsp</to>
-	</rule>
-	<rule>
-		<from>^/stakeholders$</from>
-		<to>/WEB-INF/stakeholder.jsp</to>
-	</rule>
-	<rule>
-		<from>^/application</from>
-		<to>/WEB-INF/application.jsp</to>
-	</rule>
-
 </urlrewrite>

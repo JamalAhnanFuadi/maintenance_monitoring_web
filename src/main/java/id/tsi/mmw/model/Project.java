@@ -20,6 +20,9 @@ public class Project {
     private List<ProjectStaffPIC> staffPic;
     private List<ProjectCustomerPIC> customerPic;
 
+    private boolean markForDeletion;
+    private String markForDeletionDt;
+
     public Project() {
     }
 
@@ -125,5 +128,21 @@ public class Project {
 
     public void setCustomerPic(List<ProjectCustomerPIC> customerPic) {
         this.customerPic = customerPic;
+    }
+
+    public boolean isMarkForDeletion() {
+        return markForDeletion;
+    }
+
+    public void setMarkForDeletion(boolean markForDeletion) {
+        this.markForDeletion = markForDeletion;
+    }
+
+    public String getMarkForDeletionDt() {
+        return markForDeletionDt;
+    }
+
+    public void setMarkForDeletionDt(String markForDeletionDt) {
+        this.markForDeletionDt = markForDeletionDt;
     }
 }

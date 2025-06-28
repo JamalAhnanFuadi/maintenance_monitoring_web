@@ -15,6 +15,9 @@ public class DateHelper {
 
     private static final DateTimeFormatter DB_DT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm:ss");
+
     private DateHelper() {}
 
     public static String formatFileDateTime(LocalDateTime dt) {
@@ -49,4 +52,19 @@ public class DateHelper {
     public static LocalDate parseFEDate(String str) {
         return LocalDate.parse(str, UI_D_FORMAT);
     }
+
+    public static String formatDate(LocalDateTime dt) {
+        if (dt != null) {
+            return dt.format(DATE_FORMAT);
+        }
+        return null;
+    }
+
+    public static String formatTime(LocalDateTime dt) {
+        if (dt != null) {
+            return dt.format(TIME_FORMAT);
+        }
+        return null;
+    }
+
 }

@@ -15,11 +15,17 @@ public class PropertyManager extends BaseManager{
     private PropertyManager() {
         log = new AppLogger(this.getClass());
         try {
+
             prop = new Properties();
+
+            log.info("PropertyManager", "Loading Common Properties");
             prop.load(PropertyManager.class.getClassLoader().getResourceAsStream(Property.CONFIGURATION_FILE));
 
+            log.info("PropertyManager", "Loading Environment Properties");
+            prop.load(PropertyManager.class.getClassLoader().getResourceAsStream(Property.CONFIGURATION_COMMON_FILE));
+
         } catch (Exception ex) {
-            log.error("", ex);
+            log.error("PropertyManager", ex);
         }
     }
 

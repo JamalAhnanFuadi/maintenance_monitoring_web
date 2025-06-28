@@ -5,6 +5,7 @@ public class Property {
     private Property() {}
 
     public static final String CONFIGURATION_FILE = "application.properties";
+    public static final String CONFIGURATION_COMMON_FILE = "application.common.properties";
 
     public static final String DB_DRIVER_CLASSNAME = "db.driver";
     public static final String DB_URL = "db.url";
@@ -19,7 +20,6 @@ public class Property {
     public static final String STAFF_DEFAULT_PASSWORD = "staff.default.password";
 
     public static final String MAIL_SMTP_SENDER = "mail.sender";
-
 
     public static final String MAIL_MS_SERVER = "mail.ms.server";
     public static final String MAIL_MS_SEND_EMAIL_API = "mail.ms.send-email.api";

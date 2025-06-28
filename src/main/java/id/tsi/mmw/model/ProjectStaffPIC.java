@@ -7,6 +7,7 @@ public class ProjectStaffPIC {
     private String staffUid;
     private String staffName;
     private String staffEmail;
+    private String createDt;
 
 
     public ProjectStaffPIC() {
@@ -50,5 +51,13 @@ public class ProjectStaffPIC {
 
     public void setStaffEmail(String staffEmail) {
         this.staffEmail = staffEmail;
+    }
+
+    public String getCreateDt() {
+        return createDt;
+    }
+
+    public void setCreateDt(String createDt) {
+        this.createDt = createDt;
     }
 }
