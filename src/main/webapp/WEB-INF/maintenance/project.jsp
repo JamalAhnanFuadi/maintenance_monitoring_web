@@ -135,23 +135,23 @@
                                 Customer Name <span class="text-danger">*</span>
                             </label>
                             <div class="col-md-6">
-                                <select id="val_customer_name" name="val_customer_name" class="form-control select-chosen"
-                                        data-placeholder="Select customer.." style="width: 250px;">
+                                <select id="val_customer_name" name="val_customer_name"
+                                        class="form-control select-chosen" data-placeholder="Select customer.."
+                                        style="width: 250px;">
                                     <option value=""></option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-4 control-label" for="val_so_number">Sales Order Number <span
-                                    class="text-danger">*</span></label>
+                            <label class="col-md-4 control-label" for="val_so_number">Sales Order Number
+                            </label>
                             <div class="col-md-6">
                                 <input type="text" id="val_so_number" name="val_so_number" class="form-control"
                                        placeholder="Sales Order Number.."></input>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-4 control-label" for="val_job_code">Job Code <span
-                                    class="text-danger">*</span></label>
+                            <label class="col-md-4 control-label" for="val_job_code">Job Code </label>
                             <div class="col-md-6">
                                 <input type="text" id="val_job_code" name="val_job_code" class="form-control"
                                        placeholder="Job Code.."></input>

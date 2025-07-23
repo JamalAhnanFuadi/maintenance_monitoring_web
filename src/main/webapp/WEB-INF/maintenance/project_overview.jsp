@@ -123,7 +123,8 @@
                                     <label class="col-sm-3 control-label">Staff PIC :</label>
                                     <div class="col-xs-9">
                                         <!-- Staff PIC Content -->
-                                        <div class="row style-alt form-control-static" id="staff-pic-container"></div>
+                                        <div class="row style-alt form-control-static"
+                                             id="staff-pic-container"></div>
                                         <!-- END Staff PIC Content -->
                                     </div>
                                 </div>
@@ -182,7 +183,8 @@
                             <!-- Customer PIC Title -->
                             <div class="block-title">
                                 <h2><strong>Customer PIC</strong></h2>
-                                <a id="update-customer-pic-button" class="btn btn-sm btn-info update-button"
+                                <a id="update-customer-pic-button"
+                                   class="btn btn-sm btn-info update-button"
                                    style="display: inline-block; vertical-align: middle; margin-top: -2px;">
                                     Update</a>
                             </div>
@@ -210,7 +212,7 @@
                         <div class="timeline block-content-full">
                             <ul class="timeline-list timeline-hover">
                             </ul>
-                            <br/>
+                            <br />
                         </div>
                         <!-- END Project History Content -->
                     </div>
@@ -276,23 +278,22 @@
                             </label>
                             <div class="col-md-6">
                                 <select id="val_customer_name" name="val_customer_name"
-                                        class="form-control select-chosen"
-                                        data-placeholder="Select customer.." style="width: 250px;">
+                                        class="form-control select-chosen" data-placeholder="Select customer.."
+                                        style="width: 250px;">
                                     <option value=""></option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-4 control-label" for="val_so_number">Sales Order Number <span
-                                    class="text-danger">*</span></label>
+                            <label class="col-md-4 control-label" for="val_so_number">Sales Order Number
+                            </label>
                             <div class="col-md-6">
                                 <input type="text" id="val_so_number" name="val_so_number" class="form-control"
                                        placeholder="Sales Order Number.."></input>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-4 control-label" for="val_job_code">Job Code <span
-                                    class="text-danger">*</span></label>
+                            <label class="col-md-4 control-label" for="val_job_code">Job Code </label>
                             <div class="col-md-6">
                                 <input type="text" id="val_job_code" name="val_job_code" class="form-control"
                                        placeholder="Job Code.."></input>
